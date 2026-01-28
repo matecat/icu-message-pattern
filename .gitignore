@@ -1,0 +1,16 @@
+# Composer
+composer.lock
+vendor/
+
+# Auto-generated documentation directory (phpDocumentor)
+docs/
+
+# Auto-generated code coverage report
+report/
+/.phpunit.cache/
+/.phpunit.result.cache
+/coverage.clover
+/cache/
+/Benchmarks/
+.idea/
+composer.phar
