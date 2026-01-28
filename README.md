@@ -6,7 +6,7 @@ This package focuses on parsing ICU MessageFormat patterns into a precise token 
 This package does not provide locale-aware date/number formatting itself — it provides the pattern model and utilities so you can build formatters or validators that interoperate with PHP's intl extension or other formatting libraries.
 
 ## Authors
-- Domenico Lupinetti (ostico) — https://github.com/Ostico — domenico@translated.net / ostico@gmail.com
+- Domenico Lupinetti — [Ostico](https://github.com/Ostico) — domenico@translated.net / ostico@gmail.com
 
 ## Features
 - Full tokenization of ICU MessageFormat patterns (braces, argument names/indexes, type specifiers, selectors, offsets, quoted text, etc.).
@@ -16,10 +16,9 @@ This package does not provide locale-aware date/number formatting itself — it 
 - Mirrored behavior of ICU4J MessagePattern parsing logic (same parsing rules and edge-case handling).
 
 ## Installation
-Replace your-vendor/icu-messagepattern with your package vendor name and the package name once published.
 
 ### Install via Composer:
-composer require your-vendor/icu-messagepattern
+composer require matecat/icu-message-pattern
 
 #### Requirements
 - PHP 8.3+
@@ -31,7 +30,8 @@ composer require your-vendor/icu-messagepattern
 ### Basic parse and inspect
 
 ```php
-use Matecat\ICU\MessagePattern;use Matecat\ICU\Parts\TokenType;
+use Matecat\ICU\MessagePattern;
+use Matecat\ICU\Parts\TokenType;
 
 $patternText = "You have {num, plural, offset:1 =0{no messages} =1{one message} other{# messages}} in {folder}.";
 $pattern = new MessagePattern($patternText);
