@@ -47,9 +47,9 @@ composer require matecat/icu-intl
 
 ## Namespaces
 
-| Namespace | Description |
-|-----------|-------------|
-| `Matecat\ICU` | ICU MessagePattern parser and AST classes |
+| Namespace         | Description                                       |
+|-------------------|---------------------------------------------------|
+| `Matecat\ICU`     | ICU MessagePattern parser and AST classes         |
 | `Matecat\Locales` | Language data, plural rules, and locale utilities |
 
 ## Quick Usage
@@ -182,7 +182,7 @@ $pluralCount = Languages::getPluralsCount('ru-RU'); // 3
 
 #### Plural Rules
 ```php
-use Matecat\Locales\PluralRules\PluralRules;
+use Matecat\ICU\PluralRules\PluralRules;
 
 // Get the plural form index for a number in a specific language
 $form = PluralRules::calculate('en', 1);    // 0 (singular)
@@ -192,9 +192,30 @@ $form = PluralRules::calculate('ru', 1);    // 0 (one)
 $form = PluralRules::calculate('ru', 2);    // 1 (few)
 $form = PluralRules::calculate('ru', 5);    // 2 (many)
 
-// Get the number of plural forms for a language
-$count = PluralRules::getPluralsCount('ar'); // 6
-$count = PluralRules::getPluralsCount('ja'); // 1
+// Get the CLDR plural category name for a number
+$category = PluralRules::getCategoryName('en', 1);    // "one"
+$category = PluralRules::getCategoryName('en', 5);    // "other"
+
+$category = PluralRules::getCategoryName('ru', 1);    // "one"
+$category = PluralRules::getCategoryName('ru', 2);    // "few"
+$category = PluralRules::getCategoryName('ru', 5);    // "many"
+
+$category = PluralRules::getCategoryName('ar', 0);    // "zero"
+$category = PluralRules::getCategoryName('ar', 1);    // "one"
+$category = PluralRules::getCategoryName('ar', 2);    // "two"
+$category = PluralRules::getCategoryName('ar', 5);    // "few"
+$category = PluralRules::getCategoryName('ar', 11);   // "many"
+$category = PluralRules::getCategoryName('ar', 100);  // "other"
+
+// Get all available plural categories for a language
+$categories = PluralRules::getCategories('en');  // ["one", "other"]
+$categories = PluralRules::getCategories('ru');  // ["one", "few", "many"]
+$categories = PluralRules::getCategories('ar');  // ["zero", "one", "two", "few", "many", "other"]
+
+// Use category constants for comparison
+if (PluralRules::getCategoryName('en', $count) === PluralRules::CATEGORY_ONE) {
+    echo "Singular form";
+}
 ```
 
 #### Language Domains
@@ -261,9 +282,18 @@ Argument classifications: `NONE`, `SIMPLE`, `CHOICE`, `PLURAL`, `SELECT`, `SELEC
 - `isRTL(string $rfc3066code): bool`
 - `getPluralsCount(string $rfc3066code): int` (static)
 
-### Matecat\Locales\PluralRules\PluralRules
-- `calculate(string $langCode, int|float $number): int` (static)
-- `getPluralsCount(string $langCode): int` (static)
+### Matecat\ICU\PluralRules\PluralRules
+- `calculate(string $locale, int $n): int` (static) - Returns the plural form index for a number
+- `getCategoryName(string $locale, int $n): string` (static) - Returns the CLDR category name ('zero', 'one', 'two', 'few', 'many', 'other')
+- `getCategories(string $locale): array` (static) - Returns all available category names for a locale
+
+#### Category Constants
+- `CATEGORY_ZERO` = 'zero'
+- `CATEGORY_ONE` = 'one'
+- `CATEGORY_TWO` = 'two'
+- `CATEGORY_FEW` = 'few'
+- `CATEGORY_MANY` = 'many'
+- `CATEGORY_OTHER` = 'other'
 
 ### Matecat\Locales\LanguageDomains
 - `getInstance(): LanguageDomains` (singleton)

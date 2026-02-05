@@ -863,4 +863,304 @@ final class PluralRulesTest extends TestCase
         self::assertSame(1, PluralRules::calculate('en', 2));
         self::assertSame(1, PluralRules::calculate('fr', 2));
     }
+
+    // =========================================================================
+    // getCategoryName() Tests
+    // =========================================================================
+
+    #[DataProvider('getCategoryNameProvider')]
+    public function testGetCategoryName(string $locale, int $n, string $expected): void
+    {
+        self::assertSame($expected, PluralRules::getCategoryName($locale, $n));
+    }
+
+    /**
+     * @return array<array<string|int>>
+     */
+    public static function getCategoryNameProvider(): array
+    {
+        return [
+            // Rule 0: No plural forms - always "other"
+            ['ja', 0, PluralRules::CATEGORY_OTHER],
+            ['ja', 1, PluralRules::CATEGORY_OTHER],
+            ['zh', 5, PluralRules::CATEGORY_OTHER],
+            ['ko', 100, PluralRules::CATEGORY_OTHER],
+
+            // Rule 1: Two forms (n != 1) - "one" or "other"
+            ['en', 1, PluralRules::CATEGORY_ONE],
+            ['en', 0, PluralRules::CATEGORY_OTHER],
+            ['en', 2, PluralRules::CATEGORY_OTHER],
+            ['de', 1, PluralRules::CATEGORY_ONE],
+            ['de', 5, PluralRules::CATEGORY_OTHER],
+
+            // Rule 2: Two forms (n > 1) - "one" or "other"
+            ['fr', 0, PluralRules::CATEGORY_ONE],
+            ['fr', 1, PluralRules::CATEGORY_ONE],
+            ['fr', 2, PluralRules::CATEGORY_OTHER],
+            ['pt', 1, PluralRules::CATEGORY_ONE],
+
+            // Rule 3: Slavic - "one", "few", "many"
+            ['ru', 1, PluralRules::CATEGORY_ONE],
+            ['ru', 21, PluralRules::CATEGORY_ONE],
+            ['ru', 2, PluralRules::CATEGORY_FEW],
+            ['ru', 3, PluralRules::CATEGORY_FEW],
+            ['ru', 4, PluralRules::CATEGORY_FEW],
+            ['ru', 5, PluralRules::CATEGORY_MANY],
+            ['ru', 11, PluralRules::CATEGORY_MANY],
+            ['ru', 20, PluralRules::CATEGORY_MANY],
+
+            // Rule 4: Czech/Slovak - "one", "few", "other"
+            ['cs', 1, PluralRules::CATEGORY_ONE],
+            ['cs', 2, PluralRules::CATEGORY_FEW],
+            ['cs', 4, PluralRules::CATEGORY_FEW],
+            ['cs', 5, PluralRules::CATEGORY_OTHER],
+            ['sk', 1, PluralRules::CATEGORY_ONE],
+
+            // Rule 5: Irish - "one", "two", "few", "many", "other"
+            ['ga', 1, PluralRules::CATEGORY_ONE],
+            ['ga', 2, PluralRules::CATEGORY_TWO],
+            ['ga', 3, PluralRules::CATEGORY_FEW],
+            ['ga', 6, PluralRules::CATEGORY_FEW],
+            ['ga', 7, PluralRules::CATEGORY_MANY],
+            ['ga', 10, PluralRules::CATEGORY_MANY],
+            ['ga', 11, PluralRules::CATEGORY_OTHER],
+
+            // Rule 6: Lithuanian - "one", "few", "other"
+            ['lt', 1, PluralRules::CATEGORY_ONE],
+            ['lt', 21, PluralRules::CATEGORY_ONE],
+            ['lt', 2, PluralRules::CATEGORY_FEW],
+            ['lt', 9, PluralRules::CATEGORY_FEW],
+            ['lt', 10, PluralRules::CATEGORY_OTHER],
+            ['lt', 11, PluralRules::CATEGORY_OTHER],
+
+            // Rule 7: Slovenian - "one", "two", "few", "other"
+            ['sl', 1, PluralRules::CATEGORY_ONE],
+            ['sl', 101, PluralRules::CATEGORY_ONE],
+            ['sl', 2, PluralRules::CATEGORY_TWO],
+            ['sl', 102, PluralRules::CATEGORY_TWO],
+            ['sl', 3, PluralRules::CATEGORY_FEW],
+            ['sl', 4, PluralRules::CATEGORY_FEW],
+            ['sl', 5, PluralRules::CATEGORY_OTHER],
+
+            // Rule 8: Macedonian - "one", "two", "other"
+            ['mk', 1, PluralRules::CATEGORY_ONE],
+            ['mk', 21, PluralRules::CATEGORY_ONE],
+            ['mk', 2, PluralRules::CATEGORY_TWO],
+            ['mk', 22, PluralRules::CATEGORY_TWO],
+            ['mk', 3, PluralRules::CATEGORY_OTHER],
+            ['mk', 11, PluralRules::CATEGORY_OTHER],
+
+            // Rule 9: Maltese - "one", "few", "many", "other"
+            ['mt', 1, PluralRules::CATEGORY_ONE],
+            ['mt', 0, PluralRules::CATEGORY_FEW],
+            ['mt', 2, PluralRules::CATEGORY_FEW],
+            ['mt', 10, PluralRules::CATEGORY_FEW],
+            ['mt', 11, PluralRules::CATEGORY_MANY],
+            ['mt', 19, PluralRules::CATEGORY_MANY],
+            ['mt', 20, PluralRules::CATEGORY_OTHER],
+
+            // Rule 10: Latvian - "one", "other", "zero"
+            ['lv', 1, PluralRules::CATEGORY_ONE],
+            ['lv', 21, PluralRules::CATEGORY_ONE],
+            ['lv', 2, PluralRules::CATEGORY_OTHER],
+            ['lv', 11, PluralRules::CATEGORY_OTHER],
+            ['lv', 0, PluralRules::CATEGORY_ZERO],
+
+            // Rule 11: Polish - "one", "few", "many"
+            ['pl', 1, PluralRules::CATEGORY_ONE],
+            ['pl', 2, PluralRules::CATEGORY_FEW],
+            ['pl', 4, PluralRules::CATEGORY_FEW],
+            ['pl', 5, PluralRules::CATEGORY_MANY],
+            ['pl', 21, PluralRules::CATEGORY_MANY],
+
+            // Rule 12: Romanian - "one", "few", "other"
+            ['ro', 1, PluralRules::CATEGORY_ONE],
+            ['ro', 0, PluralRules::CATEGORY_FEW],
+            ['ro', 19, PluralRules::CATEGORY_FEW],
+            ['ro', 20, PluralRules::CATEGORY_OTHER],
+
+            // Rule 13: Arabic - "zero", "one", "two", "few", "many", "other"
+            ['ar', 0, PluralRules::CATEGORY_ZERO],
+            ['ar', 1, PluralRules::CATEGORY_ONE],
+            ['ar', 2, PluralRules::CATEGORY_TWO],
+            ['ar', 3, PluralRules::CATEGORY_FEW],
+            ['ar', 10, PluralRules::CATEGORY_FEW],
+            ['ar', 11, PluralRules::CATEGORY_MANY],
+            ['ar', 99, PluralRules::CATEGORY_MANY],
+            ['ar', 100, PluralRules::CATEGORY_OTHER],
+
+            // Rule 14: Welsh - "one", "two", "few", "other"
+            ['cy', 1, PluralRules::CATEGORY_ONE],
+            ['cy', 2, PluralRules::CATEGORY_TWO],
+            ['cy', 3, PluralRules::CATEGORY_FEW],
+            ['cy', 8, PluralRules::CATEGORY_OTHER],
+            ['cy', 11, PluralRules::CATEGORY_OTHER],
+
+            // Rule 15: Icelandic - "one", "other"
+            ['is', 1, PluralRules::CATEGORY_ONE],
+            ['is', 21, PluralRules::CATEGORY_ONE],
+            ['is', 2, PluralRules::CATEGORY_OTHER],
+            ['is', 11, PluralRules::CATEGORY_OTHER],
+
+            // Rule 16: Scottish Gaelic - "one", "two", "few", "other"
+            ['gd', 1, PluralRules::CATEGORY_ONE],
+            ['gd', 11, PluralRules::CATEGORY_ONE],
+            ['gd', 2, PluralRules::CATEGORY_TWO],
+            ['gd', 12, PluralRules::CATEGORY_TWO],
+            ['gd', 3, PluralRules::CATEGORY_FEW],
+            ['gd', 19, PluralRules::CATEGORY_FEW],
+            ['gd', 20, PluralRules::CATEGORY_OTHER],
+
+            // Unknown locale - defaults to rule 0, returns "other"
+            ['xyz', 1, PluralRules::CATEGORY_OTHER],
+            ['unknown', 5, PluralRules::CATEGORY_OTHER],
+        ];
+    }
+
+    // =========================================================================
+    // getCategories() Tests
+    // =========================================================================
+
+    /**
+     * @param array<string> $expected
+     */
+    #[DataProvider('getCategoriesProvider')]
+    public function testGetCategories(string $locale, array $expected): void
+    {
+        self::assertSame($expected, PluralRules::getCategories($locale));
+    }
+
+    /**
+     * @return array<array{string, array<string>}>
+     */
+    public static function getCategoriesProvider(): array
+    {
+        return [
+            // Rule 0: No plural forms
+            ['ja', [PluralRules::CATEGORY_OTHER]],
+            ['zh', [PluralRules::CATEGORY_OTHER]],
+            ['ko', [PluralRules::CATEGORY_OTHER]],
+            ['vi', [PluralRules::CATEGORY_OTHER]],
+
+            // Rule 1: Two forms (n != 1)
+            ['en', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER]],
+            ['de', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER]],
+            ['es', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER]],
+            ['it', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER]],
+
+            // Rule 2: Two forms (n > 1)
+            ['fr', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER]],
+            ['pt', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER]],
+
+            // Rule 3: Slavic
+            ['ru', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_MANY]],
+            ['uk', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_MANY]],
+            ['sr', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_MANY]],
+
+            // Rule 4: Czech/Slovak
+            ['cs', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_OTHER]],
+            ['sk', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_OTHER]],
+
+            // Rule 5: Irish
+            ['ga', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_TWO, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_MANY, PluralRules::CATEGORY_OTHER]],
+
+            // Rule 6: Lithuanian
+            ['lt', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_OTHER]],
+
+            // Rule 7: Slovenian
+            ['sl', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_TWO, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_OTHER]],
+
+            // Rule 8: Macedonian
+            ['mk', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_TWO, PluralRules::CATEGORY_OTHER]],
+
+            // Rule 9: Maltese
+            ['mt', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_MANY, PluralRules::CATEGORY_OTHER]],
+
+            // Rule 10: Latvian
+            ['lv', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER, PluralRules::CATEGORY_ZERO]],
+
+            // Rule 11: Polish
+            ['pl', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_MANY]],
+
+            // Rule 12: Romanian
+            ['ro', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_OTHER]],
+
+            // Rule 13: Arabic
+            ['ar', [PluralRules::CATEGORY_ZERO, PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_TWO, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_MANY, PluralRules::CATEGORY_OTHER]],
+
+            // Rule 14: Welsh
+            ['cy', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_TWO, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_OTHER]],
+
+            // Rule 15: Icelandic
+            ['is', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER]],
+
+            // Rule 16: Scottish Gaelic
+            ['gd', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_TWO, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_OTHER]],
+
+            // Unknown locale - defaults to rule 0
+            ['xyz', [PluralRules::CATEGORY_OTHER]],
+            ['unknown', [PluralRules::CATEGORY_OTHER]],
+        ];
+    }
+
+    // =========================================================================
+    // Locale Variant Tests for New Methods
+    // =========================================================================
+
+    public function testGetCategoryNameWithLocaleVariants(): void
+    {
+        // Test with underscore separator
+        self::assertSame(PluralRules::CATEGORY_ONE, PluralRules::getCategoryName('en_US', 1));
+        self::assertSame(PluralRules::CATEGORY_OTHER, PluralRules::getCategoryName('en_US', 2));
+        self::assertSame(PluralRules::CATEGORY_ONE, PluralRules::getCategoryName('fr_FR', 0));
+        self::assertSame(PluralRules::CATEGORY_OTHER, PluralRules::getCategoryName('fr_FR', 2));
+
+        // Test with hyphen separator
+        self::assertSame(PluralRules::CATEGORY_ONE, PluralRules::getCategoryName('en-GB', 1));
+        self::assertSame(PluralRules::CATEGORY_OTHER, PluralRules::getCategoryName('en-GB', 5));
+        self::assertSame(PluralRules::CATEGORY_FEW, PluralRules::getCategoryName('ru-RU', 2));
+
+        // Test case insensitivity
+        self::assertSame(PluralRules::CATEGORY_ONE, PluralRules::getCategoryName('EN', 1));
+        self::assertSame(PluralRules::CATEGORY_ONE, PluralRules::getCategoryName('En_Us', 1));
+    }
+
+    public function testGetCategoriesWithLocaleVariants(): void
+    {
+        // Test with underscore separator
+        self::assertSame(
+            [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER],
+            PluralRules::getCategories('en_US')
+        );
+        self::assertSame(
+            [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_MANY],
+            PluralRules::getCategories('ru_RU')
+        );
+
+        // Test with hyphen separator
+        self::assertSame(
+            [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER],
+            PluralRules::getCategories('en-GB')
+        );
+
+        // Test case insensitivity
+        self::assertSame(
+            [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER],
+            PluralRules::getCategories('EN')
+        );
+    }
+
+    // =========================================================================
+    // Constants Tests
+    // =========================================================================
+
+    public function testCategoryConstants(): void
+    {
+        self::assertSame('zero', PluralRules::CATEGORY_ZERO);
+        self::assertSame('one', PluralRules::CATEGORY_ONE);
+        self::assertSame('two', PluralRules::CATEGORY_TWO);
+        self::assertSame('few', PluralRules::CATEGORY_FEW);
+        self::assertSame('many', PluralRules::CATEGORY_MANY);
+        self::assertSame('other', PluralRules::CATEGORY_OTHER);
+    }
 }

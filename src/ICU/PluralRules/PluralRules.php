@@ -70,6 +70,100 @@ use RuntimeException;
  */
 class PluralRules
 {
+    /**
+     * CLDR plural category names
+     */
+    public const string CATEGORY_ZERO = 'zero';
+    public const string CATEGORY_ONE = 'one';
+    public const string CATEGORY_TWO = 'two';
+    public const string CATEGORY_FEW = 'few';
+    public const string CATEGORY_MANY = 'many';
+    public const string CATEGORY_OTHER = 'other';
+
+    /**
+     * Mapping of plural rule group => array of category names indexed by plural form number.
+     *
+     * Each rule group returns indices 0, 1, 2, etc. from calculate().
+     * This map translates those indices to CLDR category names.
+     *
+     * @var array<int, array<int, string>>
+     */
+    protected static array $_categoryMap = [
+        // Rule 0: nplurals=1; (Asian, no plural forms)
+        // Only "other" form exists
+        0 => [self::CATEGORY_OTHER],
+
+        // Rule 1: nplurals=2; plural=(n != 1); (Germanic, most European)
+        // 0=one (n==1), 1=other (n!=1)
+        1 => [self::CATEGORY_ONE, self::CATEGORY_OTHER],
+
+        // Rule 2: nplurals=2; plural=(n > 1); (French, Brazilian Portuguese)
+        // 0=one (n<=1), 1=other (n>1)
+        2 => [self::CATEGORY_ONE, self::CATEGORY_OTHER],
+
+        // Rule 3: nplurals=3; (Slavic - Russian, Ukrainian, etc.)
+        // 0=one, 1=few, 2=many
+        3 => [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_MANY],
+
+        // Rule 4: nplurals=3; (Czech, Slovak)
+        // 0=one, 1=few, 2=other
+        4 => [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_OTHER],
+
+        // Rule 5: nplurals=5; (Irish)
+        // 0=one, 1=two, 2=few, 3=many, 4=other
+        5 => [self::CATEGORY_ONE, self::CATEGORY_TWO, self::CATEGORY_FEW, self::CATEGORY_MANY, self::CATEGORY_OTHER],
+
+        // Rule 6: nplurals=3; (Lithuanian)
+        // 0=one, 1=few, 2=other
+        6 => [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_OTHER],
+
+        // Rule 7: nplurals=4; (Slovenian)
+        // 0=one, 1=two, 2=few, 3=other
+        7 => [self::CATEGORY_ONE, self::CATEGORY_TWO, self::CATEGORY_FEW, self::CATEGORY_OTHER],
+
+        // Rule 8: nplurals=3; (Macedonian)
+        // 0=one, 1=two, 2=other
+        8 => [self::CATEGORY_ONE, self::CATEGORY_TWO, self::CATEGORY_OTHER],
+
+        // Rule 9: nplurals=4; (Maltese)
+        // 0=one, 1=few, 2=many, 3=other
+        9 => [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_MANY, self::CATEGORY_OTHER],
+
+        // Rule 10: nplurals=3; (Latvian)
+        // 0=one, 1=other, 2=zero
+        10 => [self::CATEGORY_ONE, self::CATEGORY_OTHER, self::CATEGORY_ZERO],
+
+        // Rule 11: nplurals=3; (Polish)
+        // 0=one, 1=few, 2=many
+        11 => [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_MANY],
+
+        // Rule 12: nplurals=3; (Romanian)
+        // 0=one, 1=few, 2=other
+        12 => [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_OTHER],
+
+        // Rule 13: nplurals=6; (Arabic)
+        // 0=zero, 1=one, 2=two, 3=few, 4=many, 5=other
+        13 => [
+            self::CATEGORY_ZERO,
+            self::CATEGORY_ONE,
+            self::CATEGORY_TWO,
+            self::CATEGORY_FEW,
+            self::CATEGORY_MANY,
+            self::CATEGORY_OTHER
+        ],
+
+        // Rule 14: nplurals=4; (Welsh)
+        // 0=one, 1=two, 2=few, 3=other
+        14 => [self::CATEGORY_ONE, self::CATEGORY_TWO, self::CATEGORY_FEW, self::CATEGORY_OTHER],
+
+        // Rule 15: nplurals=2; (Icelandic)
+        // 0=one, 1=other
+        15 => [self::CATEGORY_ONE, self::CATEGORY_OTHER],
+
+        // Rule 16: nplurals=4; (Scottish Gaelic)
+        // 0=one, 1=two, 2=few, 3=other
+        16 => [self::CATEGORY_ONE, self::CATEGORY_TWO, self::CATEGORY_FEW, self::CATEGORY_OTHER],
+    ];
 
     /**
      * A map of locale => plurals group used to determine
@@ -419,21 +513,9 @@ class PluralRules
      */
     public static function calculate(string $locale, int $n): int
     {
-        $locale = strtolower($locale);
+        $ruleGroup = self::getRuleGroup($locale);
 
-        if (!isset(static::$_rulesMap[$locale])) {
-            $locale = explode('_', $locale)[0];
-        }
-
-        if (!isset(static::$_rulesMap[$locale])) {
-            $locale = explode('-', $locale)[0];
-        }
-
-        if (!isset(static::$_rulesMap[$locale])) {
-            return 0;
-        }
-
-        switch (static::$_rulesMap[$locale]) {
+        switch ($ruleGroup) {
             case 0:
                 // nplurals=1; plural=0; (Asian, no plural forms)
                 return 0;
@@ -507,5 +589,98 @@ class PluralRules
         // @codeCoverageIgnoreStart
         throw new RuntimeException('Unable to find plural rule number.');
         // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * Returns the CLDR plural category name for the given locale and number.
+     *
+     * This method combines calculate() with the category mapping to return
+     * the actual category name ('zero', 'one', 'two', 'few', 'many', 'other').
+     *
+     * ## Usage Example
+     *
+     * ```php
+     * use Matecat\ICU\PluralRules\PluralRules;
+     *
+     * // English
+     * PluralRules::getCategoryName('en', 1);  // Returns "one"
+     * PluralRules::getCategoryName('en', 2);  // Returns "other"
+     *
+     * // Arabic
+     * PluralRules::getCategoryName('ar', 0);  // Returns "zero"
+     * PluralRules::getCategoryName('ar', 1);  // Returns "one"
+     * PluralRules::getCategoryName('ar', 2);  // Returns "two"
+     * PluralRules::getCategoryName('ar', 5);  // Returns "few"
+     * PluralRules::getCategoryName('ar', 11); // Returns "many"
+     * PluralRules::getCategoryName('ar', 100);// Returns "other"
+     *
+     * // Russian
+     * PluralRules::getCategoryName('ru', 1);  // Returns "one"
+     * PluralRules::getCategoryName('ru', 2);  // Returns "few"
+     * PluralRules::getCategoryName('ru', 5);  // Returns "many"
+     * ```
+     *
+     * @param string $locale The locale to get the category for.
+     * @param int $n The number to apply the rules to.
+     * @return string The CLDR plural category name.
+     */
+    public static function getCategoryName(string $locale, int $n): string
+    {
+        $pluralIndex = self::calculate($locale, $n);
+        $ruleGroup = self::getRuleGroup($locale);
+
+        return self::$_categoryMap[$ruleGroup][$pluralIndex] ?? self::CATEGORY_OTHER;
+    }
+
+    /**
+     * Returns all available CLDR plural categories for a given locale.
+     *
+     * This is useful to know which plural forms are available for a language
+     * when building ICU MessageFormat patterns.
+     *
+     * ## Usage Example
+     *
+     * ```php
+     * use Matecat\ICU\PluralRules\PluralRules;
+     *
+     * PluralRules::getCategories('en');
+     * // Returns ['one', 'other']
+     *
+     * PluralRules::getCategories('ru');
+     * // Returns ['one', 'few', 'many']
+     *
+     * PluralRules::getCategories('ar');
+     * // Returns ['zero', 'one', 'two', 'few', 'many', 'other']
+     * ```
+     *
+     * @param string $locale The locale to get categories for.
+     * @return array<string> Array of category names available for this locale.
+     */
+    public static function getCategories(string $locale): array
+    {
+        $ruleGroup = self::getRuleGroup($locale);
+
+        return self::$_categoryMap[$ruleGroup] ?? [self::CATEGORY_OTHER];
+    }
+
+    /**
+     * Returns the plural rule group number for a given locale.
+     *
+     * @param string $locale The locale to get the rule group for.
+     * @return int The rule group number (0-16).
+     */
+    protected static function getRuleGroup(string $locale): int
+    {
+        $locale = strtolower($locale);
+
+        if (!isset(static::$_rulesMap[$locale])) {
+            $locale = explode('_', $locale)[0];
+        }
+
+        if (!isset(static::$_rulesMap[$locale])) {
+            $locale = explode('-', $locale)[0];
+        }
+
+        return static::$_rulesMap[$locale] ?? 0;
     }
 }
