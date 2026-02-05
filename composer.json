@@ -1,6 +1,6 @@
 {
-    "name": "matecat/icu-message-pattern",
-    "description": "A PHP port of ICU4J's MessagePattern parser that parses ICU MessageFormat patterns into an inspectable AST and token stream so you can analyze, validate, and implement MessageFormat-compatible formatters in PHP.",
+    "name": "matecat/icu-intl",
+    "description": "A PHP port of ICU4J's MessagePattern parser with locale utilities. Parses ICU MessageFormat patterns into an inspectable AST and provides locale data support for internationalization in PHP.",
     "type": "library",
     "license": "LGPL-3.0-or-later",
     "autoload": {
