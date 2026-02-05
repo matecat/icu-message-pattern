@@ -175,9 +175,6 @@ class MessagePatternAnalyzerTest extends TestCase
         $analyzer->validatePluralCompliance();
     }
 
-    /**
-     * @param array<string> $expectedInvalidSelectors
-     */
     #[DataProvider('pluralComplianceProvider')]
     #[Test]
     public function testValidatePluralComplianceVariousLocales(
@@ -191,10 +188,18 @@ class MessagePatternAnalyzerTest extends TestCase
         $analyzer = new MessagePatternAnalyzer($pattern, $locale);
 
         if ($shouldThrow) {
-            self::expectException(PluralComplianceException::class);
+            try {
+                $analyzer->validatePluralCompliance();
+                self::fail('Expected PluralComplianceException to be thrown');
+            } catch (PluralComplianceException $e) {
+                // Verify the expected invalid selectors are in the exception
+                foreach ($expectedInvalidSelectors as $selector) {
+                    self::assertContains($selector, $e->invalidSelectors);
+                }
+            }
+        } else {
+            $analyzer->validatePluralCompliance();
         }
-
-        $analyzer->validatePluralCompliance();
     }
 
     /**
