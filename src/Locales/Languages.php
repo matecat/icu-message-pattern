@@ -430,36 +430,5 @@ class Languages
     {
         return self::$ocr_notSupported;
     }
-
-    /**
-     * Returns the number of plural forms (nplurals) for the given language code.
-     *
-     * This method looks up the `nplurals` field from the language definition.
-     * If the language is not found, it returns 1 (no plural forms) as default.
-     *
-     * Examples:
-     * - English (en-US): 2 forms (singular, plural)
-     * - French (fr-FR): 2 forms
-     * - Russian (ru-RU): 3 forms (one, few, many)
-     * - Arabic (ar-SA): 6 forms (zero, one, two, few, many, other)
-     * - Japanese (ja-JP): 1 form (no plural)
-     *
-     * @param string $code The language code (RFC3066 format like "en-US" or ISO like "en")
-     *
-     * @return int The number of plural forms for the language (minimum 1)
-     */
-    public static function getNumberOfPlurals(string $code): int
-    {
-        $code = self::getInstance()->normalizeLanguageCode($code);
-
-        if ($code === null || !isset(self::$map_rfc2obj[$code])) {
-            return 1; // Default: no plural forms
-        }
-
-        /** @var int $nplurals */
-        $nplurals = self::$map_rfc2obj[$code]['nplurals'] ?? 1;
-
-        return $nplurals;
-    }
 }
 

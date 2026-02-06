@@ -29,15 +29,17 @@ class MessagePatternAnalyzer
      */
     public function containsComplexSyntax(): bool
     {
-        $complex = false;
         foreach ($this->pattern as $part) {
             $argType = $part->getArgType();
-            $complex |= $argType->hasPluralStyle() ||
+            if (
+                $argType->hasPluralStyle() ||
                 $argType === ArgType::SELECT ||
-                $argType === ArgType::CHOICE;
+                $argType === ArgType::CHOICE
+            ) {
+                return true; // Early exit is also more efficient
+            }
         }
-
-        return (bool)$complex;
+        return false;
     }
 
     /**
@@ -103,19 +105,17 @@ class MessagePatternAnalyzer
         }
 
         // Only throw exception if we found plural forms with invalid selectors or missing categories
-        if (!empty($foundSelectors) && (!empty($invalidSelectors) || $this->hasMissingCategories(
-                    $foundSelectors,
-                    $expectedCategories
-                ))) {
-            // Find missing categories (categories expected but not found)
-            $missingCategories = array_values($this->getMissingCategories($foundSelectors, $expectedCategories));
+        if (!empty($foundSelectors)) {
+            $missingCategories = $this->getMissingCategories($foundSelectors, $expectedCategories);
 
-            throw new PluralComplianceException(
-                expectedCategories: $expectedCategories,
-                foundSelectors: array_unique($foundSelectors),
-                invalidSelectors: array_unique($invalidSelectors),
-                missingCategories: $missingCategories
-            );
+            if (!empty($invalidSelectors) || !empty($missingCategories)) {
+                throw new PluralComplianceException(
+                    expectedCategories: $expectedCategories,
+                    foundSelectors: array_unique($foundSelectors),
+                    invalidSelectors: array_unique($invalidSelectors),
+                    missingCategories: $missingCategories
+                );
+            }
         }
     }
 
@@ -147,7 +147,7 @@ class MessagePatternAnalyzer
      */
     private function extractCategorySelectors(array $selectors): array
     {
-        return array_filter($selectors, fn($s) => !preg_match(self::NUMERIC_SELECTOR_PATTERN, $s));
+        return array_values(array_filter($selectors, fn($s) => !preg_match(self::NUMERIC_SELECTOR_PATTERN, $s)));
     }
 
     /**
@@ -178,19 +178,7 @@ class MessagePatternAnalyzer
 
         // Calculate missing categories by comparing expected categories against found category selectors
         // Numeric selectors (=0, =1, etc.) do NOT count toward fulfilling category requirements
-        return array_diff($expectedCategories, $foundCategorySelectors);
-    }
-
-    /**
-     * Checks if there are any missing-expected categories in the found selectors.
-     *
-     * @param array<string> $foundSelectors All selectors found in the message.
-     * @param array<string> $expectedCategories Expected categories for the locale.
-     * @return bool True if any expected categories are missing.
-     */
-    private function hasMissingCategories(array $foundSelectors, array $expectedCategories): bool
-    {
-        return !empty($this->getMissingCategories($foundSelectors, $expectedCategories));
+        return array_values(array_diff($expectedCategories, $foundCategorySelectors));
     }
 
     /**

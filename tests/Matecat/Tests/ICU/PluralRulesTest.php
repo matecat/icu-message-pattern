@@ -2853,4 +2853,102 @@ final class PluralRulesTest extends TestCase
         ];
     }
 
+    // =========================================================================
+    // getPluralCount Tests (moved from LanguagesTest)
+    // =========================================================================
+
+    #[DataProvider('numberOfPluralsProvider')]
+    public function testGetPluralCountReturnsCorrectCount(string $locale, int $expectedCount): void
+    {
+        self::assertSame($expectedCount, PluralRules::getPluralCount($locale));
+    }
+
+    /**
+     * @return array<string, array{0: string, 1: int}>
+     */
+    public static function numberOfPluralsProvider(): array
+    {
+        return [
+            // Languages with 1 plural form (no plural)
+            'Japanese' => ['ja', 1],
+            'Chinese' => ['zh', 1],
+            'Korean' => ['ko', 1],
+            'Vietnamese' => ['vi', 1],
+            'Thai' => ['th', 1],
+            'Indonesian' => ['id', 1],
+
+            // Languages with 2 plural forms
+            'English' => ['en', 2],
+            'German' => ['de', 2],
+            'Dutch' => ['nl', 2],
+            'Swedish' => ['sv', 2],
+            'Danish' => ['da', 2],
+            'Norwegian' => ['nb', 2],
+            'Icelandic' => ['is', 2],
+            'Macedonian' => ['mk', 2],
+
+            // Languages with 3 plural forms
+            'Russian' => ['ru', 3],
+            'Ukrainian' => ['uk', 3],
+            'Polish' => ['pl', 3],
+            'Czech' => ['cs', 3],
+            'Slovak' => ['sk', 3],
+            'Croatian' => ['hr', 3],
+            'Serbian' => ['sr', 3],
+            'Romanian' => ['ro', 3],
+            'Lithuanian' => ['lt', 3],
+            'Latvian' => ['lv', 3],
+            'Italian' => ['it', 3],
+            'Spanish' => ['es', 3],
+            'French' => ['fr', 3],
+            'Portuguese' => ['pt', 3],
+
+            // Languages with 4 plural forms
+            'Slovenian' => ['sl', 4],
+            'Maltese' => ['mt', 4],
+            'Scottish Gaelic' => ['gd', 4],
+            'Hebrew' => ['he', 4],
+            'Manx' => ['gv', 4],
+
+            // Languages with 5 plural forms
+            'Irish' => ['ga', 5],
+            'Breton' => ['br', 5],
+
+            // Languages with 6 plural forms
+            'Arabic' => ['ar', 6],
+            'Welsh' => ['cy', 6],
+        ];
+    }
+
+    public function testGetPluralCountReturnsOneForUnknownLanguage(): void
+    {
+        // Unknown language should return 1 (default: no plural forms)
+        self::assertSame(1, PluralRules::getPluralCount('xx'));
+        self::assertSame(1, PluralRules::getPluralCount('unknown'));
+    }
+
+    public function testGetPluralCountWorksWithLocaleVariants(): void
+    {
+        // Should normalize locale variants and return the correct count
+        self::assertSame(2, PluralRules::getPluralCount('en-US'));
+        self::assertSame(2, PluralRules::getPluralCount('en-GB'));
+        self::assertSame(2, PluralRules::getPluralCount('en_AU'));
+        self::assertSame(3, PluralRules::getPluralCount('fr-FR'));
+        self::assertSame(3, PluralRules::getPluralCount('fr_CA'));
+        self::assertSame(3, PluralRules::getPluralCount('it-IT'));
+        self::assertSame(3, PluralRules::getPluralCount('ru-RU'));
+        self::assertSame(6, PluralRules::getPluralCount('ar-SA'));
+    }
+
+    public function testGetPluralCountIsCaseInsensitive(): void
+    {
+        // Should work with different case variations
+        self::assertSame(2, PluralRules::getPluralCount('EN'));
+        self::assertSame(2, PluralRules::getPluralCount('En'));
+        self::assertSame(2, PluralRules::getPluralCount('EN-US'));
+        self::assertSame(2, PluralRules::getPluralCount('en-us'));
+    }
+
 }
+
+

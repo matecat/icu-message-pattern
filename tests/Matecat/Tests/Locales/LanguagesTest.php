@@ -409,89 +409,6 @@ final class LanguagesTest extends TestCase
         self::assertNull(Languages::getLocalizedLanguage('invalid-XX'));
     }
 
-    // =========================================================================
-    // Number of Plurals Tests
-    // =========================================================================
-
-    #[DataProvider('numberOfPluralsProvider')]
-    public function testGetNumberOfPluralsReturnsCorrectCount(string $code, int $expectedCount): void
-    {
-        self::assertSame($expectedCount, Languages::getNumberOfPlurals($code));
-    }
-
-    /**
-     * @return array<string, array{0: string, 1: int}>
-     */
-    public static function numberOfPluralsProvider(): array
-    {
-        return [
-            // Languages with 1 plural form (no plural)
-            'Japanese' => ['ja-JP', 1],
-            'Chinese' => ['zh-CN', 1],
-            'Korean' => ['ko-KR', 1],
-            'Vietnamese' => ['vi-VN', 1],
-            'Thai' => ['th-TH', 1],
-            'Indonesian' => ['id-ID', 1],
-
-            // Languages with 2 plural forms
-            'English (US)' => ['en-US', 2],
-            'English (UK)' => ['en-GB', 2],
-            'German' => ['de-DE', 2],
-            'Dutch' => ['nl-NL', 2],
-            'Swedish' => ['sv-SE', 2],
-            'Danish' => ['da-DK', 2],
-            'Norwegian' => ['nb-NO', 2],
-
-            // Languages with 3 plural forms
-            'Russian' => ['ru-RU', 3],
-            'Ukrainian' => ['uk-UA', 3],
-            'Polish' => ['pl-PL', 3],
-            'Czech' => ['cs-CZ', 3],
-            'Slovak' => ['sk-SK', 3],
-            'Croatian' => ['hr-HR', 3],
-            'Serbian' => ['sr-Latn-RS', 3],
-            'Romanian' => ['ro-RO', 3],
-            'Lithuanian' => ['lt-LT', 3],
-            'Latvian' => ['lv-LV', 3],
-            'Italian' => ['it-IT', 3],
-            'Spanish' => ['es-ES', 3],
-            'French' => ['fr-FR', 3],
-            'Portuguese' => ['pt-PT', 3],
-
-            // Languages with 4 plural forms
-            'Slovenian' => ['sl-SI', 4],
-            'Maltese' => ['mt-MT', 4],
-            'Scottish Gaelic' => ['gd-GB', 4],
-            'Hebrew' => ['he-IL', 4],
-            'Manx' => ['gv-IM', 4],
-
-            // Languages with 5 plural forms
-            'Irish' => ['ga-IE', 5],
-            'Breton' => ['br-FR', 5],
-
-            // Languages with 6 plural forms
-            'Arabic' => ['ar-SA', 6],
-            'Arabic (UAE)' => ['ar-AE', 6],
-            'Arabic (Egypt)' => ['ar-EG', 6],
-            'Welsh' => ['cy-GB', 6],
-        ];
-    }
-
-    public function testGetNumberOfPluralsReturnsOneForUnknownLanguage(): void
-    {
-        // Unknown language should return 1 (default: no plural forms)
-        self::assertSame(1, Languages::getNumberOfPlurals('xx-XX'));
-    }
-
-    public function testGetNumberOfPluralsWorksWithISOCodes(): void
-    {
-        // Should normalize ISO codes to RFC and return the correct count
-        self::assertSame(2, Languages::getNumberOfPlurals('en'));
-        self::assertSame(3, Languages::getNumberOfPlurals('fr'));
-        self::assertSame(3, Languages::getNumberOfPlurals('it'));
-        self::assertSame(3, Languages::getNumberOfPlurals('ru'));
-        self::assertSame(6, Languages::getNumberOfPlurals('ar'));
-    }
 
     // =========================================================================
     // OCR Support Tests
@@ -535,7 +452,6 @@ final class LanguagesTest extends TestCase
     {
         // Languages like sr-Latn-RS (Serbian Latin)
         self::assertTrue(Languages::isValidLanguage('sr-Latn-RS'));
-        self::assertSame(3, Languages::getNumberOfPlurals('sr-Latn-RS'));
     }
 
     public function testISOCodeFallback(): void
@@ -560,12 +476,5 @@ final class LanguagesTest extends TestCase
         // This tests the "else { return null; }" branch in normalizeLanguageCode
         self::assertFalse(Languages::isValidLanguage('a-b-c-d'));
         self::assertFalse(Languages::isValidLanguage('en-US-extra-part'));
-    }
-
-    public function testGetNumberOfPluralsWithInvalidNormalizedCode(): void
-    {
-        // Test with a code that normalizes to null (more than 3 parts)
-        // Should return default of 1
-        self::assertSame(1, Languages::getNumberOfPlurals('a-b-c-d'));
     }
 }

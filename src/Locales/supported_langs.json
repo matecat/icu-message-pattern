@@ -13,8 +13,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -29,8 +28,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -45,8 +43,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -61,8 +58,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -77,8 +73,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -93,8 +88,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -109,8 +103,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 6
+            }
         },
         {
             "localized": [
@@ -125,8 +118,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 6
+            }
         },
         {
             "localized": [
@@ -141,8 +133,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 6
+            }
         },
         {
             "localized": [
@@ -157,8 +148,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 6
+            }
         },
         {
             "localized": [
@@ -173,8 +163,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 6
+            }
         },
         {
             "localized": [
@@ -189,8 +178,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -205,8 +193,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -221,8 +208,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -237,8 +223,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -253,8 +238,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -269,8 +253,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -285,8 +268,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -302,8 +284,7 @@
                 "supported": true,
                 "not_supported_or_rtl": false
             },
-            "languageRegionCode": "az-Latn-AZ",
-            "nplurals": 2
+            "languageRegionCode": "az-Latn-AZ"
         },
         {
             "localized": [
@@ -318,8 +299,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -334,8 +314,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -350,8 +329,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -366,8 +344,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -382,8 +359,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -398,8 +374,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -414,8 +389,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -430,8 +404,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -446,8 +419,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -462,8 +434,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -478,8 +449,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -494,8 +464,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -510,8 +479,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -526,8 +494,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -542,8 +509,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -558,8 +524,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -574,8 +539,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -590,8 +554,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -606,8 +569,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -623,8 +585,7 @@
                 "supported": true,
                 "not_supported_or_rtl": false
             },
-            "languageRegionCode": "bs-Latn-BA",
-            "nplurals": 3
+            "languageRegionCode": "bs-Latn-BA"
         },
         {
             "localized": [
@@ -640,8 +601,7 @@
                 "supported": true,
                 "not_supported_or_rtl": false
             },
-            "languageRegionCode": "bs-Cyrl-BA",
-            "nplurals": 3
+            "languageRegionCode": "bs-Cyrl-BA"
         },
         {
             "localized": [
@@ -656,8 +616,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 5
+            }
         },
         {
             "localized": [
@@ -672,8 +631,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -688,8 +646,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -704,8 +661,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -720,8 +676,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -736,8 +691,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -752,8 +706,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -768,8 +721,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -784,8 +736,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -800,8 +751,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -816,8 +766,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 6
+            }
         },
         {
             "localized": [
@@ -832,8 +781,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -848,8 +796,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -864,8 +811,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -880,8 +826,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -896,8 +841,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -912,8 +856,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -928,8 +871,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -944,8 +886,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -960,8 +901,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -976,8 +916,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -992,8 +931,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1008,8 +946,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1024,8 +961,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -1040,8 +976,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1056,8 +991,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1072,8 +1006,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1088,8 +1021,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -1104,8 +1036,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1120,8 +1051,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -1136,8 +1066,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -1152,8 +1081,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1168,8 +1096,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1184,8 +1111,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1200,8 +1126,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1216,8 +1141,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1232,8 +1156,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -1248,8 +1171,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -1264,8 +1186,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1280,8 +1201,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1296,8 +1216,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1312,8 +1231,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1328,8 +1246,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1344,8 +1261,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1360,8 +1276,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1376,8 +1291,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1392,8 +1306,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1408,8 +1321,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1424,8 +1336,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1440,8 +1351,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1456,8 +1366,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1472,8 +1381,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1488,8 +1396,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1504,8 +1411,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1520,8 +1426,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1536,8 +1441,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1552,8 +1456,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1568,8 +1471,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1584,8 +1486,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1600,8 +1501,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1616,8 +1516,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1632,8 +1531,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1648,8 +1546,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1664,8 +1561,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1680,8 +1576,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1696,8 +1591,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1712,8 +1606,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -1728,8 +1621,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1744,8 +1636,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -1760,8 +1651,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1776,8 +1666,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1792,8 +1681,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1808,8 +1696,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1824,8 +1711,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -1840,8 +1726,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -1856,8 +1741,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -1872,8 +1756,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -1888,8 +1771,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1904,8 +1786,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1920,8 +1801,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1936,8 +1816,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1952,8 +1831,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -1968,8 +1846,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -1984,8 +1861,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2000,8 +1876,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -2016,8 +1891,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2032,8 +1906,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2048,8 +1921,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2064,8 +1936,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2080,8 +1951,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2096,8 +1966,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2112,8 +1981,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2128,8 +1996,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2144,8 +2011,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2160,8 +2026,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2176,8 +2041,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 4
+            }
         },
         {
             "localized": [
@@ -2192,8 +2056,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2208,8 +2071,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2224,8 +2086,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2240,8 +2101,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2256,8 +2116,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2272,8 +2131,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -2288,8 +2146,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2304,8 +2161,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2320,8 +2176,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2336,8 +2191,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -2352,8 +2206,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2368,8 +2221,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -2384,8 +2236,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2400,8 +2251,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 5
+            }
         },
         {
             "localized": [
@@ -2416,8 +2266,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -2432,8 +2281,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -2448,8 +2296,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2464,8 +2311,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -2480,8 +2326,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -2496,8 +2341,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -2512,8 +2356,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2528,8 +2371,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -2544,8 +2386,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -2560,8 +2401,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2576,8 +2416,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2592,8 +2431,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2608,8 +2446,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2624,8 +2461,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2640,8 +2476,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -2656,8 +2491,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -2672,8 +2506,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2688,8 +2521,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2704,8 +2536,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2720,8 +2551,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2736,8 +2566,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2752,8 +2581,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -2768,8 +2596,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2784,8 +2611,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2800,8 +2626,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2816,8 +2641,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2832,8 +2656,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2848,8 +2671,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2864,8 +2686,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2880,8 +2701,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -2896,8 +2716,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2912,8 +2731,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2928,8 +2746,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2944,8 +2761,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -2960,8 +2776,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -2976,8 +2791,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -2992,8 +2806,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -3008,8 +2821,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3024,8 +2836,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3040,8 +2851,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3056,8 +2866,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -3072,8 +2881,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3088,8 +2896,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3104,8 +2911,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3120,8 +2926,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3136,8 +2941,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3152,8 +2956,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3168,8 +2971,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3184,8 +2986,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3200,8 +3001,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3216,8 +3016,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3232,8 +3031,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3248,8 +3046,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -3264,8 +3061,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3280,8 +3076,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3296,8 +3091,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 4
+            }
         },
         {
             "localized": [
@@ -3312,8 +3106,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3328,8 +3121,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3344,8 +3136,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3360,8 +3151,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3376,8 +3166,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3392,8 +3181,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 4
+            }
         },
         {
             "localized": [
@@ -3408,8 +3196,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3424,8 +3211,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3440,8 +3226,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3456,8 +3241,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3472,8 +3256,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -3488,8 +3271,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3504,8 +3286,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3520,8 +3301,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3536,8 +3316,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -3552,8 +3331,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3568,8 +3346,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3585,8 +3362,7 @@
                 "supported": true,
                 "not_supported_or_rtl": false
             },
-            "languageRegionCode": "sr-Latn-RS",
-            "nplurals": 3
+            "languageRegionCode": "sr-Latn-RS"
         },
         {
             "localized": [
@@ -3601,8 +3377,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3617,8 +3392,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 6
+            }
         },
         {
             "localized": [
@@ -3633,8 +3407,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -3649,8 +3422,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3665,8 +3437,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3681,8 +3452,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3697,8 +3467,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -3713,8 +3482,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3729,8 +3497,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3746,8 +3513,7 @@
                 "supported": true,
                 "not_supported_or_rtl": false
             },
-            "languageRegionCode": "nde-ZW",
-            "nplurals": 2
+            "languageRegionCode": "nde-ZW"
         },
         {
             "localized": [
@@ -3762,8 +3528,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3778,8 +3543,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3794,8 +3558,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3810,8 +3573,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3826,8 +3588,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3842,8 +3603,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3858,8 +3618,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3874,8 +3633,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3890,8 +3648,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3906,8 +3663,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3922,8 +3678,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3938,8 +3693,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3954,8 +3708,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -3970,8 +3723,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -3986,8 +3738,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4002,8 +3753,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4018,8 +3768,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4035,8 +3784,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4051,8 +3799,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4067,8 +3814,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -4083,8 +3829,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4099,8 +3844,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4115,8 +3859,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -4131,8 +3874,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4147,8 +3889,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4163,8 +3904,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4179,8 +3919,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4195,8 +3934,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4211,8 +3949,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4227,8 +3964,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4243,8 +3979,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4259,8 +3994,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4275,8 +4009,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4291,8 +4024,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4307,8 +4039,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4323,8 +4054,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4339,8 +4069,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4355,8 +4084,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4371,8 +4099,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4387,8 +4114,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4403,8 +4129,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -4419,8 +4144,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -4435,8 +4159,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4451,8 +4174,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4467,8 +4189,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4483,8 +4204,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 4
+            }
         },
         {
             "localized": [
@@ -4499,8 +4219,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4516,8 +4235,7 @@
                 "supported": true,
                 "not_supported_or_rtl": false
             },
-            "languageRegionCode": "sr-Cyrl-RS",
-            "nplurals": 3
+            "languageRegionCode": "sr-Cyrl-RS"
         },
         {
             "localized": [
@@ -4533,8 +4251,7 @@
                 "supported": true,
                 "not_supported_or_rtl": false
             },
-            "languageRegionCode": "sr-Latn-RS",
-            "nplurals": 3
+            "languageRegionCode": "sr-Latn-RS"
         },
         {
             "localized": [
@@ -4549,8 +4266,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4565,8 +4281,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4581,8 +4296,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4597,8 +4311,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -4613,8 +4326,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4629,8 +4341,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4645,8 +4356,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -4661,8 +4371,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4677,8 +4386,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4693,8 +4401,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4709,8 +4416,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4725,8 +4431,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4741,8 +4446,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4757,8 +4461,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 4
+            }
         },
         {
             "localized": [
@@ -4773,8 +4476,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4789,8 +4491,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4805,8 +4506,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4821,8 +4521,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4837,8 +4536,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4854,8 +4552,7 @@
                 "supported": true,
                 "not_supported_or_rtl": false
             },
-            "languageRegionCode": "nso-ZA",
-            "nplurals": 2
+            "languageRegionCode": "nso-ZA"
         },
         {
             "localized": [
@@ -4870,8 +4567,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -4886,8 +4582,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4902,8 +4597,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4918,8 +4612,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4934,8 +4627,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4950,8 +4642,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4966,8 +4657,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4982,8 +4672,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -4998,8 +4687,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -5014,8 +4702,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -5030,8 +4717,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5046,8 +4732,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -5062,8 +4747,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5078,8 +4762,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5094,8 +4777,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5111,8 +4793,7 @@
                 "supported": true,
                 "not_supported_or_rtl": false
             },
-            "languageRegionCode": "sw-KE",
-            "nplurals": 2
+            "languageRegionCode": "sw-KE"
         },
         {
             "localized": [
@@ -5127,8 +4808,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5143,8 +4823,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5159,8 +4838,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5175,8 +4853,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5191,8 +4868,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5207,8 +4883,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5223,8 +4898,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5239,8 +4913,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5255,8 +4928,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5272,8 +4944,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5289,8 +4960,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5305,8 +4975,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5321,8 +4990,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5337,8 +5005,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5353,8 +5020,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5369,8 +5035,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5385,8 +5050,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5401,8 +5065,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5417,8 +5080,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5433,8 +5095,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5449,8 +5110,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5465,8 +5125,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5481,8 +5140,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5497,8 +5155,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5513,8 +5170,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5529,8 +5185,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5545,8 +5200,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5561,8 +5215,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5577,8 +5230,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5593,8 +5245,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5609,8 +5260,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5625,8 +5275,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5641,8 +5290,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 3
+            }
         },
         {
             "localized": [
@@ -5657,8 +5305,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5673,8 +5320,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5689,8 +5335,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5705,8 +5350,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5721,8 +5365,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5738,8 +5381,7 @@
                 "supported": true,
                 "not_supported_or_rtl": false
             },
-            "languageRegionCode": "uz-Latn-UZ",
-            "nplurals": 2
+            "languageRegionCode": "uz-Latn-UZ"
         },
         {
             "localized": [
@@ -5754,8 +5396,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5770,8 +5411,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5786,8 +5426,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5802,8 +5441,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5818,8 +5456,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5834,8 +5471,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5850,8 +5486,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 6
+            }
         },
         {
             "localized": [
@@ -5866,8 +5501,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5882,8 +5516,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5898,8 +5531,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 1
+            }
         },
         {
             "localized": [
@@ -5914,8 +5546,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5930,8 +5561,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5946,8 +5576,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         },
         {
             "localized": [
@@ -5962,8 +5591,7 @@
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
-            },
-            "nplurals": 2
+            }
         }
     ]
 }
