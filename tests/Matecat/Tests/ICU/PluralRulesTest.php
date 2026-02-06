@@ -964,6 +964,35 @@ final class PluralRulesTest extends TestCase
         self::assertSame(0, PluralRules::calculate('ja', 0));  // no plural
     }
 
+    /**
+     * Test Welsh (cy) plural rules explicitly to ensure all match branches are covered.
+     * Welsh has 6 plural forms: zero, one, two, few, many, other
+     */
+    public function testWelshAllBranches(): void
+    {
+        // zero: n = 0
+        self::assertSame(0, PluralRules::calculate('cy', 0));
+
+        // one: n = 1
+        self::assertSame(1, PluralRules::calculate('cy', 1));
+
+        // two: n = 2
+        self::assertSame(2, PluralRules::calculate('cy', 2));
+
+        // few: n = 3
+        self::assertSame(3, PluralRules::calculate('cy', 3));
+
+        // many: n = 6
+        self::assertSame(4, PluralRules::calculate('cy', 6));
+
+        // other: everything else (default branch)
+        self::assertSame(5, PluralRules::calculate('cy', 4));
+        self::assertSame(5, PluralRules::calculate('cy', 5));
+        self::assertSame(5, PluralRules::calculate('cy', 7));
+        self::assertSame(5, PluralRules::calculate('cy', 10));
+        self::assertSame(5, PluralRules::calculate('cy', 100));
+    }
+
     // =========================================================================
     // Specific Language Code Tests (ISO 639-1 and ISO 639-3)
     // =========================================================================
