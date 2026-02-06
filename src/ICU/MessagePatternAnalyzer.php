@@ -131,7 +131,7 @@ class MessagePatternAnalyzer
             return PluralRules::getOrdinalCategories($this->language);
         }
 
-        return PluralRules::getCategories($this->language);
+        return PluralRules::getCardinalCategories($this->language);
     }
 
     /**

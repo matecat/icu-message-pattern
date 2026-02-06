@@ -81,212 +81,212 @@ class PluralRules
     public const string CATEGORY_OTHER = 'other';
 
     /**
-     * Mapping of plural rule group => array of category names indexed by plural form number.
+     * Common category arrays shared by multiple rules.
+     * Using constants to avoid duplication in the categoryMap.
+     */
+    private const array CATEGORIES_OTHER = [self::CATEGORY_OTHER];
+    private const array CATEGORIES_ONE_OTHER = [self::CATEGORY_ONE, self::CATEGORY_OTHER];
+    private const array CATEGORIES_ONE_FEW_OTHER = [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_OTHER];
+    private const array CATEGORIES_ONE_FEW_MANY = [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_MANY];
+    private const array CATEGORIES_ONE_MANY_OTHER = [self::CATEGORY_ONE, self::CATEGORY_MANY, self::CATEGORY_OTHER];
+    private const array CATEGORIES_ONE_TWO_FEW_OTHER = [
+        self::CATEGORY_ONE,
+        self::CATEGORY_TWO,
+        self::CATEGORY_FEW,
+        self::CATEGORY_OTHER
+    ];
+    private const array CATEGORIES_ONE_TWO_MANY_OTHER = [
+        self::CATEGORY_ONE,
+        self::CATEGORY_TWO,
+        self::CATEGORY_MANY,
+        self::CATEGORY_OTHER
+    ];
+    private const array CATEGORIES_ONE_FEW_MANY_OTHER = [
+        self::CATEGORY_ONE,
+        self::CATEGORY_FEW,
+        self::CATEGORY_MANY,
+        self::CATEGORY_OTHER
+    ];
+    private const array CATEGORIES_ONE_TWO_FEW_MANY_OTHER = [
+        self::CATEGORY_ONE,
+        self::CATEGORY_TWO,
+        self::CATEGORY_FEW,
+        self::CATEGORY_MANY,
+        self::CATEGORY_OTHER
+    ];
+    private const array CATEGORIES_ZERO_ONE_OTHER = [self::CATEGORY_ZERO, self::CATEGORY_ONE, self::CATEGORY_OTHER];
+    private const array CATEGORIES_ZERO_ONE_TWO_FEW_MANY_OTHER = [
+        self::CATEGORY_ZERO,
+        self::CATEGORY_ONE,
+        self::CATEGORY_TWO,
+        self::CATEGORY_FEW,
+        self::CATEGORY_MANY,
+        self::CATEGORY_OTHER
+    ];
+
+    /**
+     * Mapping of the plural rule group => array of category names indexed by plural form number.
      *
      * Each rule group returns indices 0, 1, 2, etc. from calculate().
      * This map translates those indices to CLDR category names.
      *
+     * Rules with identical category arrays share the same constant to reduce memory usage.
+     * The rule number determines the calculation logic, not the category names.
+     *
      * @var array<int, array<int, string>>
      */
-    protected static array $categoryMap = [
+    protected static array $cardinalCategoryMap = [
         // Rule 0: nplurals=1; (Asian, no plural forms)
-        // Only "other" form exists
-        0 => [self::CATEGORY_OTHER],
+        0 => self::CATEGORIES_OTHER,
 
         // Rule 1: nplurals=2; plural=(n != 1); (Germanic, most European)
-        // 0=one (n==1), 1=other (n!=1)
-        1 => [self::CATEGORY_ONE, self::CATEGORY_OTHER],
+        1 => self::CATEGORIES_ONE_OTHER,
 
-        // Rule 2: nplurals=2; plural=(n > 1); (French, Brazilian Portuguese)
-        // 0=one (n<=1), 1=other (n>1)
-        2 => [self::CATEGORY_ONE, self::CATEGORY_OTHER],
+        // Rule 2: nplurals=2; plural=(n > 1); (Filipino, Turkish, etc.)
+        2 => self::CATEGORIES_ONE_OTHER,
 
         // Rule 3: nplurals=3; (Slavic - Russian, Ukrainian, etc.)
-        // 0=one, 1=few, 2=many
-        3 => [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_MANY],
+        3 => self::CATEGORIES_ONE_FEW_MANY,
 
         // Rule 4: nplurals=3; (Czech, Slovak)
-        // 0=one, 1=few, 2=other
-        4 => [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_OTHER],
+        4 => self::CATEGORIES_ONE_FEW_OTHER,
 
         // Rule 5: nplurals=5; (Irish)
-        // 0=one, 1=two, 2=few, 3=many, 4=other
-        5 => [self::CATEGORY_ONE, self::CATEGORY_TWO, self::CATEGORY_FEW, self::CATEGORY_MANY, self::CATEGORY_OTHER],
+        5 => self::CATEGORIES_ONE_TWO_FEW_MANY_OTHER,
 
         // Rule 6: nplurals=3; (Lithuanian)
-        // 0=one, 1=few, 2=other
-        6 => [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_OTHER],
+        6 => self::CATEGORIES_ONE_FEW_OTHER,
 
         // Rule 7: nplurals=4; (Slovenian)
-        // 0=one, 1=two, 2=few, 3=other
-        7 => [self::CATEGORY_ONE, self::CATEGORY_TWO, self::CATEGORY_FEW, self::CATEGORY_OTHER],
+        7 => self::CATEGORIES_ONE_TWO_FEW_OTHER,
 
         // Rule 8: nplurals=2; (Macedonian - CLDR 48)
-        // 0=one, 1=other
-        8 => [self::CATEGORY_ONE, self::CATEGORY_OTHER],
+        8 => self::CATEGORIES_ONE_OTHER,
 
         // Rule 9: nplurals=4; (Maltese)
-        // 0=one, 1=few, 2=many, 3=other
-        9 => [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_MANY, self::CATEGORY_OTHER],
+        9 => self::CATEGORIES_ONE_FEW_MANY_OTHER,
 
         // Rule 10: nplurals=3; (Latvian - CLDR 48)
-        // 0=zero, 1=one, 2=other
-        10 => [self::CATEGORY_ZERO, self::CATEGORY_ONE, self::CATEGORY_OTHER],
+        10 => self::CATEGORIES_ZERO_ONE_OTHER,
 
         // Rule 11: nplurals=3; (Polish)
-        // 0=one, 1=few, 2=many
-        11 => [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_MANY],
+        11 => self::CATEGORIES_ONE_FEW_MANY,
 
         // Rule 12: nplurals=3; (Romanian)
-        // 0=one, 1=few, 2=other
-        12 => [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_OTHER],
+        12 => self::CATEGORIES_ONE_FEW_OTHER,
 
         // Rule 13: nplurals=6; (Arabic)
-        // 0=zero, 1=one, 2=two, 3=few, 4=many, 5=other
-        13 => [
-            self::CATEGORY_ZERO,
-            self::CATEGORY_ONE,
-            self::CATEGORY_TWO,
-            self::CATEGORY_FEW,
-            self::CATEGORY_MANY,
-            self::CATEGORY_OTHER
-        ],
+        13 => self::CATEGORIES_ZERO_ONE_TWO_FEW_MANY_OTHER,
 
         // Rule 14: nplurals=6; (Welsh)
-        // 0=zero, 1=one, 2=two, 3=few, 4=many, 5=other
-        14 => [
-            self::CATEGORY_ZERO,
-            self::CATEGORY_ONE,
-            self::CATEGORY_TWO,
-            self::CATEGORY_FEW,
-            self::CATEGORY_MANY,
-            self::CATEGORY_OTHER
-        ],
+        14 => self::CATEGORIES_ZERO_ONE_TWO_FEW_MANY_OTHER,
 
         // Rule 15: nplurals=2; (Icelandic)
-        // 0=one, 1=other
-        15 => [self::CATEGORY_ONE, self::CATEGORY_OTHER],
+        15 => self::CATEGORIES_ONE_OTHER,
 
         // Rule 16: nplurals=4; (Scottish Gaelic)
-        // 0=one, 1=two, 2=few, 3=other
-        16 => [self::CATEGORY_ONE, self::CATEGORY_TWO, self::CATEGORY_FEW, self::CATEGORY_OTHER],
+        16 => self::CATEGORIES_ONE_TWO_FEW_OTHER,
 
         // Rule 17: nplurals=5; (Breton - CLDR 48)
-        // 0=one, 1=two, 2=few, 3=many, 4=other
-        17 => [self::CATEGORY_ONE, self::CATEGORY_TWO, self::CATEGORY_FEW, self::CATEGORY_MANY, self::CATEGORY_OTHER],
+        17 => self::CATEGORIES_ONE_TWO_FEW_MANY_OTHER,
 
         // Rule 18: nplurals=4; (Manx - CLDR 48)
-        // 0=one, 1=two, 2=few, 3=other
-        18 => [self::CATEGORY_ONE, self::CATEGORY_TWO, self::CATEGORY_FEW, self::CATEGORY_OTHER],
+        18 => self::CATEGORIES_ONE_TWO_FEW_OTHER,
 
         // Rule 19: nplurals=4; (Hebrew - CLDR 48)
-        // 0=one, 1=two, 2=many, 3=other
-        19 => [self::CATEGORY_ONE, self::CATEGORY_TWO, self::CATEGORY_MANY, self::CATEGORY_OTHER],
+        19 => self::CATEGORIES_ONE_TWO_MANY_OTHER,
 
         // Rule 20: nplurals=3; (Italian, Spanish, French, Portuguese, Catalan - CLDR 49)
-        // one: i = 1 and v = 0
-        // many: e = 0 and i != 0 and i % 1000000 = 0 and v = 0
-        // other: everything else
-        // 0=one, 1=many, 2=other
-        20 => [self::CATEGORY_ONE, self::CATEGORY_MANY, self::CATEGORY_OTHER],
+        20 => self::CATEGORIES_ONE_MANY_OTHER,
     ];
 
     /**
-     * Mapping of the ordinal rule group => array of CLDR ordinal category names.
+     * Additional category arrays for ordinal rules not covered by cardinal constants.
+     */
+    private const array CATEGORIES_MANY_OTHER = [self::CATEGORY_MANY, self::CATEGORY_OTHER];
+    private const array CATEGORIES_FEW_OTHER = [self::CATEGORY_FEW, self::CATEGORY_OTHER];
+    private const array CATEGORIES_ONE_FEW_OTHER_ORDINAL = [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_OTHER];
+
+    /**
+     * Mapping of ordinal rule group => array of CLDR ordinal category names.
      *
      * CLDR ordinal rules are separate from cardinal rules. Many languages
      * that have simple cardinal rules (like English with one/other) have
      * more complex ordinal rules (English ordinal: one/two/few/other for 1st/2nd/3rd/4th).
      *
-     * @see https://www.unicode.org/cldr/charts/48/supplemental/language_plural_rules.html
+     * @see https://www.unicode.org/cldr/charts/49/supplemental/language_plural_rules.html
      * @var array<int, array<int, string>>
      */
     protected static array $ordinalCategoryMap = [
-        // Rule 0: No ordinal distinction (Asian languages, etc.)
-        // Only "other" form exists
-        0 => [self::CATEGORY_OTHER],
+        // Rule 0: No ordinal distinction - only "other"
+        0 => self::CATEGORIES_OTHER,
 
         // Rule 1: English-like ordinals (one/two/few/other for 1st/2nd/3rd/4th)
-        // one: 1, 21, 31, 41... (ends in 1 but not 11)
-        // two: 2, 22, 32, 42... (ends in 2 but not 12)
-        // few: 3, 23, 33, 43... (ends in 3 but not 13)
-        // other: 0, 4-20, 24-30, etc.
-        1 => [self::CATEGORY_ONE, self::CATEGORY_TWO, self::CATEGORY_FEW, self::CATEGORY_OTHER],
+        1 => self::CATEGORIES_ONE_TWO_FEW_OTHER,
 
-        // Rule 2: French-like ordinals (only one/other)
-        // one: 1
-        // other: everything else
-        2 => [self::CATEGORY_ONE, self::CATEGORY_OTHER],
+        // Rule 2: French-like ordinals (one/other)
+        2 => self::CATEGORIES_ONE_OTHER,
 
-        // Rule 3: Slavic ordinals (most use only "other")
-        3 => [self::CATEGORY_OTHER],
+        // Rules 3, 4, 6, 7, 9, 10, 11, 13, 15, 17, 18, 19: Only "other"
+        3 => self::CATEGORIES_OTHER,
+        4 => self::CATEGORIES_OTHER,
+        5 => self::CATEGORIES_ONE_OTHER,  // Irish ordinals
+        6 => self::CATEGORIES_OTHER,
+        7 => self::CATEGORIES_OTHER,
+        8 => self::CATEGORIES_ONE_TWO_MANY_OTHER,  // Macedonian ordinals
+        9 => self::CATEGORIES_OTHER,
+        10 => self::CATEGORIES_OTHER,
+        11 => self::CATEGORIES_OTHER,
+        12 => self::CATEGORIES_ONE_OTHER,  // Romanian ordinals
+        13 => self::CATEGORIES_OTHER,
+        14 => self::CATEGORIES_ZERO_ONE_TWO_FEW_MANY_OTHER,  // Welsh ordinals
+        15 => self::CATEGORIES_OTHER,
+        16 => self::CATEGORIES_ONE_TWO_FEW_OTHER,  // Scottish Gaelic ordinals
+        17 => self::CATEGORIES_OTHER,
+        18 => self::CATEGORIES_OTHER,
+        19 => self::CATEGORIES_OTHER,
+        20 => self::CATEGORIES_MANY_OTHER,  // Italian ordinals (many/other)
 
-        // Rule 4: Czech/Slovak ordinals (only "other")
-        4 => [self::CATEGORY_OTHER],
+        // Rule 21: Kazakh, Azerbaijani ordinals (many/other)
+        // many: n % 10 = 6 or n % 10 = 9 or n % 10 = 0 and n != 0
+        21 => self::CATEGORIES_MANY_OTHER,
 
-        // Rule 5: Irish ordinals (one/other)
-        5 => [self::CATEGORY_ONE, self::CATEGORY_OTHER],
+        // Rule 22: Hungarian, Ukrainian, Turkmen ordinals (few/other)
+        // few: n = 1 or n = 5
+        22 => self::CATEGORIES_FEW_OTHER,
 
-        // Rule 6: Lithuanian ordinals (only "other")
-        6 => [self::CATEGORY_OTHER],
+        // Rule 23: Bengali, Assamese, Hindi ordinals (one/other)
+        // one: n = 1,5,7,8,9,10
+        23 => self::CATEGORIES_ONE_OTHER,
 
-        // Rule 7: Slovenian ordinals (only "other")
-        7 => [self::CATEGORY_OTHER],
+        // Rule 24: Gujarati ordinals (one/two/few/many/other)
+        24 => self::CATEGORIES_ONE_TWO_FEW_MANY_OTHER,
 
-        // Rule 8: Macedonian ordinals (one/two/many/other)
-        8 => [self::CATEGORY_ONE, self::CATEGORY_TWO, self::CATEGORY_MANY, self::CATEGORY_OTHER],
+        // Rule 25: Kannada ordinals (one/two/few/other)
+        25 => self::CATEGORIES_ONE_TWO_FEW_OTHER,
 
-        // Rule 9: Maltese ordinals (only "other")
-        9 => [self::CATEGORY_OTHER],
+        // Rule 26: Marathi ordinals (one/other)
+        26 => self::CATEGORIES_ONE_OTHER,
 
-        // Rule 10: Latvian ordinals (only "other")
-        10 => [self::CATEGORY_OTHER],
+        // Rule 27: Odia ordinals (one/two/few/many/other)
+        27 => self::CATEGORIES_ONE_TWO_FEW_MANY_OTHER,
 
-        // Rule 11: Polish ordinals (only "other")
-        11 => [self::CATEGORY_OTHER],
+        // Rule 28: Telugu ordinals (one/two/many/other)
+        // not exactly same as 8 but close
+        28 => self::CATEGORIES_ONE_TWO_MANY_OTHER,
 
-        // Rule 12: Romanian ordinals (one/other)
-        12 => [self::CATEGORY_ONE, self::CATEGORY_OTHER],
+        // Rule 29: Nepali ordinals (one/few/other)
+        29 => self::CATEGORIES_ONE_FEW_OTHER_ORDINAL,
 
-        // Rule 13: Arabic ordinals (only "other")
-        13 => [self::CATEGORY_OTHER],
-
-        // Rule 14: Welsh ordinals (zero/one/two/few/many/other)
-        14 => [
-            self::CATEGORY_ZERO,
-            self::CATEGORY_ONE,
-            self::CATEGORY_TWO,
-            self::CATEGORY_FEW,
-            self::CATEGORY_MANY,
-            self::CATEGORY_OTHER
-        ],
-
-        // Rule 15: Icelandic ordinals (only "other")
-        15 => [self::CATEGORY_OTHER],
-
-        // Rule 16: Scottish Gaelic ordinals (one/two/few/other)
-        16 => [self::CATEGORY_ONE, self::CATEGORY_TWO, self::CATEGORY_FEW, self::CATEGORY_OTHER],
-
-        // Rule 17: Breton ordinals (only "other")
-        17 => [self::CATEGORY_OTHER],
-
-        // Rule 18: Manx ordinals (only "other")
-        18 => [self::CATEGORY_OTHER],
-
-        // Rule 19: Hebrew ordinals (only "other")
-        19 => [self::CATEGORY_OTHER],
-
-        // Rule 20: Italian ordinals (many/other - CLDR 48)
-        // many: n = 11 or n = 8 or n = 80 or n = 800
-        // other: everything else
-        20 => [self::CATEGORY_MANY, self::CATEGORY_OTHER],
+        // Rule 30: Albanian ordinals (one/two/few/other)
+        30 => self::CATEGORIES_ONE_TWO_FEW_OTHER,
     ];
 
     /**
-     * A map of locale => plurals group used to determine
+     * A map of the locale => plurals group used to determine
      * which plural rules apply to the language
      *
-     * Plural Rules:
+     * Plural Rules (Cardinal):
      * 0  - nplurals=1; plural=0; (Asian, no plural forms)
      * 1  - nplurals=2; plural=(n != 1); (Germanic, most European)
      * 2  - nplurals=2; plural=(n > 1); (French, Brazilian Portuguese)
@@ -309,317 +309,401 @@ class PluralRules
      * 19 - nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n>10 && n%10==0) ? 2 : 3; (Hebrew - CLDR 48)
      * 20 - nplurals=3; plural=(n==1) ? 0 : (n!=0 && n%1000000==0) ? 1 : 2; (Italian, Spanish, French, Portuguese, Catalan - CLDR 49)
      *
-     * @var array<string, int>
+     * Ordinal Rules:
+     * 0  - Only "other" (no ordinal distinction)
+     * 1  - one/two/few/other (English-like: 1st, 2nd, 3rd, 4th)
+     * 2  - one/other (French-like: 1er, 2e)
+     * 3  - Only "other" (Slavic)
+     * 4  - Only "other" (Czech/Slovak)
+     * 5  - one/other (Irish)
+     * 6  - Only "other" (Lithuanian)
+     * 7  - Only "other" (Slovenian)
+     * 8  - one/two/many/other (Macedonian)
+     * 9  - Only "other" (Maltese)
+     * 10 - Only "other" (Latvian)
+     * 11 - Only "other" (Polish)
+     * 12 - one/other (Romanian)
+     * 13 - Only "other" (Arabic)
+     * 14 - zero/one/two/few/many/other (Welsh)
+     * 15 - Only "other" (Icelandic)
+     * 16 - one/two/few/other (Scottish Gaelic)
+     * 17 - Only "other" (Breton)
+     * 18 - Only "other" (Manx)
+     * 19 - Only "other" (Hebrew)
+     * 20 - many/other (Italian-like ordinals)
+     * 21 - many/other (Kazakh, Azerbaijani ordinals: n%10=6,9 or n%10=0 && n!=0)
+     * 22 - few/other (Hungarian ordinals: n=1,5)
+     * 23 - one/other (Bengali, Assamese ordinals: n=1,5,7,8,9,10)
+     * 24 - one/two/few/many/other (Gujarati ordinals)
+     * 25 - one/two/few/other (Kannada ordinals)
+     * 26 - one/other (Marathi ordinals: n=1)
+     * 27 - one/two/few/many/other (Odia ordinals)
+     * 28 - one/two/many/other (Telugu ordinals)
+     * 29 - one/few/other (Nepali ordinals)
+     * 30 - one/two/few/other (Albanian ordinals)
+     *
+     * @var array<string, array{cardinal: int, ordinal: int}>
      */
     protected static array $rulesMap = [
-        'ace' => 0,  // Acehnese - no plural
-        'acf' => 2,  // Saint Lucian Creole French - French-based creole
-        'af' => 1,   // Afrikaans
-        'aig' => 1,  // Antigua and Barbuda Creole English - English-based creole
-        'ak' => 2,   // Akan
-        'als' => 1,  // Albanian (Tosk) - same as Albanian
-        'am' => 2,   // Amharic
-        'an' => 1,   // Aragonese
-        'ar' => 13,  // Arabic
-        'as' => 1,   // Assamese
-        'ast' => 1,  // Asturian
-        'awa' => 1,  // Awadhi - Indo-Aryan
-        'ayr' => 0,  // Central Aymara - no plural
-        'az' => 1,   // Azerbaijani
-        'azb' => 1,  // South Azerbaijani
-        'azj' => 1,  // North Azerbaijani
-        'ba' => 0,   // Bashkir - Turkic, no plural
-        'bah' => 1,  // Bahamas Creole English - English-based creole
-        'bal' => 1,  // Baluchi
-        'ban' => 0,  // Balinese - no plural
-        'be' => 3,   // Belarusian
-        'bem' => 1,  // Bemba
-        'bg' => 1,   // Bulgarian
-        'bh' => 2,   // Bihari
-        'bho' => 1,  // Bhojpuri
-        'bi' => 0,   // Bislama - Creole, no plural
-        'bjn' => 0,  // Banjar - no plural
-        'bjs' => 1,  // Bajan - English-based creole
-        'bm' => 0,   // Bambara - no plural
-        'bn' => 1,   // Bengali
-        'bo' => 0,   // Tibetan
-        'br' => 17,  // Breton - CLDR 48
-        'brx' => 1,  // Bodo
-        'bs' => 3,   // Bosnian
-        'bug' => 0,  // Buginese - no plural
-        'ca' => 20,  // Catalan - CLDR 49 (one, many, other)
-        'cac' => 1,  // Chuj - Mayan
-        'cav' => 20, // Catalan (Valencia) - CLDR 49 (one, many, other)
-        'ce' => 1,   // Chechen
-        'ceb' => 1,  // Cebuano
-        'ch' => 0,   // Chamorro - no plural
-        'chk' => 0,  // Chuukese - no plural
-        'chr' => 1,  // Cherokee
-        'cjk' => 1,  // Chokwe
-        'ckb' => 1,  // Central Kurdish
-        'cop' => 1,  // Coptic
-        'crh' => 0,  // Crimean Tatar - Turkic, no plural
-        'crs' => 2,  // Seselwa Creole French - French-based creole
-        'cs' => 4,   // Czech
-        'ctg' => 1,  // Chittagonian - Indo-Aryan
-        'cy' => 14,  // Welsh
-        'da' => 1,   // Danish
-        'de' => 1,   // German
-        'dik' => 1,  // Southwestern Dinka
-        'diq' => 1,  // Dimli
-        'doi' => 1,  // Dogri
-        'dv' => 1,   // Divehi
-        'dyu' => 0,  // Dyula - no plural
-        'dz' => 0,   // Dzongkha
-        'ee' => 1,   // Ewe
-        'el' => 1,   // Greek
-        'en' => 1,   // English
-        'eo' => 1,   // Esperanto
-        'es' => 20,  // Spanish - CLDR 49 (one, many, other)
-        'et' => 1,   // Estonian
-        'eu' => 1,   // Basque
-        'fa' => 2,   // Persian
-        'ff' => 1,   // Fulah
-        'fi' => 1,   // Finnish
-        'fil' => 2,  // Filipino
-        'fj' => 0,   // Fijian - no plural
-        'fn' => 0,   // Fanagalo - no plural
-        'fo' => 1,   // Faroese
-        'fon' => 0,  // Fon - no plural
-        'fr' => 20,  // French - CLDR 49 (one, many, other)
-        'fuc' => 1,  // Pulaar - Fulah dialect
-        'fur' => 1,  // Friulian
-        'fuv' => 1,  // Nigerian Fulfulde
-        'ga' => 5,   // Irish
-        'gax' => 1,  // Borana-Arsi-Guji Oromo
-        'gaz' => 1,  // West Central Oromo
-        'gcl' => 2,  // Grenadian Creole English
-        'gd' => 16,  // Scottish Gaelic
-        'gil' => 0,  // Gilbertese - no plural
-        'gl' => 1,   // Galician
-        'glw' => 1,  // Glaro-Twabo
-        'gn' => 1,   // Guarani
-        'grc' => 1,  // Ancient Greek
-        'grt' => 1,  // Garo
-        'gu' => 1,   // Gujarati
-        'guz' => 1,  // Gusii
-        'gv' => 18,  // Manx - CLDR 48
-        'gyn' => 1,  // Guyanese Creole English
-        'ha' => 1,   // Hausa
-        'haw' => 1,  // Hawaiian
-        'he' => 19,  // Hebrew - CLDR 48
-        'hi' => 2,   // Hindi
-        'hig' => 1,  // Kamwe
-        'hil' => 1,  // Hiligaynon
-        'hmn' => 0,  // Hmong - no plural
-        'hne' => 1,  // Chhattisgarhi
-        'hoc' => 1,  // Ho
-        'hr' => 3,   // Croatian
-        'ht' => 1,   // Haitian Creole
-        'hu' => 1,   // Hungarian
-        'hy' => 1,   // Armenian
-        'id' => 0,   // Indonesian
-        'ig' => 0,   // Igbo - no plural
-        'ilo' => 1,  // Ilocano
-        'is' => 15,  // Icelandic
-        'it' => 20,  // Italian - CLDR 48 (one, many, other)
-        'ja' => 0,   // Japanese
-        'jam' => 1,  // Jamaican Creole English
-        'jv' => 0,   // Javanese
-        'ka' => 0,   // Georgian
-        'kab' => 2,  // Kabyle
-        'kac' => 0,  // Kachin - no plural
-        'kam' => 1,  // Kamba
-        'kar' => 0,  // Karen - no plural
-        'kas' => 1,  // Kashmiri
-        'kbp' => 0,  // Kabiyè - no plural
-        'kea' => 0,  // Kabuverdianu - no plural
-        'kg' => 1,   // Kongo
-        'kha' => 1,  // Khasi
-        'khk' => 1,  // Halh Mongolian
-        'ki' => 1,   // Kikuyu
-        'kjb' => 1,  // Q'anjob'al - Mayan
-        'kk' => 1,   // Kazakh
-        'kl' => 1,   // Greenlandic
-        'kln' => 1,  // Kalenjin
-        'km' => 0,   // Khmer
-        'kmb' => 1,  // Kimbundu
-        'kmr' => 1,  // Northern Kurdish
-        'kn' => 1,   // Kannada
-        'knc' => 1,  // Central Kanuri
-        'ko' => 0,   // Korean
-        'kok' => 1,  // Konkani
-        'kr' => 0,   // Kanuri - no plural
-        'ks' => 1,   // Kashmiri
-        'ksw' => 0,  // S'gaw Karen - no plural
-        'ky' => 1,   // Kyrgyz
-        'la' => 1,   // Latin
-        'lb' => 1,   // Luxembourgish
-        'lg' => 1,   // Ganda
-        'li' => 1,   // Limburgish
-        'lij' => 1,  // Ligurian
-        'lmo' => 1,  // Lombard
-        'ln' => 2,   // Lingala
-        'lo' => 0,   // Lao
-        'lt' => 6,   // Lithuanian
-        'ltg' => 10, // Latgalian - same as Latvian
-        'lua' => 1,  // Luba-Lulua
-        'luo' => 1,  // Luo
-        'lus' => 1,  // Mizo
-        'luy' => 1,  // Luyia
-        'lv' => 10,  // Latvian
-        'lvs' => 10, // Standard Latvian
-        'mag' => 1,  // Magahi
-        'mai' => 1,  // Maithili
-        'mam' => 1,  // Mam - Mayan
-        'mas' => 1,  // Maasai
-        'men' => 1,  // Mende
-        'mer' => 1,  // Meru
-        'mfe' => 2,  // Mauritian Creole
-        'mfi' => 1,  // Wandala
-        'mfv' => 1,  // Mandjak
-        'mg' => 2,   // Malagasy
-        'mh' => 0,   // Marshallese - no plural
-        'mhr' => 1,  // Eastern Mari
-        'mi' => 2,   // Maori
-        'min' => 0,  // Minangkabau - no plural
-        'mk' => 8,   // Macedonian
-        'ml' => 1,   // Malayalam
-        'mn' => 1,   // Mongolian
-        'mni' => 1,  // Manipuri
-        'mnk' => 1,  // Mandinka
-        'mos' => 0,  // Mossi - no plural
-        'mr' => 1,   // Marathi
-        'mrj' => 1,  // Western Mari
-        'mrt' => 1,  // Marghi Central
-        'ms' => 0,   // Malay
-        'mt' => 9,   // Maltese
-        'my' => 0,   // Burmese
-        'nb' => 1,   // Norwegian Bokmål
-        'nd' => 1,   // North Ndebele
-        'ndc' => 1,  // Ndau
-        'ne' => 1,   // Nepali
-        'niu' => 0,  // Niuean - no plural
-        'nl' => 1,   // Dutch
-        'nn' => 1,   // Norwegian Nynorsk
-        'nr' => 1,   // South Ndebele
-        'nso' => 2,  // Northern Sotho
-        'nup' => 1,  // Nupe
-        'nus' => 1,  // Nuer
-        'ny' => 1,   // Nyanja (Chichewa)
-        'nyf' => 1,  // Giryama
-        'oc' => 2,   // Occitan
-        'om' => 1,   // Oromo
-        'or' => 1,   // Oriya
-        'ory' => 1,  // Odia (Oriya)
-        'pa' => 1,   // Punjabi
-        'pag' => 1,  // Pangasinan
-        'pap' => 1,  // Papiamento
-        'pau' => 0,  // Palauan - no plural
-        'pbt' => 1,  // Southern Pashto
-        'pi' => 1,   // Pali
-        'pis' => 0,  // Pijin - no plural
-        'pko' => 1,  // Pökoot
-        'pl' => 11,  // Polish
-        'plt' => 2,  // Plateau Malagasy
-        'pon' => 0,  // Pohnpeian - no plural
-        'pot' => 1,  // Potawatomi
-        'pov' => 1,  // Guinea-Bissau Creole
-        'ppk' => 0,  // Uma - no plural
-        'prs' => 2,  // Dari - same as Persian
-        'ps' => 1,   // Pashto
-        'pt' => 20,  // Portuguese - CLDR 49 (one, many, other)
-        'qu' => 1,   // Quechua
-        'quc' => 1,  // K'iche' - Mayan
-        'quy' => 1,  // Ayacucho Quechua
-        'rhg' => 1,  // Rohingya
-        'rhl' => 1,  // Rohingya (alternate)
-        'rmn' => 3,  // Balkan Romani - Slavic influence
-        'rmo' => 1,  // Sinte Romani
-        'rn' => 1,   // Rundi
-        'ro' => 12,  // Romanian
-        'roh' => 1,  // Romansh
-        'ru' => 3,   // Russian
-        'run' => 1,  // Rundi (alternate)
-        'rw' => 1,   // Kinyarwanda
-        'sa' => 1,   // Sanskrit
-        'sat' => 1,  // Santali
-        'sc' => 1,   // Sardinian
-        'scn' => 1,  // Sicilian
-        'sd' => 1,   // Sindhi
-        'seh' => 1,  // Sena
-        'sg' => 0,   // Sango - no plural
-        'sh' => 3,   // Serbo-Croatian
-        'shn' => 0,  // Shan - no plural
-        'shu' => 13, // Chadian Arabic - Arabic
-        'si' => 1,   // Sinhala
-        'sk' => 4,   // Slovak
-        'sl' => 7,   // Slovenian
-        'sm' => 0,   // Samoan - no plural
-        'sn' => 1,   // Shona
-        'snk' => 1,  // Soninke
-        'so' => 1,   // Somali
-        'sq' => 1,   // Albanian
-        'sr' => 3,   // Serbian
-        'srn' => 1,  // Sranan Tongo
-        'ss' => 1,   // Swati
-        'ssy' => 1,  // Saho
-        'st' => 1,   // Southern Sotho
-        'su' => 0,   // Sundanese
-        'sus' => 0,  // Susu - no plural
-        'sv' => 1,   // Swedish
-        'svc' => 1,  // Vincentian Creole English
-        'sw' => 1,   // Swahili
-        'syc' => 1,  // Classical Syriac
-        'szl' => 11, // Silesian - Polish-like
-        'ta' => 1,   // Tamil
-        'taq' => 0,  // Tamasheq - no plural
-        'te' => 1,   // Telugu
-        'tet' => 1,  // Tetum
-        'tg' => 2,   // Tajik
-        'th' => 0,   // Thai
-        'ti' => 2,   // Tigrinya
-        'tiv' => 1,  // Tiv
-        'tk' => 1,   // Turkmen
-        'tkl' => 0,  // Tokelau - no plural
-        'tl' => 2,   // Tagalog - same as Filipino
-        'tmh' => 0,  // Tamashek - no plural
-        'tn' => 1,   // Tswana
-        'to' => 0,   // Tongan - no plural
-        'tpi' => 0,  // Tok Pisin - no plural
-        'tr' => 2,   // Turkish
-        'trv' => 0,  // Taroko - no plural
-        'ts' => 1,   // Tsonga
-        'tsc' => 1,  // Tswa
-        'tt' => 0,   // Tatar
-        'tum' => 1,  // Tumbuka
-        'tvl' => 0,  // Tuvalu - no plural
-        'tw' => 2,   // Twi - Akan
-        'ty' => 0,   // Tahitian - no plural
-        'tzm' => 2,  // Central Atlas Tamazight
-        'udm' => 1,  // Udmurt
-        'ug' => 0,   // Uyghur
-        'uk' => 3,   // Ukrainian
-        'umb' => 1,  // Umbundu
-        'ur' => 1,   // Urdu
-        'uz' => 2,   // Uzbek
-        'uzn' => 2,  // Northern Uzbek
-        'vec' => 1,  // Venetian
-        'vi' => 0,   // Vietnamese
-        'vic' => 1,  // Virgin Islands Creole English
-        'vls' => 1,  // Vlaams (West Flemish)
-        'vmw' => 1,  // Makhuwa
-        'war' => 1,  // Waray
-        'wls' => 0,  // Wallisian - no plural
-        'wo' => 0,   // Wolof
-        'xh' => 1,   // Xhosa
-        'ydd' => 1,  // Eastern Yiddish
-        'yi' => 1,   // Yiddish
-        'yo' => 1,   // Yoruba
-        'zdj' => 1,  // Ngazidja Comorian
-        'zh' => 0,   // Chinese
-        'zsm' => 0,  // Standard Malay - same as Malay
-        'zu' => 1,   // Zulu
+        // A
+        'ace' => ['cardinal' => 0, 'ordinal' => 0],   // Acehnese - no plural
+        'acf' => ['cardinal' => 2, 'ordinal' => 0],   // Saint Lucian Creole French
+        'af' => ['cardinal' => 1, 'ordinal' => 0],    // Afrikaans
+        'aig' => ['cardinal' => 1, 'ordinal' => 0],   // Antigua and Barbuda Creole English
+        'ak' => ['cardinal' => 2, 'ordinal' => 0],    // Akan
+        'als' => ['cardinal' => 1, 'ordinal' => 0],   // Albanian (Tosk)
+        'am' => ['cardinal' => 2, 'ordinal' => 0],    // Amharic
+        'an' => ['cardinal' => 1, 'ordinal' => 0],    // Aragonese
+        'ar' => ['cardinal' => 13, 'ordinal' => 0],   // Arabic
+        'as' => ['cardinal' => 1, 'ordinal' => 23],   // Assamese - CLDR 49 ordinal: one/other
+        'ast' => ['cardinal' => 1, 'ordinal' => 0],   // Asturian
+        'awa' => ['cardinal' => 1, 'ordinal' => 0],   // Awadhi
+        'ayr' => ['cardinal' => 0, 'ordinal' => 0],   // Central Aymara
+        'az' => ['cardinal' => 1, 'ordinal' => 21],   // Azerbaijani - CLDR 49 ordinal: many/other
+        'azb' => ['cardinal' => 1, 'ordinal' => 21],  // South Azerbaijani
+        'azj' => ['cardinal' => 1, 'ordinal' => 21],  // North Azerbaijani
+
+        // B
+        'ba' => ['cardinal' => 0, 'ordinal' => 0],    // Bashkir
+        'bah' => ['cardinal' => 1, 'ordinal' => 0],   // Bahamas Creole English
+        'bal' => ['cardinal' => 1, 'ordinal' => 0],   // Baluchi
+        'ban' => ['cardinal' => 0, 'ordinal' => 0],   // Balinese
+        'be' => ['cardinal' => 3, 'ordinal' => 0],    // Belarusian
+        'bem' => ['cardinal' => 1, 'ordinal' => 0],   // Bemba
+        'bg' => ['cardinal' => 1, 'ordinal' => 0],    // Bulgarian
+        'bh' => ['cardinal' => 2, 'ordinal' => 0],    // Bihari
+        'bho' => ['cardinal' => 1, 'ordinal' => 0],   // Bhojpuri
+        'bi' => ['cardinal' => 0, 'ordinal' => 0],    // Bislama
+        'bjn' => ['cardinal' => 0, 'ordinal' => 0],   // Banjar
+        'bjs' => ['cardinal' => 1, 'ordinal' => 0],   // Bajan
+        'bm' => ['cardinal' => 0, 'ordinal' => 0],    // Bambara
+        'bn' => ['cardinal' => 1, 'ordinal' => 23],   // Bengali - CLDR 49 ordinal: one/other
+        'bo' => ['cardinal' => 0, 'ordinal' => 0],    // Tibetan
+        'br' => ['cardinal' => 17, 'ordinal' => 0],   // Breton
+        'brx' => ['cardinal' => 1, 'ordinal' => 0],   // Bodo
+        'bs' => ['cardinal' => 3, 'ordinal' => 0],    // Bosnian
+        'bug' => ['cardinal' => 0, 'ordinal' => 0],   // Buginese
+
+        // C
+        'ca' => ['cardinal' => 20, 'ordinal' => 2],   // Catalan - CLDR 49
+        'cac' => ['cardinal' => 1, 'ordinal' => 0],   // Chuj
+        'cav' => ['cardinal' => 20, 'ordinal' => 2],  // Catalan (Valencia) - CLDR 49
+        'ce' => ['cardinal' => 1, 'ordinal' => 0],    // Chechen
+        'ceb' => ['cardinal' => 1, 'ordinal' => 0],   // Cebuano
+        'ch' => ['cardinal' => 0, 'ordinal' => 0],    // Chamorro
+        'chk' => ['cardinal' => 0, 'ordinal' => 0],   // Chuukese
+        'chr' => ['cardinal' => 1, 'ordinal' => 0],   // Cherokee
+        'cjk' => ['cardinal' => 1, 'ordinal' => 0],   // Chokwe
+        'ckb' => ['cardinal' => 1, 'ordinal' => 0],   // Central Kurdish
+        'cop' => ['cardinal' => 1, 'ordinal' => 0],   // Coptic
+        'crh' => ['cardinal' => 0, 'ordinal' => 0],   // Crimean Tatar
+        'crs' => ['cardinal' => 2, 'ordinal' => 0],   // Seselwa Creole French
+        'cs' => ['cardinal' => 4, 'ordinal' => 0],    // Czech
+        'ctg' => ['cardinal' => 1, 'ordinal' => 0],   // Chittagonian
+        'cy' => ['cardinal' => 14, 'ordinal' => 14],  // Welsh - CLDR 49 ordinal: zero/one/two/few/many/other
+
+        // D
+        'da' => ['cardinal' => 1, 'ordinal' => 0],    // Danish
+        'de' => ['cardinal' => 1, 'ordinal' => 0],    // German
+        'dik' => ['cardinal' => 1, 'ordinal' => 0],   // Southwestern Dinka
+        'diq' => ['cardinal' => 1, 'ordinal' => 0],   // Dimli
+        'doi' => ['cardinal' => 1, 'ordinal' => 0],   // Dogri
+        'dv' => ['cardinal' => 1, 'ordinal' => 0],    // Divehi
+        'dyu' => ['cardinal' => 0, 'ordinal' => 0],   // Dyula
+        'dz' => ['cardinal' => 0, 'ordinal' => 0],    // Dzongkha
+
+        // E
+        'ee' => ['cardinal' => 1, 'ordinal' => 0],    // Ewe
+        'el' => ['cardinal' => 1, 'ordinal' => 0],    // Greek
+        'en' => ['cardinal' => 1, 'ordinal' => 1],    // English - CLDR 49 ordinal: one/two/few/other
+        'eo' => ['cardinal' => 1, 'ordinal' => 0],    // Esperanto
+        'es' => ['cardinal' => 20, 'ordinal' => 0],   // Spanish - CLDR 49
+        'et' => ['cardinal' => 1, 'ordinal' => 0],    // Estonian
+        'eu' => ['cardinal' => 1, 'ordinal' => 0],    // Basque
+
+        // F
+        'fa' => ['cardinal' => 2, 'ordinal' => 0],    // Persian
+        'ff' => ['cardinal' => 1, 'ordinal' => 0],    // Fulah
+        'fi' => ['cardinal' => 1, 'ordinal' => 0],    // Finnish
+        'fil' => ['cardinal' => 2, 'ordinal' => 2],   // Filipino - CLDR 49 ordinal: one/other
+        'fj' => ['cardinal' => 0, 'ordinal' => 0],    // Fijian
+        'fn' => ['cardinal' => 0, 'ordinal' => 0],    // Fanagalo
+        'fo' => ['cardinal' => 1, 'ordinal' => 0],    // Faroese
+        'fon' => ['cardinal' => 0, 'ordinal' => 0],   // Fon
+        'fr' => ['cardinal' => 20, 'ordinal' => 2],   // French - CLDR 49 ordinal: one/other
+        'fuc' => ['cardinal' => 1, 'ordinal' => 0],   // Pulaar
+        'fur' => ['cardinal' => 1, 'ordinal' => 0],   // Friulian
+        'fuv' => ['cardinal' => 1, 'ordinal' => 0],   // Nigerian Fulfulde
+
+        // G
+        'ga' => ['cardinal' => 5, 'ordinal' => 2],    // Irish - CLDR 49 ordinal: one/other
+        'gax' => ['cardinal' => 1, 'ordinal' => 0],   // Borana-Arsi-Guji Oromo
+        'gaz' => ['cardinal' => 1, 'ordinal' => 0],   // West Central Oromo
+        'gcl' => ['cardinal' => 2, 'ordinal' => 0],   // Grenadian Creole English
+        'gd' => ['cardinal' => 16, 'ordinal' => 16],  // Scottish Gaelic - CLDR 49 ordinal: one/two/few/other
+        'gil' => ['cardinal' => 0, 'ordinal' => 0],   // Gilbertese
+        'gl' => ['cardinal' => 1, 'ordinal' => 0],    // Galician
+        'glw' => ['cardinal' => 1, 'ordinal' => 0],   // Glaro-Twabo
+        'gn' => ['cardinal' => 1, 'ordinal' => 0],    // Guarani
+        'grc' => ['cardinal' => 1, 'ordinal' => 0],   // Ancient Greek
+        'grt' => ['cardinal' => 1, 'ordinal' => 0],   // Garo
+        'gu' => ['cardinal' => 1, 'ordinal' => 24],   // Gujarati - CLDR 49 ordinal: one/two/few/many/other
+        'guz' => ['cardinal' => 1, 'ordinal' => 0],   // Gusii
+        'gv' => ['cardinal' => 18, 'ordinal' => 0],   // Manx
+        'gyn' => ['cardinal' => 1, 'ordinal' => 0],   // Guyanese Creole English
+
+        // H
+        'ha' => ['cardinal' => 1, 'ordinal' => 0],    // Hausa
+        'haw' => ['cardinal' => 1, 'ordinal' => 0],   // Hawaiian
+        'he' => ['cardinal' => 19, 'ordinal' => 0],   // Hebrew
+        'hi' => ['cardinal' => 2, 'ordinal' => 23],   // Hindi - CLDR 49 ordinal: one/other
+        'hig' => ['cardinal' => 1, 'ordinal' => 0],   // Kamwe
+        'hil' => ['cardinal' => 1, 'ordinal' => 0],   // Hiligaynon
+        'hmn' => ['cardinal' => 0, 'ordinal' => 0],   // Hmong
+        'hne' => ['cardinal' => 1, 'ordinal' => 0],   // Chhattisgarhi
+        'hoc' => ['cardinal' => 1, 'ordinal' => 0],   // Ho
+        'hr' => ['cardinal' => 3, 'ordinal' => 0],    // Croatian
+        'ht' => ['cardinal' => 1, 'ordinal' => 0],    // Haitian Creole
+        'hu' => ['cardinal' => 1, 'ordinal' => 22],   // Hungarian - CLDR 49 ordinal: few/other
+        'hy' => ['cardinal' => 1, 'ordinal' => 2],    // Armenian - CLDR 49 ordinal: one/other
+
+        // I
+        'id' => ['cardinal' => 0, 'ordinal' => 0],    // Indonesian
+        'ig' => ['cardinal' => 0, 'ordinal' => 0],    // Igbo
+        'ilo' => ['cardinal' => 1, 'ordinal' => 0],   // Ilocano
+        'is' => ['cardinal' => 15, 'ordinal' => 0],   // Icelandic
+        'it' => ['cardinal' => 20, 'ordinal' => 20],  // Italian - CLDR 49 ordinal: many/other
+
+        // J
+        'ja' => ['cardinal' => 0, 'ordinal' => 0],    // Japanese
+        'jam' => ['cardinal' => 1, 'ordinal' => 0],   // Jamaican Creole English
+        'jv' => ['cardinal' => 0, 'ordinal' => 0],    // Javanese
+
+        // K
+        'ka' => ['cardinal' => 0, 'ordinal' => 21],   // Georgian - CLDR 49 ordinal: many/other
+        'kab' => ['cardinal' => 2, 'ordinal' => 0],   // Kabyle
+        'kac' => ['cardinal' => 0, 'ordinal' => 0],   // Kachin
+        'kam' => ['cardinal' => 1, 'ordinal' => 0],   // Kamba
+        'kar' => ['cardinal' => 0, 'ordinal' => 0],   // Karen
+        'kas' => ['cardinal' => 1, 'ordinal' => 0],   // Kashmiri
+        'kbp' => ['cardinal' => 0, 'ordinal' => 0],   // Kabiyè
+        'kea' => ['cardinal' => 0, 'ordinal' => 0],   // Kabuverdianu
+        'kg' => ['cardinal' => 1, 'ordinal' => 0],    // Kongo
+        'kha' => ['cardinal' => 1, 'ordinal' => 0],   // Khasi
+        'khk' => ['cardinal' => 1, 'ordinal' => 0],   // Halh Mongolian
+        'ki' => ['cardinal' => 1, 'ordinal' => 0],    // Kikuyu
+        'kjb' => ['cardinal' => 1, 'ordinal' => 0],   // Q'anjob'al
+        'kk' => ['cardinal' => 1, 'ordinal' => 21],   // Kazakh - CLDR 49 ordinal: many/other
+        'kl' => ['cardinal' => 1, 'ordinal' => 0],    // Greenlandic
+        'kln' => ['cardinal' => 1, 'ordinal' => 0],   // Kalenjin
+        'km' => ['cardinal' => 0, 'ordinal' => 0],    // Khmer
+        'kmb' => ['cardinal' => 1, 'ordinal' => 0],   // Kimbundu
+        'kmr' => ['cardinal' => 1, 'ordinal' => 0],   // Northern Kurdish
+        'kn' => ['cardinal' => 1, 'ordinal' => 25],   // Kannada - CLDR 49 ordinal: one/two/few/other
+        'knc' => ['cardinal' => 1, 'ordinal' => 0],   // Central Kanuri
+        'ko' => ['cardinal' => 0, 'ordinal' => 0],    // Korean
+        'kok' => ['cardinal' => 1, 'ordinal' => 0],   // Konkani
+        'kr' => ['cardinal' => 0, 'ordinal' => 0],    // Kanuri
+        'ks' => ['cardinal' => 1, 'ordinal' => 0],    // Kashmiri
+        'ksw' => ['cardinal' => 0, 'ordinal' => 0],   // S'gaw Karen
+        'ky' => ['cardinal' => 1, 'ordinal' => 0],    // Kyrgyz
+
+        // L
+        'la' => ['cardinal' => 1, 'ordinal' => 0],    // Latin
+        'lb' => ['cardinal' => 1, 'ordinal' => 0],    // Luxembourgish
+        'lg' => ['cardinal' => 1, 'ordinal' => 0],    // Ganda
+        'li' => ['cardinal' => 1, 'ordinal' => 0],    // Limburgish
+        'lij' => ['cardinal' => 1, 'ordinal' => 0],   // Ligurian
+        'lmo' => ['cardinal' => 1, 'ordinal' => 0],   // Lombard
+        'ln' => ['cardinal' => 2, 'ordinal' => 0],    // Lingala
+        'lo' => ['cardinal' => 0, 'ordinal' => 2],    // Lao - CLDR 49 ordinal: one/other
+        'lt' => ['cardinal' => 6, 'ordinal' => 0],    // Lithuanian
+        'ltg' => ['cardinal' => 10, 'ordinal' => 0],  // Latgalian
+        'lua' => ['cardinal' => 1, 'ordinal' => 0],   // Luba-Lulua
+        'luo' => ['cardinal' => 1, 'ordinal' => 0],   // Luo
+        'lus' => ['cardinal' => 1, 'ordinal' => 0],   // Mizo
+        'luy' => ['cardinal' => 1, 'ordinal' => 0],   // Luyia
+        'lv' => ['cardinal' => 10, 'ordinal' => 0],   // Latvian
+        'lvs' => ['cardinal' => 10, 'ordinal' => 0],  // Standard Latvian
+
+        // M
+        'mag' => ['cardinal' => 1, 'ordinal' => 0],   // Magahi
+        'mai' => ['cardinal' => 1, 'ordinal' => 0],   // Maithili
+        'mam' => ['cardinal' => 1, 'ordinal' => 0],   // Mam
+        'mas' => ['cardinal' => 1, 'ordinal' => 0],   // Maasai
+        'men' => ['cardinal' => 1, 'ordinal' => 0],   // Mende
+        'mer' => ['cardinal' => 1, 'ordinal' => 0],   // Meru
+        'mfe' => ['cardinal' => 2, 'ordinal' => 0],   // Mauritian Creole
+        'mfi' => ['cardinal' => 1, 'ordinal' => 0],   // Wandala
+        'mfv' => ['cardinal' => 1, 'ordinal' => 0],   // Mandjak
+        'mg' => ['cardinal' => 2, 'ordinal' => 0],    // Malagasy
+        'mh' => ['cardinal' => 0, 'ordinal' => 0],    // Marshallese
+        'mhr' => ['cardinal' => 1, 'ordinal' => 0],   // Eastern Mari
+        'mi' => ['cardinal' => 2, 'ordinal' => 0],    // Maori
+        'min' => ['cardinal' => 0, 'ordinal' => 0],   // Minangkabau
+        'mk' => ['cardinal' => 8, 'ordinal' => 8],    // Macedonian - CLDR 49 ordinal: one/two/many/other
+        'ml' => ['cardinal' => 1, 'ordinal' => 0],    // Malayalam
+        'mn' => ['cardinal' => 1, 'ordinal' => 0],    // Mongolian
+        'mni' => ['cardinal' => 1, 'ordinal' => 0],   // Manipuri
+        'mnk' => ['cardinal' => 1, 'ordinal' => 0],   // Mandinka
+        'mos' => ['cardinal' => 0, 'ordinal' => 0],   // Mossi
+        'mr' => ['cardinal' => 1, 'ordinal' => 26],   // Marathi - CLDR 49 ordinal: one/other
+        'mrj' => ['cardinal' => 1, 'ordinal' => 0],   // Western Mari
+        'mrt' => ['cardinal' => 1, 'ordinal' => 0],   // Marghi Central
+        'ms' => ['cardinal' => 0, 'ordinal' => 2],    // Malay - CLDR 49 ordinal: one/other
+        'mt' => ['cardinal' => 9, 'ordinal' => 0],    // Maltese
+        'my' => ['cardinal' => 0, 'ordinal' => 0],    // Burmese
+
+        // N
+        'nb' => ['cardinal' => 1, 'ordinal' => 0],    // Norwegian Bokmål
+        'nd' => ['cardinal' => 1, 'ordinal' => 0],    // North Ndebele
+        'ndc' => ['cardinal' => 1, 'ordinal' => 0],   // Ndau
+        'ne' => ['cardinal' => 1, 'ordinal' => 29],   // Nepali - CLDR 49 ordinal: one/few/other
+        'niu' => ['cardinal' => 0, 'ordinal' => 0],   // Niuean
+        'nl' => ['cardinal' => 1, 'ordinal' => 0],    // Dutch
+        'nn' => ['cardinal' => 1, 'ordinal' => 0],    // Norwegian Nynorsk
+        'nr' => ['cardinal' => 1, 'ordinal' => 0],    // South Ndebele
+        'nso' => ['cardinal' => 2, 'ordinal' => 0],   // Northern Sotho
+        'nup' => ['cardinal' => 1, 'ordinal' => 0],   // Nupe
+        'nus' => ['cardinal' => 1, 'ordinal' => 0],   // Nuer
+        'ny' => ['cardinal' => 1, 'ordinal' => 0],    // Nyanja (Chichewa)
+        'nyf' => ['cardinal' => 1, 'ordinal' => 0],   // Giryama
+
+        // O
+        'oc' => ['cardinal' => 2, 'ordinal' => 0],    // Occitan
+        'om' => ['cardinal' => 1, 'ordinal' => 0],    // Oromo
+        'or' => ['cardinal' => 1, 'ordinal' => 27],   // Odia - CLDR 49 ordinal: one/two/few/many/other
+        'ory' => ['cardinal' => 1, 'ordinal' => 27],  // Odia (Oriya)
+
+        // P
+        'pa' => ['cardinal' => 1, 'ordinal' => 0],    // Punjabi
+        'pag' => ['cardinal' => 1, 'ordinal' => 0],   // Pangasinan
+        'pap' => ['cardinal' => 1, 'ordinal' => 0],   // Papiamento
+        'pau' => ['cardinal' => 0, 'ordinal' => 0],   // Palauan
+        'pbt' => ['cardinal' => 1, 'ordinal' => 0],   // Southern Pashto
+        'pi' => ['cardinal' => 1, 'ordinal' => 0],    // Pali
+        'pis' => ['cardinal' => 0, 'ordinal' => 0],   // Pijin
+        'pko' => ['cardinal' => 1, 'ordinal' => 0],   // Pökoot
+        'pl' => ['cardinal' => 11, 'ordinal' => 0],   // Polish
+        'plt' => ['cardinal' => 2, 'ordinal' => 0],   // Plateau Malagasy
+        'pon' => ['cardinal' => 0, 'ordinal' => 0],   // Pohnpeian
+        'pot' => ['cardinal' => 1, 'ordinal' => 0],   // Potawatomi
+        'pov' => ['cardinal' => 1, 'ordinal' => 0],   // Guinea-Bissau Creole
+        'ppk' => ['cardinal' => 0, 'ordinal' => 0],   // Uma
+        'prs' => ['cardinal' => 2, 'ordinal' => 0],   // Dari
+        'ps' => ['cardinal' => 1, 'ordinal' => 0],    // Pashto
+        'pt' => ['cardinal' => 20, 'ordinal' => 0],   // Portuguese - CLDR 49
+
+        // Q
+        'qu' => ['cardinal' => 1, 'ordinal' => 0],    // Quechua
+        'quc' => ['cardinal' => 1, 'ordinal' => 0],   // K'iche'
+        'quy' => ['cardinal' => 1, 'ordinal' => 0],   // Ayacucho Quechua
+
+        // R
+        'rhg' => ['cardinal' => 1, 'ordinal' => 0],   // Rohingya
+        'rhl' => ['cardinal' => 1, 'ordinal' => 0],   // Rohingya (alternate)
+        'rmn' => ['cardinal' => 3, 'ordinal' => 0],   // Balkan Romani
+        'rmo' => ['cardinal' => 1, 'ordinal' => 0],   // Sinte Romani
+        'rn' => ['cardinal' => 1, 'ordinal' => 0],    // Rundi
+        'ro' => ['cardinal' => 12, 'ordinal' => 2],   // Romanian - CLDR 49 ordinal: one/other
+        'roh' => ['cardinal' => 1, 'ordinal' => 0],   // Romansh
+        'ru' => ['cardinal' => 3, 'ordinal' => 0],    // Russian
+        'run' => ['cardinal' => 1, 'ordinal' => 0],   // Rundi (alternate)
+        'rw' => ['cardinal' => 1, 'ordinal' => 0],    // Kinyarwanda
+
+        // S
+        'sa' => ['cardinal' => 1, 'ordinal' => 0],    // Sanskrit
+        'sat' => ['cardinal' => 1, 'ordinal' => 0],   // Santali
+        'sc' => ['cardinal' => 1, 'ordinal' => 20],   // Sardinian - CLDR 49 ordinal: many/other
+        'scn' => ['cardinal' => 1, 'ordinal' => 0],   // Sicilian
+        'sd' => ['cardinal' => 1, 'ordinal' => 0],    // Sindhi
+        'seh' => ['cardinal' => 1, 'ordinal' => 0],   // Sena
+        'sg' => ['cardinal' => 0, 'ordinal' => 0],    // Sango
+        'sh' => ['cardinal' => 3, 'ordinal' => 0],    // Serbo-Croatian
+        'shn' => ['cardinal' => 0, 'ordinal' => 0],   // Shan
+        'shu' => ['cardinal' => 13, 'ordinal' => 0],  // Chadian Arabic
+        'si' => ['cardinal' => 1, 'ordinal' => 0],    // Sinhala
+        'sk' => ['cardinal' => 4, 'ordinal' => 0],    // Slovak
+        'sl' => ['cardinal' => 7, 'ordinal' => 0],    // Slovenian
+        'sm' => ['cardinal' => 0, 'ordinal' => 0],    // Samoan
+        'sn' => ['cardinal' => 1, 'ordinal' => 0],    // Shona
+        'snk' => ['cardinal' => 1, 'ordinal' => 0],   // Soninke
+        'so' => ['cardinal' => 1, 'ordinal' => 0],    // Somali
+        'sq' => ['cardinal' => 1, 'ordinal' => 30],   // Albanian - CLDR 49 ordinal: one/two/few/other
+        'sr' => ['cardinal' => 3, 'ordinal' => 0],    // Serbian
+        'srn' => ['cardinal' => 1, 'ordinal' => 0],   // Sranan Tongo
+        'ss' => ['cardinal' => 1, 'ordinal' => 0],    // Swati
+        'ssy' => ['cardinal' => 1, 'ordinal' => 0],   // Saho
+        'st' => ['cardinal' => 1, 'ordinal' => 0],    // Southern Sotho
+        'su' => ['cardinal' => 0, 'ordinal' => 0],    // Sundanese
+        'sus' => ['cardinal' => 0, 'ordinal' => 0],   // Susu
+        'sv' => ['cardinal' => 1, 'ordinal' => 2],    // Swedish - CLDR 49 ordinal: one/other
+        'svc' => ['cardinal' => 1, 'ordinal' => 0],   // Vincentian Creole English
+        'sw' => ['cardinal' => 1, 'ordinal' => 0],    // Swahili
+        'syc' => ['cardinal' => 1, 'ordinal' => 0],   // Classical Syriac
+        'szl' => ['cardinal' => 11, 'ordinal' => 0],  // Silesian
+
+        // T
+        'ta' => ['cardinal' => 1, 'ordinal' => 0],    // Tamil
+        'taq' => ['cardinal' => 0, 'ordinal' => 0],   // Tamasheq
+        'te' => ['cardinal' => 1, 'ordinal' => 28],   // Telugu - CLDR 49 ordinal: one/two/many/other
+        'tet' => ['cardinal' => 1, 'ordinal' => 0],   // Tetum
+        'tg' => ['cardinal' => 2, 'ordinal' => 0],    // Tajik
+        'th' => ['cardinal' => 0, 'ordinal' => 0],    // Thai
+        'ti' => ['cardinal' => 2, 'ordinal' => 0],    // Tigrinya
+        'tiv' => ['cardinal' => 1, 'ordinal' => 0],   // Tiv
+        'tk' => ['cardinal' => 1, 'ordinal' => 22],   // Turkmen - CLDR 49 ordinal: few/other
+        'tkl' => ['cardinal' => 0, 'ordinal' => 0],   // Tokelau
+        'tl' => ['cardinal' => 2, 'ordinal' => 2],    // Tagalog - same as Filipino
+        'tmh' => ['cardinal' => 0, 'ordinal' => 0],   // Tamashek
+        'tn' => ['cardinal' => 1, 'ordinal' => 0],    // Tswana
+        'to' => ['cardinal' => 0, 'ordinal' => 0],    // Tongan
+        'tpi' => ['cardinal' => 0, 'ordinal' => 0],   // Tok Pisin
+        'tr' => ['cardinal' => 2, 'ordinal' => 0],    // Turkish
+        'trv' => ['cardinal' => 0, 'ordinal' => 0],   // Taroko
+        'ts' => ['cardinal' => 1, 'ordinal' => 0],    // Tsonga
+        'tsc' => ['cardinal' => 1, 'ordinal' => 0],   // Tswa
+        'tt' => ['cardinal' => 0, 'ordinal' => 0],    // Tatar
+        'tum' => ['cardinal' => 1, 'ordinal' => 0],   // Tumbuka
+        'tvl' => ['cardinal' => 0, 'ordinal' => 0],   // Tuvalu
+        'tw' => ['cardinal' => 2, 'ordinal' => 0],    // Twi
+        'ty' => ['cardinal' => 0, 'ordinal' => 0],    // Tahitian
+        'tzm' => ['cardinal' => 2, 'ordinal' => 0],   // Central Atlas Tamazight
+
+        // U
+        'udm' => ['cardinal' => 1, 'ordinal' => 0],   // Udmurt
+        'ug' => ['cardinal' => 0, 'ordinal' => 0],    // Uyghur
+        'uk' => ['cardinal' => 3, 'ordinal' => 22],   // Ukrainian - CLDR 49 ordinal: few/other
+        'umb' => ['cardinal' => 1, 'ordinal' => 0],   // Umbundu
+        'ur' => ['cardinal' => 1, 'ordinal' => 0],    // Urdu
+        'uz' => ['cardinal' => 2, 'ordinal' => 0],    // Uzbek
+        'uzn' => ['cardinal' => 2, 'ordinal' => 0],   // Northern Uzbek
+
+        // V
+        'vec' => ['cardinal' => 1, 'ordinal' => 0],   // Venetian
+        'vi' => ['cardinal' => 0, 'ordinal' => 2],    // Vietnamese - CLDR 49 ordinal: one/other
+        'vic' => ['cardinal' => 1, 'ordinal' => 0],   // Virgin Islands Creole English
+        'vls' => ['cardinal' => 1, 'ordinal' => 0],   // Vlaams (West Flemish)
+        'vmw' => ['cardinal' => 1, 'ordinal' => 0],   // Makhuwa
+
+        // W
+        'war' => ['cardinal' => 1, 'ordinal' => 0],   // Waray
+        'wls' => ['cardinal' => 0, 'ordinal' => 0],   // Wallisian
+        'wo' => ['cardinal' => 0, 'ordinal' => 0],    // Wolof
+
+        // X
+        'xh' => ['cardinal' => 1, 'ordinal' => 0],    // Xhosa
+
+        // Y
+        'ydd' => ['cardinal' => 1, 'ordinal' => 0],   // Eastern Yiddish
+        'yi' => ['cardinal' => 1, 'ordinal' => 0],    // Yiddish
+        'yo' => ['cardinal' => 1, 'ordinal' => 0],    // Yoruba
+
+        // Z
+        'zdj' => ['cardinal' => 1, 'ordinal' => 0],   // Ngazidja Comorian
+        'zh' => ['cardinal' => 0, 'ordinal' => 0],    // Chinese
+        'zsm' => ['cardinal' => 0, 'ordinal' => 2],   // Standard Malay - CLDR 49 ordinal: one/other
+        'zu' => ['cardinal' => 1, 'ordinal' => 0],    // Zulu
     ];
 
     /**
@@ -634,7 +718,7 @@ class PluralRules
      */
     public static function calculate(string $locale, int $n): int
     {
-        $ruleGroup = self::getRuleGroup($locale);
+        $ruleGroup = self::getRuleGroup($locale, 'cardinal');
 
         return match ($ruleGroup) {
             // nplurals=1; plural=0; (Asian, no plural forms)
@@ -790,12 +874,12 @@ class PluralRules
      * @param int $n The number to apply the rules to.
      * @return string The CLDR plural category name.
      */
-    public static function getCategoryName(string $locale, int $n): string
+    public static function getCardinalCategoryName(string $locale, int $n): string
     {
         $pluralIndex = self::calculate($locale, $n);
-        $ruleGroup = self::getRuleGroup($locale);
+        $ruleGroup = self::getRuleGroup($locale, 'cardinal');
 
-        return self::$categoryMap[$ruleGroup][$pluralIndex] ?? self::CATEGORY_OTHER;
+        return self::$cardinalCategoryMap[$ruleGroup][$pluralIndex] ?? self::CATEGORY_OTHER;
     }
 
     /**
@@ -822,11 +906,11 @@ class PluralRules
      * @param string $locale The locale to get categories for.
      * @return array<string> Array of category names available for this locale.
      */
-    public static function getCategories(string $locale): array
+    public static function getCardinalCategories(string $locale): array
     {
-        $ruleGroup = self::getRuleGroup($locale);
+        $ruleGroup = self::getRuleGroup($locale, 'cardinal');
 
-        return self::$categoryMap[$ruleGroup] ?? [self::CATEGORY_OTHER];
+        return self::$cardinalCategoryMap[$ruleGroup] ?? [self::CATEGORY_OTHER];
     }
 
     /**
@@ -856,7 +940,7 @@ class PluralRules
      */
     public static function getOrdinalCategories(string $locale): array
     {
-        $ruleGroup = self::getRuleGroup($locale);
+        $ruleGroup = self::getRuleGroup($locale, 'ordinal');
 
         return self::$ordinalCategoryMap[$ruleGroup] ?? [self::CATEGORY_OTHER];
     }
@@ -865,9 +949,10 @@ class PluralRules
      * Returns the plural rule group number for a given locale.
      *
      * @param string $locale The locale to get the rule group for.
-     * @return int The rule group number (0-16).
+     * @param string $type The type of rule to get: 'cardinal' or 'ordinal'. Default is 'cardinal'.
+     * @return int The rule group number.
      */
-    protected static function getRuleGroup(string $locale): int
+    protected static function getRuleGroup(string $locale, string $type = 'cardinal'): int
     {
         $locale = strtolower($locale);
 
@@ -879,7 +964,9 @@ class PluralRules
             $locale = explode('-', $locale)[0];
         }
 
-        return static::$rulesMap[$locale] ?? 0;
+        $rules = static::$rulesMap[$locale] ?? ['cardinal' => 0, 'ordinal' => 0];
+
+        return $rules[$type] ?? 0;
     }
 
     /**
@@ -908,9 +995,9 @@ class PluralRules
      *
      * ## Relationship with other methods
      *
-     * - The nplurals value equals the count of categories returned by {@see getCategories()}
+     * - The nplurals value equals the count of categories returned by {@see getCardinalCategories()}
      * - The {@see calculate()} method returns indices from 0 to (nplurals - 1)
-     * - The {@see getCategoryName()} method maps these indices to CLDR category names
+     * - The {@see getCardinalCategoryName()} method maps these indices to CLDR category names
      *
      * ## Common use cases
      *
@@ -939,14 +1026,14 @@ class PluralRules
      * @param string $locale The locale code (e.g., 'en', 'ru', 'ar', 'en-US', 'fr_FR')
      * @return int The number of cardinal plural forms (1-6 depending on the language)
      *
-     * @see getCategories() To get the actual cardinal category names
+     * @see getCardinalCategories() To get the actual cardinal category names
      * @see getOrdinalCategories() To get ordinal category names (1st, 2nd, 3rd)
      * @see calculate() To determine which plural form index to use for a specific number
      * @see https://www.unicode.org/cldr/charts/48/supplemental/language_plural_rules.html
      */
     public static function getPluralCount(string $locale): int
     {
-        return count(self::getCategories($locale));
+        return count(self::getCardinalCategories($locale));
     }
 
 }

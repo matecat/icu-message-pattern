@@ -194,27 +194,27 @@ $form = PluralRules::calculate('ru', 2);    // 1 (few)
 $form = PluralRules::calculate('ru', 5);    // 2 (many)
 
 // Get the CLDR plural category name for a number
-$category = PluralRules::getCategoryName('en', 1);    // "one"
-$category = PluralRules::getCategoryName('en', 5);    // "other"
+$category = PluralRules::getCardinalCategoryName('en', 1);    // "one"
+$category = PluralRules::getCardinalCategoryName('en', 5);    // "other"
 
-$category = PluralRules::getCategoryName('ru', 1);    // "one"
-$category = PluralRules::getCategoryName('ru', 2);    // "few"
-$category = PluralRules::getCategoryName('ru', 5);    // "many"
+$category = PluralRules::getCardinalCategoryName('ru', 1);    // "one"
+$category = PluralRules::getCardinalCategoryName('ru', 2);    // "few"
+$category = PluralRules::getCardinalCategoryName('ru', 5);    // "many"
 
-$category = PluralRules::getCategoryName('ar', 0);    // "zero"
-$category = PluralRules::getCategoryName('ar', 1);    // "one"
-$category = PluralRules::getCategoryName('ar', 2);    // "two"
-$category = PluralRules::getCategoryName('ar', 5);    // "few"
-$category = PluralRules::getCategoryName('ar', 11);   // "many"
-$category = PluralRules::getCategoryName('ar', 100);  // "other"
+$category = PluralRules::getCardinalCategoryName('ar', 0);    // "zero"
+$category = PluralRules::getCardinalCategoryName('ar', 1);    // "one"
+$category = PluralRules::getCardinalCategoryName('ar', 2);    // "two"
+$category = PluralRules::getCardinalCategoryName('ar', 5);    // "few"
+$category = PluralRules::getCardinalCategoryName('ar', 11);   // "many"
+$category = PluralRules::getCardinalCategoryName('ar', 100);  // "other"
 
 // Get all available plural categories for a language
-$categories = PluralRules::getCategories('en');  // ["one", "other"]
-$categories = PluralRules::getCategories('ru');  // ["one", "few", "many"]
-$categories = PluralRules::getCategories('ar');  // ["zero", "one", "two", "few", "many", "other"]
+$categories = PluralRules::getCardinalCategories('en');  // ["one", "other"]
+$categories = PluralRules::getCardinalCategories('ru');  // ["one", "few", "many"]
+$categories = PluralRules::getCardinalCategories('ar');  // ["zero", "one", "two", "few", "many", "other"]
 
 // Use category constants for comparison
-if (PluralRules::getCategoryName('en', $count) === PluralRules::CATEGORY_ONE) {
+if (PluralRules::getCardinalCategoryName('en', $count) === PluralRules::CATEGORY_ONE) {
     echo "Singular form";
 }
 ```

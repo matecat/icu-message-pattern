@@ -1045,7 +1045,7 @@ final class PluralRulesTest extends TestCase
     #[DataProvider('getCategoryNameProvider')]
     public function testGetCategoryName(string $locale, int $n, string $expected): void
     {
-        self::assertSame($expected, PluralRules::getCategoryName($locale, $n));
+        self::assertSame($expected, PluralRules::getCardinalCategoryName($locale, $n));
     }
 
     /**
@@ -1206,7 +1206,7 @@ final class PluralRulesTest extends TestCase
     #[DataProvider('getCategoriesProvider')]
     public function testGetCategories(string $locale, array $expected): void
     {
-        self::assertSame($expected, PluralRules::getCategories($locale));
+        self::assertSame($expected, PluralRules::getCardinalCategories($locale));
     }
 
     /**
@@ -1368,19 +1368,19 @@ final class PluralRulesTest extends TestCase
     public function testGetCategoryNameWithLocaleVariants(): void
     {
         // Test with underscore separator
-        self::assertSame(PluralRules::CATEGORY_ONE, PluralRules::getCategoryName('en_US', 1));
-        self::assertSame(PluralRules::CATEGORY_OTHER, PluralRules::getCategoryName('en_US', 2));
-        self::assertSame(PluralRules::CATEGORY_OTHER, PluralRules::getCategoryName('fr_FR', 0));  // CLDR 49: 0 is 'other'
-        self::assertSame(PluralRules::CATEGORY_OTHER, PluralRules::getCategoryName('fr_FR', 2));
+        self::assertSame(PluralRules::CATEGORY_ONE, PluralRules::getCardinalCategoryName('en_US', 1));
+        self::assertSame(PluralRules::CATEGORY_OTHER, PluralRules::getCardinalCategoryName('en_US', 2));
+        self::assertSame(PluralRules::CATEGORY_OTHER, PluralRules::getCardinalCategoryName('fr_FR', 0));  // CLDR 49: 0 is 'other'
+        self::assertSame(PluralRules::CATEGORY_OTHER, PluralRules::getCardinalCategoryName('fr_FR', 2));
 
         // Test with hyphen separator
-        self::assertSame(PluralRules::CATEGORY_ONE, PluralRules::getCategoryName('en-GB', 1));
-        self::assertSame(PluralRules::CATEGORY_OTHER, PluralRules::getCategoryName('en-GB', 5));
-        self::assertSame(PluralRules::CATEGORY_FEW, PluralRules::getCategoryName('ru-RU', 2));
+        self::assertSame(PluralRules::CATEGORY_ONE, PluralRules::getCardinalCategoryName('en-GB', 1));
+        self::assertSame(PluralRules::CATEGORY_OTHER, PluralRules::getCardinalCategoryName('en-GB', 5));
+        self::assertSame(PluralRules::CATEGORY_FEW, PluralRules::getCardinalCategoryName('ru-RU', 2));
 
         // Test case insensitivity
-        self::assertSame(PluralRules::CATEGORY_ONE, PluralRules::getCategoryName('EN', 1));
-        self::assertSame(PluralRules::CATEGORY_ONE, PluralRules::getCategoryName('En_Us', 1));
+        self::assertSame(PluralRules::CATEGORY_ONE, PluralRules::getCardinalCategoryName('EN', 1));
+        self::assertSame(PluralRules::CATEGORY_ONE, PluralRules::getCardinalCategoryName('En_Us', 1));
     }
 
     public function testGetCategoriesWithLocaleVariants(): void
@@ -1388,23 +1388,23 @@ final class PluralRulesTest extends TestCase
         // Test with underscore separator
         self::assertSame(
             [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER],
-            PluralRules::getCategories('en_US')
+            PluralRules::getCardinalCategories('en_US')
         );
         self::assertSame(
             [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_MANY],
-            PluralRules::getCategories('ru_RU')
+            PluralRules::getCardinalCategories('ru_RU')
         );
 
         // Test with hyphen separator
         self::assertSame(
             [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER],
-            PluralRules::getCategories('en-GB')
+            PluralRules::getCardinalCategories('en-GB')
         );
 
         // Test case insensitivity
         self::assertSame(
             [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER],
-            PluralRules::getCategories('EN')
+            PluralRules::getCardinalCategories('EN')
         );
     }
 
@@ -1560,7 +1560,7 @@ final class PluralRulesTest extends TestCase
 
         foreach ($locales as $locale) {
             self::assertSame(
-                count(PluralRules::getCategories($locale)),
+                count(PluralRules::getCardinalCategories($locale)),
                 PluralRules::getPluralCount($locale),
                 "getPluralCount should equal count of getCategories for locale: $locale"
             );
