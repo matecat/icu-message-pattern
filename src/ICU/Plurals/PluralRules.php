@@ -205,10 +205,9 @@ class PluralRules
      */
     private const array CATEGORIES_MANY_OTHER = [self::CATEGORY_MANY, self::CATEGORY_OTHER];
     private const array CATEGORIES_FEW_OTHER = [self::CATEGORY_FEW, self::CATEGORY_OTHER];
-    private const array CATEGORIES_ONE_FEW_OTHER_ORDINAL = [self::CATEGORY_ONE, self::CATEGORY_FEW, self::CATEGORY_OTHER];
 
     /**
-     * Mapping of ordinal rule group => array of CLDR ordinal category names.
+     * Mapping of the ordinal rule group => array of CLDR ordinal category names.
      *
      * CLDR ordinal rules are separate from cardinal rules. Many languages
      * that have simple cardinal rules (like English with one/other) have
@@ -276,7 +275,7 @@ class PluralRules
         28 => self::CATEGORIES_ONE_TWO_MANY_OTHER,
 
         // Rule 29: Nepali ordinals (one/few/other)
-        29 => self::CATEGORIES_ONE_FEW_OTHER_ORDINAL,
+        29 => self::CATEGORIES_ONE_FEW_OTHER,
 
         // Rule 30: Albanian ordinals (one/two/few/other)
         30 => self::CATEGORIES_ONE_TWO_FEW_OTHER,
