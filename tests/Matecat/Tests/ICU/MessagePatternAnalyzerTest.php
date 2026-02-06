@@ -73,38 +73,60 @@ class MessagePatternAnalyzerTest extends TestCase
     public function testValidatePluralComplianceValidArabic(): void
     {
         $pattern = new MessagePattern();
-        $pattern->parse('{count, plural, zero{no items} one{one item} two{two items} few{# items} many{# items} other{# item}}');
+        $pattern->parse(
+            '{count, plural, zero{no items} one{one item} two{two items} few{# items} many{# items} other{# item}}'
+        );
         $analyzer = new MessagePatternAnalyzer($pattern, 'ar');
 
         // Should not throw when all categories are present
         $analyzer->validatePluralCompliance();
     }
 
+    /**
+     * @throws PluralComplianceException
+     */
     #[Test]
-    public function testValidatePluralComplianceInvalidSelectorsForEnglish(): void
+    public function testValidatePluralComplianceWrongLocaleSelectorsForEnglish(): void
     {
-        // English only has 'one' and 'other', so 'few' and 'many' are invalid
+        // English only has 'one' and 'other', so 'few' and 'many' are valid CLDR categories
+        // but wrong for this locale - should return a warning, not throw exception
         $pattern = new MessagePattern();
         $pattern->parse('{count, plural, one{# item} few{# items} many{# items} other{# items}}');
+        $analyzer = new MessagePatternAnalyzer($pattern, 'en');
+
+        $warning = $analyzer->validatePluralCompliance();
+
+        self::assertNotNull($warning);
+        self::assertContains('few', $warning->wrongLocaleSelectors);
+        self::assertContains('many', $warning->wrongLocaleSelectors);
+    }
+
+    #[Test]
+    public function testValidatePluralComplianceThrowsExceptionForNonExistentCategory(): void
+    {
+        // 'some' is NOT a valid CLDR category at all - should throw an exception
+        $pattern = new MessagePattern();
+        $pattern->parse('{count, plural, one{# item} some{# items} other{# items}}');
         $analyzer = new MessagePatternAnalyzer($pattern, 'en');
 
         self::expectException(PluralComplianceException::class);
         self::expectExceptionMessageMatches('/Invalid selectors found/');
 
         $analyzer->validatePluralCompliance();
-    }
-
-    /**
+    }    /**
      * In ICU MessageFormat, plural selectors can be:
      * Keyword selectors: zero, one, two, few, many, other
      * Explicit value selectors: =0, =1, =2, etc. (matches exactly that number)
      *
-     * STRICT VALIDATION: Numeric selectors (=0, =1, =2) are NOT allowed to substitute for
+     * SOFT VALIDATION: Numeric selectors (=0, =1, =2) are NOT allowed to substitute for
      * CLDR plural category keywords (zero, one, two, few, many, other).
      *
-     * Every expected plural category for the locale MUST be explicitly provided using
+     * Every expected plural category for the locale SHOULD be explicitly provided using
      * the corresponding category keyword. While numeric selectors are syntactically valid,
      * they cannot fulfill the requirement for category-based selectors.
+     *
+     * When numeric selectors are present but required categories are missing, a warning
+     * is returned instead of throwing an exception.
      *
      * @return void
      * @throws PluralComplianceException
@@ -113,17 +135,19 @@ class MessagePatternAnalyzerTest extends TestCase
     public function testValidatePluralComplianceWithExplicitSelectorsReplacesCategoryKeywords(): void
     {
         // Numeric selectors (=0, =1, =2, etc.) CANNOT substitute for category keywords.
-        // This pattern is INVALID because the required 'one' category is missing,
-        // even though =1 is present.
+        // This pattern is missing the required 'one' category, even though =1 is present.
+        // Since numeric selectors are present, a warning is returned instead of exception.
         $pattern = new MessagePattern();
         $pattern->parse('{count, plural, =0{# items} =1{# item} other{# items}}');
         $analyzer = new MessagePatternAnalyzer($pattern, 'en');
 
-        self::expectException(PluralComplianceException::class);
-        self::expectExceptionMessageMatches('/Missing categories/');
+        // Should return a warning - =0 and =1 cannot substitute 'one' category
+        $warning = $analyzer->validatePluralCompliance();
 
-        // Should throw an Exception - =0 and =1 cannot substitute 'one' category
-        $analyzer->validatePluralCompliance();
+        self::assertNotNull($warning);
+        self::assertContains('one', $warning->missingCategories);
+        self::assertContains('=0', $warning->numericSelectors);
+        self::assertContains('=1', $warning->numericSelectors);
     }
 
     /**
@@ -131,7 +155,8 @@ class MessagePatternAnalyzerTest extends TestCase
      *
      * For French (CLDR 49), the categories are 'one', 'many', and 'other'.
      * Numeric selectors like =0 and =1 are NOT allowed to substitute for the required
-     * CLDR category keywords. The message must explicitly use category keywords.
+     * CLDR category keywords. When numeric selectors are present but categories are missing,
+     * a warning is returned instead of an exception.
      *
      * @throws PluralComplianceException
      */
@@ -145,71 +170,79 @@ class MessagePatternAnalyzerTest extends TestCase
         $pattern->parse('{count, plural, =0{# item} =1{# item} many{# item} other{# items}}');
         $analyzer = new MessagePatternAnalyzer($pattern, 'fr');
 
-        self::expectException(PluralComplianceException::class);
-        self::expectExceptionMessageMatches('/Missing categories/');
+        // Should return a warning - missing 'one' category (many is present)
+        $warning = $analyzer->validatePluralCompliance();
 
-        // Should throw an Exception - missing 'one' and 'many' categories
-        $analyzer->validatePluralCompliance();
+        self::assertNotNull($warning);
+        self::assertContains('one', $warning->missingCategories);
+        self::assertContains('=0', $warning->numericSelectors);
+        self::assertContains('=1', $warning->numericSelectors);
     }
 
     /**
-     * Test that French with only =1 fails because it's missing required categories.
+     * Test that French with only =1 returns a warning because it's missing required categories.
      * In French (CLDR 49), the expected categories are 'one', 'many', and 'other'.
      *
      * @throws PluralComplianceException
      */
     #[Test]
-    public function testValidatePluralComplianceWithOnlyEquals1ForFrenchFails(): void
+    public function testValidatePluralComplianceWithOnlyEquals1ForFrenchReturnsWarning(): void
     {
         // French with only =1 is incomplete - missing 'one' and 'many' categories
         $pattern = new MessagePattern();
         $pattern->parse('{count, plural, =1{# item}  other{# items}}');
         $analyzer = new MessagePatternAnalyzer($pattern, 'fr');
 
-        // Should throw because French (CLDR 49) needs 'one', 'many', and 'other'
-        self::expectException(PluralComplianceException::class);
-        self::expectExceptionMessageMatches('/Missing categories/');
+        // Should return a warning because French (CLDR 49) needs 'one', 'many', and 'other'
+        // and numeric selector =1 is present
+        $warning = $analyzer->validatePluralCompliance();
 
-        $analyzer->validatePluralCompliance();
+        self::assertNotNull($warning);
+        self::assertContains('one', $warning->missingCategories);
+        self::assertContains('many', $warning->missingCategories);
+        self::assertContains('=1', $warning->numericSelectors);
     }
 
     /**
-     * Test that English with only =1 fails because numeric selectors cannot substitute for 'one'.
+     * Test that English with only =1 returns a warning because numeric selectors cannot substitute for 'one'.
      *
      * Even though =1 semantically matches the English 'one' category (n==1), it is not
      * allowed to substitute for the required 'one' CLDR category keyword.
+     * A warning is returned when numeric selectors are present but categories are missing.
      *
      * @throws PluralComplianceException
      */
     #[Test]
-    public function testValidatePluralComplianceWithOnlyEquals1ForEnglishFails(): void
+    public function testValidatePluralComplianceWithOnlyEquals1ForEnglishReturnsWarning(): void
     {
         // English expects 'one' and 'other' categories
-        // Using only =1 is NOT sufficient - the required 'one' keyword must be present
+        // Using only =1 is NOT sufficient - the required 'one' keyword should be present
         $pattern = new MessagePattern();
         $pattern->parse('{count, plural, =1{# item} other{# items}}');
         $analyzer = new MessagePatternAnalyzer($pattern, 'en');
 
-        self::expectException(PluralComplianceException::class);
-        self::expectExceptionMessageMatches('/Missing categories/');
+        // Should return a warning - =1 cannot substitute for the required 'one' category
+        $warning = $analyzer->validatePluralCompliance();
 
-        // Should throw - =1 cannot substitute for the required 'one' category
-        $analyzer->validatePluralCompliance();
+        self::assertNotNull($warning);
+        self::assertContains('one', $warning->missingCategories);
+        self::assertContains('=1', $warning->numericSelectors);
     }
 
     #[Test]
     public function testValidatePluralComplianceMissingCategories(): void
     {
         // Russian expects 'one', 'few', 'many' - only providing 'one' and 'other'
-        // Note: 'other' is NOT in Russian's expected categories, so it's invalid
+        // Missing 'few' and 'many' categories should return a warning
         $pattern = new MessagePattern();
         $pattern->parse('{count, plural, one{# item} other{# items}}');
         $analyzer = new MessagePatternAnalyzer($pattern, 'ru');
 
-        self::expectException(PluralComplianceException::class);
-        self::expectExceptionMessageMatches('/Invalid selectors found|Missing categories/');
+        $warning = $analyzer->validatePluralCompliance();
 
-        $analyzer->validatePluralCompliance();
+        self::assertNotNull($warning);
+        self::assertContains('few', $warning->missingCategories);
+        self::assertContains('many', $warning->missingCategories);
     }
 
     /**
@@ -251,13 +284,14 @@ class MessagePatternAnalyzerTest extends TestCase
     public function testValidatePluralComplianceWithSelectOrdinalInvalid(): void
     {
         $pattern = new MessagePattern();
-        // Russian ordinal only has 'other' - using 'one' is invalid
+        // Russian ordinal only has 'other' - using 'one' is a valid CLDR category but wrong for this locale
         $pattern->parse('{count, selectordinal, one{#st} other{#th}}');
         $analyzer = new MessagePatternAnalyzer($pattern, 'ru');
 
-        self::expectException(PluralComplianceException::class);
+        $warning = $analyzer->validatePluralCompliance();
 
-        $analyzer->validatePluralCompliance();
+        self::assertNotNull($warning);
+        self::assertContains('one', $warning->wrongLocaleSelectors);
     }
 
     /**
@@ -281,7 +315,9 @@ class MessagePatternAnalyzerTest extends TestCase
     public function testValidatePluralComplianceWithNestedPlurals(): void
     {
         $pattern = new MessagePattern();
-        $pattern->parse('{gender, select, male{{count, plural, one{He has # item} other{He has # items}}} female{{count, plural, one{She has # item} other{She has # items}}} other{{count, plural, one{They have # item} other{They have # items}}}}');
+        $pattern->parse(
+            '{gender, select, male{{count, plural, one{He has # item} other{He has # items}}} female{{count, plural, one{She has # item} other{She has # items}}} other{{count, plural, one{They have # item} other{They have # items}}}}'
+        );
         $analyzer = new MessagePatternAnalyzer($pattern, 'en');
 
         // Should not throw for valid nested plurals
@@ -321,120 +357,145 @@ class MessagePatternAnalyzerTest extends TestCase
     }
 
     /**
-     * @param array<string> $expectedInvalidSelectors
+     * @param array<string> $expectedWrongLocaleSelectors
      * @param array<string> $expectedMissingCategories
      * @throws PluralComplianceException
      */
-    #[DataProvider('pluralComplianceProvider')]
+    #[DataProvider('pluralComplianceWarningProvider')]
     #[Test]
-    public function testValidatePluralComplianceVariousLocales(
+    public function testValidatePluralComplianceWarningsVariousLocales(
         string $locale,
         string $message,
-        bool $shouldThrow,
-        array $expectedInvalidSelectors,
+        array $expectedWrongLocaleSelectors,
         array $expectedMissingCategories = []
     ): void {
         $pattern = new MessagePattern();
         $pattern->parse($message);
         $analyzer = new MessagePatternAnalyzer($pattern, $locale);
 
-        if ($shouldThrow) {
-            try {
-                $analyzer->validatePluralCompliance();
-                self::fail('Expected PluralComplianceException to be thrown');
-            } catch (PluralComplianceException $e) {
-                // Verify the expected invalid selectors are in the exception
-                foreach ($expectedInvalidSelectors as $selector) {
-                    self::assertContains($selector, $e->invalidSelectors);
-                }
-                // Verify the expected missing categories are in the exception
-                foreach ($expectedMissingCategories as $category) {
-                    self::assertContains($category, $e->missingCategories);
-                }
-            }
-        } else {
-            $analyzer->validatePluralCompliance();
+        $warning = $analyzer->validatePluralCompliance();
+
+        self::assertNotNull($warning);
+        foreach ($expectedWrongLocaleSelectors as $selector) {
+            self::assertContains($selector, $warning->wrongLocaleSelectors);
+        }
+        foreach ($expectedMissingCategories as $category) {
+            self::assertContains($category, $warning->missingCategories);
         }
     }
 
     /**
-     * @return array<array{string, string, bool, array<string>, array<string>}>
+     * @return array<array{string, string, array<string>, array<string>}>
      */
-    public static function pluralComplianceProvider(): array
+    public static function pluralComplianceWarningProvider(): array
     {
         return [
-            // Polish with invalid 'two' selector - Polish expects one/few/many, not two
-            // Note: 'other' is always valid as ICU requires it as fallback
-            ['pl', '{n, plural, one{# file} two{# files} other{# files}}', true, ['two'], []],
+            // Polish with 'two' selector - 'two' is valid CLDR but not for Polish (expects one/few/many/other)
+            ['pl', '{n, plural, one{# file} two{# files} other{# files}}', ['two'], []],
 
-            // Czech: one, few, other - complete
-            ['cs', '{n, plural, one{# file} few{# files} other{# files}}', false, [], []],
-            // Czech with invalid `many` selector
-            ['cs', '{n, plural, one{# file} many{# files} other{# files}}', true, ['many'], []],
+            // Czech with 'many' selector - 'many' is valid CLDR but not for Czech (expects one/few/other)
+            ['cs', '{n, plural, one{# file} many{# files} other{# files}}', ['many'], []],
 
-            // Japanese: only other (no plural forms)
-            ['ja', '{n, plural, other{# items}}', false, [], []],
+            // French with 'zero' selector - 'zero' is valid CLDR but not for French (expects one/many/other)
+            ['fr', '{n, plural, zero{none} one{# element} many{# elements} other{# elements}}', ['zero'], []],
 
-            // French: one, many, other (CLDR 49)
-            ['fr', '{n, plural, one{# element} many{# elements} other{# elements}}', false, [], []],
-            // French with invalid 'zero' selector
-            ['fr', '{n, plural, zero{none} one{# element} many{# elements} other{# elements}}', true, ['zero'], []],
-            // French missing 'many' category
-            ['fr', '{n, plural, one{# element} other{# elements}}', true, [], ['many']],
+            // French missing 'many' category - returns warning with missing category
+            ['fr', '{n, plural, one{# element} other{# elements}}', [], ['many']],
         ];
     }
 
+    /**
+     * @throws PluralComplianceException
+     */
+    #[DataProvider('pluralComplianceValidProvider')]
     #[Test]
-    public function testPluralComplianceExceptionProperties(): void
-    {
+    public function testValidatePluralComplianceValidVariousLocales(
+        string $locale,
+        string $message
+    ): void {
         $pattern = new MessagePattern();
-        $pattern->parse('{count, plural, one{# item} few{# items} other{# items}}');
-        $analyzer = new MessagePatternAnalyzer($pattern, 'en');
+        $pattern->parse($message);
+        $analyzer = new MessagePatternAnalyzer($pattern, $locale);
 
-        try {
-            $analyzer->validatePluralCompliance();
-            self::fail('Expected PluralComplianceException to be thrown');
-        } catch (PluralComplianceException $e) {
-            self::assertSame([PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER], $e->expectedCategories);
-            self::assertContains('few', $e->invalidSelectors);
-            self::assertEmpty($e->missingCategories); // English only expects one/other
-            self::assertStringContainsString('Invalid selectors found', $e->getMessage());
-        }
+        $warning = $analyzer->validatePluralCompliance();
+
+        self::assertNull($warning);
+    }
+
+    /**
+     * @return array<array{string, string}>
+     */
+    public static function pluralComplianceValidProvider(): array
+    {
+        return [
+            // Czech: one, few, other - complete
+            ['cs', '{n, plural, one{# file} few{# files} other{# files}}'],
+
+            // Japanese: only other (no plural forms)
+            ['ja', '{n, plural, other{# items}}'],
+
+            // French: one, many, other (CLDR 49)
+            ['fr', '{n, plural, one{# element} many{# elements} other{# elements}}'],
+        ];
     }
 
     /**
      * @throws PluralComplianceException
      */
     #[Test]
-    public function testPluralComplianceExceptionIsMissingOther(): void
+    public function testPluralComplianceWarningProperties(): void
+    {
+        $pattern = new MessagePattern();
+        $pattern->parse('{count, plural, one{# item} few{# items} other{# items}}');
+        $analyzer = new MessagePatternAnalyzer($pattern, 'en');
+
+        // 'few' is a valid CLDR category but wrong for English - should return a warning
+        $warning = $analyzer->validatePluralCompliance();
+
+        self::assertNotNull($warning);
+        self::assertSame([PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_OTHER], $warning->expectedCategories);
+        self::assertContains('few', $warning->wrongLocaleSelectors);
+        self::assertEmpty($warning->missingCategories); // English only expects one/other, both present
+    }
+
+    /**
+     * @throws PluralComplianceException
+     */
+    #[Test]
+    public function testPluralComplianceValidWhenAllRequiredCategoriesPresent(): void
     {
         $pattern = new MessagePattern();
         // Russian expects one/few/many - providing all required categories plus 'other'
-        // This is valid since 'other' is always accepted as ICU requires it
+        // 'other' is always valid as ICU requires it as fallback, so this is fully valid
         $pattern->parse('{count, plural, one{# item} few{# items} many{# items} other{# items}}');
         $analyzer = new MessagePatternAnalyzer($pattern, 'ru');
 
-        // Should NOT throw - 'other' is always valid as ICU fallback
-        $analyzer->validatePluralCompliance();
+        // Should return null - all required categories present, 'other' is always valid
+        $warning = $analyzer->validatePluralCompliance();
+
+        self::assertNull($warning);
     }
 
+    /**
+     * @throws PluralComplianceException
+     */
     #[Test]
-    public function testPluralComplianceExceptionWithInvalidCategory(): void
+    public function testPluralComplianceWarningWithWrongLocaleCategory(): void
     {
         $pattern = new MessagePattern();
-        // Russian expects one/few/many - 'two' is invalid for Russian cardinal
+        // Russian expects one/few/many - 'two' is valid CLDR but wrong for Russian cardinal
+        // All required categories are present, so this returns a warning (not exception)
         $pattern->parse('{count, plural, one{# item} two{# items} few{# items} many{# items} other{# items}}');
         $analyzer = new MessagePatternAnalyzer($pattern, 'ru');
 
-        try {
-            $analyzer->validatePluralCompliance();
-            self::fail('Expected PluralComplianceException to be thrown');
-        } catch (PluralComplianceException $e) {
-            // 'two' should be invalid since the Russian's cardinals numbers don't have it
-            self::assertContains('two', $e->invalidSelectors);
-            // 'other' should NOT be in invalid selectors - it's always valid
-            self::assertNotContains('other', $e->invalidSelectors);
-        }
+        // Should return a warning, not throw an exception
+        $warning = $analyzer->validatePluralCompliance();
+
+        self::assertNotNull($warning);
+        // 'two' is a valid CLDR category but wrong for Russian - should be in wrongLocaleSelectors
+        self::assertContains('two', $warning->wrongLocaleSelectors);
+        // 'other' is always valid as ICU fallback, so it's NOT in wrongLocaleSelectors
+        self::assertNotContains('other', $warning->wrongLocaleSelectors);
     }
 
     /**
@@ -461,6 +522,56 @@ class MessagePatternAnalyzerTest extends TestCase
 
         // Just verify no exception is thrown for valid plurals
         $analyzer->validatePluralCompliance();
+    }
+
+    /**
+     * Test complex nested select + plural pattern with offset.
+     *
+     * This tests a gender select with nested plural forms, which is a common
+     * real-world pattern for party invitation messages that need to handle
+     * both gender and guest count variations.
+     *
+     * @throws PluralComplianceException
+     */
+    #[Test]
+    public function testValidatePluralComplianceWithNestedSelectAndPluralWithOffset(): void
+    {
+        $pattern = new MessagePattern();
+        $message = "{gender_of_host, select, "
+            . "female {"
+            . "{num_guests, plural, offset:1 "
+            . "=0 {{host} does not give a party.}"
+            . "=1 {{host} invites {guest} to her party.}"
+            . "=2 {{host} invites {guest} and one other person to her party.}"
+            . "other {{host} invites {guest} and # other people to her party.}}}"
+            . "male {"
+            . "{num_guests, plural, offset:1 "
+            . "=0 {{host} does not give a party.}"
+            . "=1 {{host} invites {guest} to his party.}"
+            . "=2 {{host} invites {guest} and one other person to his party.}"
+            . "other {{host} invites {guest} and # other people to his party.}}}"
+            . "other {"
+            . "{num_guests, plural, offset:1 "
+            . "=0 {{host} does not give a party.}"
+            . "=1 {{host} invites {guest} to their party.}"
+            . "=2 {{host} invites {guest} and one other person to their party.}"
+            . "=2 {{host} invites {guest} and one other person to their party.}"
+            . "other {{host} invites {guest} and # other people to their party.}}}}";
+
+        $pattern->parse($message);
+        $analyzer = new MessagePatternAnalyzer($pattern, 'en');
+
+        // This pattern uses explicit numeric selectors (=0, =1, =2) and 'other'
+        // For English, categories are 'one' and 'other'
+        // Since only numeric selectors are used (no 'one' category keyword),
+        // this should return a warning instead of throwing an exception
+        $warning = $analyzer->validatePluralCompliance();
+
+        self::assertNotNull($warning);
+        self::assertContains('one', $warning->missingCategories);
+        self::assertContains('=0', $warning->numericSelectors);
+        self::assertContains('=1', $warning->numericSelectors);
+        self::assertContains('=2', $warning->numericSelectors);
     }
 
 }

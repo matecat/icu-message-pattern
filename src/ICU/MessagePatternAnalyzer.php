@@ -10,6 +10,7 @@
 namespace Matecat\ICU;
 
 use Matecat\ICU\Plurals\PluralComplianceException;
+use Matecat\ICU\Plurals\PluralComplianceWarning;
 use Matecat\ICU\Plurals\PluralRules;
 use Matecat\ICU\Tokens\ArgType;
 use Matecat\ICU\Tokens\TokenType;
@@ -57,15 +58,23 @@ class MessagePatternAnalyzer
      * Cardinal (plural) and ordinal (selectordinal) rules are validated separately
      * according to CLDR specifications.
      *
-     * @return void
-     * @throws PluralComplianceException If any selector is invalid or required categories are missing.
+     * Validation behavior:
+     * - Throws PluralComplianceException ONLY for non-existent category names (e.g., 'some', 'foo')
+     * - Returns PluralComplianceWarning for all other issues:
+     *   - Valid CLDR categories that don't apply to the locale (e.g., 'few' in English)
+     *   - Missing required categories for the locale
+     *
+     * @return PluralComplianceWarning|null Returns a warning object if there are compliance issues, null otherwise.
+     * @throws PluralComplianceException Only if a selector is not a valid CLDR category name.
      *
      */
-    public function validatePluralCompliance(): void
+    public function validatePluralCompliance(): ?PluralComplianceWarning
     {
         $foundSelectors = [];
-        $invalidSelectors = [];
+        $invalidSelectors = [];      // Non-existent categories (like 'some')
+        $wrongLocaleSelectors = [];  // Valid CLDR categories but wrong for this locale
         $expectedCategories = [];
+        $numericSelectors = [];
 
         foreach ($this->pattern as $index => $part) {
             $argType = $part->getArgType();
@@ -89,6 +98,7 @@ class MessagePatternAnalyzer
 
                 // Explicit numeric selectors (=0, =1, =2, etc.) are always valid
                 if (preg_match(self::NUMERIC_SELECTOR_PATTERN, $selector)) {
+                    $numericSelectors[] = $selector;
                     continue;
                 }
 
@@ -97,26 +107,73 @@ class MessagePatternAnalyzer
                     continue;
                 }
 
-                // Check if the selector is a valid CLDR category for this locale and argument type
-                if (!in_array($selector, $categories, true)) {
+                // Check if it's a valid CLDR category at all
+                if (!$this->isValidCldrCategory($selector)) {
+                    // Non-existent category - this is an error
                     $invalidSelectors[] = $selector;
+                    continue;
+                }
+
+                // Check if the selector is valid for this locale and argument type
+                if (!in_array($selector, $categories, true)) {
+                    // Valid CLDR category but wrong for this locale - this is a warning
+                    $wrongLocaleSelectors[] = $selector;
                 }
             }
         }
 
-        // Only throw exception if we found plural forms with invalid selectors or missing categories
+        // Only validate if we found plural forms
         if (!empty($foundSelectors)) {
-            $missingCategories = $this->getMissingCategories($foundSelectors, $expectedCategories);
-
-            if (!empty($invalidSelectors) || !empty($missingCategories)) {
+            // If there are non-existent categories, throw an exception
+            if (!empty($invalidSelectors)) {
                 throw new PluralComplianceException(
                     expectedCategories: $expectedCategories,
                     foundSelectors: array_unique($foundSelectors),
                     invalidSelectors: array_unique($invalidSelectors),
-                    missingCategories: $missingCategories
+                    missingCategories: []
+                );
+            }
+
+            $missingCategories = $this->getMissingCategories($foundSelectors, $expectedCategories);
+
+            // Return a warning if there are any issues:
+            // - wrong locale categories (valid CLDR but not for this locale)
+            // - missing categories (with or without numeric selectors)
+            if (!empty($wrongLocaleSelectors) || !empty($missingCategories)) {
+                return new PluralComplianceWarning(
+                    expectedCategories: $expectedCategories,
+                    foundSelectors: array_unique($foundSelectors),
+                    missingCategories: $missingCategories,
+                    numericSelectors: array_unique($numericSelectors),
+                    wrongLocaleSelectors: array_unique($wrongLocaleSelectors)
                 );
             }
         }
+
+        return null;
+    }
+
+    /**
+     * All valid CLDR plural category names.
+     */
+    private const array VALID_CLDR_CATEGORIES = [
+        PluralRules::CATEGORY_ZERO,
+        PluralRules::CATEGORY_ONE,
+        PluralRules::CATEGORY_TWO,
+        PluralRules::CATEGORY_FEW,
+        PluralRules::CATEGORY_MANY,
+        PluralRules::CATEGORY_OTHER,
+    ];
+
+    /**
+     * Checks if a selector is a valid CLDR category name.
+     *
+     * @param string $selector The selector to check.
+     * @return bool True if it's a valid CLDR category, false otherwise.
+     */
+    private function isValidCldrCategory(string $selector): bool
+    {
+        return in_array($selector, self::VALID_CLDR_CATEGORIES, true);
     }
 
     /**
