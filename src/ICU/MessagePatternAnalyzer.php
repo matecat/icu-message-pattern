@@ -75,6 +75,7 @@ class MessagePatternAnalyzer
         $allFoundSelectors = [];
         /** @var array<PluralArgumentWarning> $argumentWarnings */
         $argumentWarnings = [];
+        $allMissingCategories = [];
 
         foreach ($this->pattern as $index => $part) {
             // Only process ARG_START parts (skip ARG_LIMIT and all other part types)
@@ -137,6 +138,7 @@ class MessagePatternAnalyzer
 
             // Check for missing categories for THIS specific argument
             $argumentMissingCategories = array_values(array_diff($categories, $argumentCategorySelectors));
+            $allMissingCategories = array_merge($allMissingCategories, $argumentMissingCategories);
 
             // Create a warning for this argument if there are issues
             if (!empty($argumentWrongLocaleSelectors) || !empty($argumentMissingCategories)) {
@@ -161,7 +163,8 @@ class MessagePatternAnalyzer
                     expectedCategories: PluralRules::VALID_CATEGORIES,
                     foundSelectors: array_unique($allFoundSelectors),
                     invalidSelectors: array_unique($allInvalidSelectors),
-                    missingCategories: []
+                    missingCategories: array_unique($allMissingCategories),
+                    locale: $this->language
                 );
             }
 

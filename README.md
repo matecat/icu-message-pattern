@@ -267,8 +267,12 @@ try {
     $analyzer->validatePluralCompliance();
 } catch (PluralComplianceException $e) {
     echo $e->getMessage();
-    // "Invalid selectors found: [some]. Valid CLDR categories are: [zero, one, two, few, many, other]."
+    // "Invalid selectors found for locale 'en': [some]. Found selectors: [one, some, other]. Valid CLDR categories are: [zero, one, two, few, many, other]."
+    // If missingCategories is provided: "...Missing required categories: [one, few]. Valid CLDR categories are: [zero, one, two, few, many, other]."
+    echo $e->locale;                  // 'en'
     print_r($e->invalidSelectors);    // ['some']
+    print_r($e->foundSelectors);      // ['one', 'some', 'other']
+    print_r($e->missingCategories);   // [] (typically empty for this exception, used in warnings)
     print_r($e->expectedCategories);  // ['zero', 'one', 'two', 'few', 'many', 'other']
 }
 

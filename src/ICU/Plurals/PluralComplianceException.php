@@ -30,6 +30,7 @@ class PluralComplianceException extends Exception
      * @param array<string> $foundSelectors All selectors found in the message.
      * @param array<string> $invalidSelectors Selectors that don't match expected categories.
      * @param array<string> $missingCategories Expected categories not found in the message.
+     * @param string $locale The locale being validated.
      * @param int $code Exception code.
      * @param Throwable|null $previous Previous exception for chaining.
      */
@@ -38,6 +39,7 @@ class PluralComplianceException extends Exception
         public readonly array $foundSelectors,
         public readonly array $invalidSelectors,
         public readonly array $missingCategories,
+        public readonly string $locale = '',
         int $code = 0,
         ?Throwable $previous = null
     ) {
@@ -49,10 +51,34 @@ class PluralComplianceException extends Exception
      */
     private function generateMessage(): string
     {
-        return sprintf(
-            'Invalid selectors found: [%s]. Valid CLDR categories are: [%s].',
-            implode(', ', $this->invalidSelectors),
+        $localeInfo = $this->locale ? " for locale '{$this->locale}'" : '';
+
+        $parts = [];
+        $parts[] = sprintf(
+            'Invalid selectors found%s: [%s].',
+            $localeInfo,
+            implode(', ', $this->invalidSelectors)
+        );
+
+        if (!empty($this->foundSelectors)) {
+            $parts[] = sprintf(
+                'Found selectors: [%s].',
+                implode(', ', $this->foundSelectors)
+            );
+        }
+
+        if (!empty($this->missingCategories)) {
+            $parts[] = sprintf(
+                'Missing required categories: [%s].',
+                implode(', ', $this->missingCategories)
+            );
+        }
+
+        $parts[] = sprintf(
+            'Valid CLDR categories are: [%s].',
             implode(', ', $this->expectedCategories)
         );
+
+        return implode(' ', $parts);
     }
 }
