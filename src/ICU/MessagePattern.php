@@ -1143,9 +1143,10 @@ final class MessagePattern implements Iterator
      */
     private function skipWhiteSpace(int $index): int
     {
-        $length = $this->msgLength;
-        while ($index < $length && preg_match('#\G[' . self::PATTERN_WHITE_SPACE . ']#xu', $this->msg, $m, 0, $index)) {
-            $index += mb_strlen($m[0]);
+        // Convert character offset to byte offset for preg_match
+        $byteOffset = strlen(mb_substr($this->msg, 0, $index));
+        if (preg_match('#\G[' . self::PATTERN_WHITE_SPACE . ']+#xu', $this->msg, $m, 0, $byteOffset)) {
+            return $index + mb_strlen($m[0]);
         }
         return $index;
     }
@@ -1159,14 +1160,18 @@ final class MessagePattern implements Iterator
      */
     private function skipIdentifier(int $index): int
     {
+
         // ICU Pattern_Syntax + Pattern_White_Space (exact, hard-coded)
+        // Convert character offset to byte offset for preg_match
+        $byteOffset = strlen(mb_substr($this->msg, 0, $index));
+
         if (
             preg_match(
                 '#\G[^' . self::PATTERN_WHITE_SPACE . self::PATTERN_IDENTIFIER . ']+#xu',
                 $this->msg,
                 $m,
                 0,
-                $index
+                $byteOffset
             )
         ) {
             return $index + mb_strlen($m[0]);

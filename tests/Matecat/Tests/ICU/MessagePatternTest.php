@@ -990,7 +990,8 @@ MSG;
         $hasChoice = false;
         for ($i = 0; $i < $pattern->countParts(); $i++) {
             $part = $pattern->getPart($i);
-            if ($part->getType() === TokenType::ARG_START && $part->getArgType() === \Matecat\ICU\Tokens\ArgType::CHOICE) {
+            if ($part->getType() === TokenType::ARG_START && $part->getArgType(
+                ) === \Matecat\ICU\Tokens\ArgType::CHOICE) {
                 $hasChoice = true;
                 break;
             }
@@ -1348,7 +1349,6 @@ MSG;
         $out = '';
         MessagePattern::appendReducedApostrophes("no apostrophe", 0, 13, $out);
         self::assertSame("no apostrophe", $out);
-
     }
 
     /**
@@ -1610,4 +1610,19 @@ MSG;
         self::assertSame(1, $argLimit->getLength());
         self::assertSame(6, $argLimit->getLimit());
     }
+
+    /**
+     * Test keyword selector too long
+     */
+    #[Test]
+    public function testKeywordSelectorNoExceptionsRaisedWithUTF8(): void
+    {
+        $this->expectNotToPerformAssertions();
+        $pattern = new MessagePattern();
+        $pattern->parse("{gender, select, male {He is punctual} female {She is punctual} other {They are punctual}}");
+        $pattern->parse("{gender, select, male {Lui è puntuale} female {Lei è puntuale} other {Loro sono puntuali}}");
+        $pattern->parse("{gender, select, male {他很守时。} female {她很守时。} other {他们很守时。}}");
+        $pattern->parse("{gender, select, male {إنه ملتزم بالمواعيد} female {إنها ملتزمة بالمواعيد} other {إنهم ملتزمون بالمواعيد}}");
+    }
+
 }
