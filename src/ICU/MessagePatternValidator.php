@@ -16,7 +16,7 @@ use Matecat\ICU\Plurals\PluralRules;
 use Matecat\ICU\Tokens\ArgType;
 use Matecat\ICU\Tokens\TokenType;
 
-class MessagePatternAnalyzer
+class MessagePatternValidator
 {
 
     public function __construct(

@@ -225,7 +225,7 @@ The `MessagePatternAnalyzer` validates that plural/selectordinal selectors compl
 
 ```php
 use Matecat\ICU\MessagePattern;
-use Matecat\ICU\MessagePatternAnalyzer;
+use Matecat\ICU\MessagePatternValidator;
 use Matecat\ICU\Plurals\PluralComplianceException;
 
 // Parse an ICU message
@@ -233,14 +233,14 @@ $pattern = new MessagePattern();
 $pattern->parse('{count, plural, one{# item} other{# items}}');
 
 // Validate plural compliance for English
-$analyzer = new MessagePatternAnalyzer($pattern, 'en');
+$analyzer = new MessagePatternValidator($pattern, 'en');
 $warning = $analyzer->validatePluralCompliance();
 
 // Returns null when all categories are valid and complete
 var_dump($warning); // null - 'one' and 'other' are valid for English
 
 // Check with Russian locale - Russian requires one/few/many/other
-$analyzer = new MessagePatternAnalyzer($pattern, 'ru');
+$analyzer = new MessagePatternValidator($pattern, 'ru');
 $warning = $analyzer->validatePluralCompliance();
 
 // Returns a PluralComplianceWarning with per-argument details
@@ -261,7 +261,7 @@ foreach ($warning->getArgumentWarnings() as $argWarning) {
 
 // Invalid CLDR categories throw an exception
 $pattern->parse('{count, plural, some{# items} other{# items}}'); // 'some' is not a valid CLDR category
-$analyzer = new MessagePatternAnalyzer($pattern, 'en');
+$analyzer = new MessagePatternValidator($pattern, 'en');
 
 try {
     $analyzer->validatePluralCompliance();
@@ -278,7 +278,7 @@ try {
 
 // Valid CLDR categories wrong for locale return warnings (not exceptions)
 $pattern->parse('{count, plural, one{# item} few{# items} other{# items}}');
-$analyzer = new MessagePatternAnalyzer($pattern, 'en'); // English doesn't use 'few'
+$analyzer = new MessagePatternValidator($pattern, 'en'); // English doesn't use 'few'
 $warning = $analyzer->validatePluralCompliance();
 
 $argWarning = $warning->getArgumentWarnings()[0];
@@ -286,7 +286,7 @@ print_r($argWarning->wrongLocaleSelectors); // ['few'] - valid CLDR but not for 
 
 // Explicit numeric selectors (=0, =1, =2) are always valid but don't substitute category keywords
 $pattern->parse('{count, plural, =0{none} =1{one item} other{# items}}');
-$analyzer = new MessagePatternAnalyzer($pattern, 'en');
+$analyzer = new MessagePatternValidator($pattern, 'en');
 $warning = $analyzer->validatePluralCompliance();
 
 $argWarning = $warning->getArgumentWarnings()[0];
@@ -295,12 +295,12 @@ print_r($argWarning->missingCategories);   // ['one'] - =1 doesn't substitute fo
 
 // Nested messages with multiple plural arguments get per-argument validation
 $pattern->parse("{gender, select, female{{n, plural, one{her item} other{her items}}} male{{n, plural, one{his item} other{his items}}}}");
-$analyzer = new MessagePatternAnalyzer($pattern, 'en');
+$analyzer = new MessagePatternValidator($pattern, 'en');
 $warning = $analyzer->validatePluralCompliance(); // null - all valid
 
 // SelectOrdinal validation uses ordinal rules (different from cardinal)
 $pattern->parse('{rank, selectordinal, one{#st} two{#nd} few{#rd} other{#th}}');
-$analyzer = new MessagePatternAnalyzer($pattern, 'en');
+$analyzer = new MessagePatternValidator($pattern, 'en');
 $warning = $analyzer->validatePluralCompliance(); // null - English ordinal uses one/two/few/other
 ```
 

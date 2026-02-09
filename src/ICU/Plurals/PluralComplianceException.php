@@ -16,7 +16,7 @@ use Throwable;
  * Exception thrown when a message pattern's plural selectors do not comply
  * with the expected CLDR plural categories for a given locale.
  *
- * This exception is raised by MessagePatternAnalyzer::validatePluralCompliance()
+ * This exception is raised by MessagePatternValidator::validatePluralCompliance()
  * when the message contains:
  * - Invalid plural selectors that don't match expected CLDR categories
  * - Missing required plural categories for the locale
