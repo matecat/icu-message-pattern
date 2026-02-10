@@ -1625,4 +1625,17 @@ MSG;
         $pattern->parse("{gender, select, male {إنه ملتزم بالمواعيد} female {إنها ملتزمة بالمواعيد} other {إنهم ملتزمون بالمواعيد}}");
     }
 
+    /**
+     * Test keyword selector too long
+     */
+    #[Test]
+    public function testUnmatchedCurlyBracesAtTheEndOfMessage(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Unmatched '{' braces in message");
+
+        $pattern = new MessagePattern();
+        $pattern->parse("{numItems, plural,=0{Non hai messaggi} one{Hai un messaggio} other{Hai # messaggi} ");
+    }
+
 }

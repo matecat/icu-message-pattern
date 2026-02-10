@@ -2,9 +2,9 @@
 
 namespace Matecat\ICU;
 
+use Iterator;
 use Matecat\ICU\Exceptions\InvalidArgumentException;
 use Matecat\ICU\Exceptions\OutOfBoundsException;
-use Iterator;
 use Matecat\ICU\Tokens\ArgType;
 use Matecat\ICU\Tokens\Part;
 use Matecat\ICU\Tokens\TokenType;
@@ -904,6 +904,25 @@ final class MessagePattern implements Iterator
 
             // end of style: '}' or end of string
             if ($eos || $this->charAt($index) === '}') {
+
+                if ($eos) {
+                    $curlyBraces = 0; // Counter to track the balance of opening and closing curly braces.
+
+                    // Iterate through all parts of the message to count opening and closing braces.
+                    foreach ($this->parts as $part) {
+                        match ($part->getType()) {
+                            TokenType::MSG_START => $curlyBraces++, // Increment for each opening brace.
+                            TokenType::MSG_LIMIT => $curlyBraces--, // Decrement for each closing brace.
+                            default => null, // Ignore other token types.
+                        };
+                    }
+
+                    // If there are unmatched opening braces, throw an exception.
+                    if ($curlyBraces > 0) {
+                        throw new InvalidArgumentException("Unmatched '{' braces in message " . $this->prefix());
+                    }
+                }
+
                 // validate matching end depending on nesting context
                 if ($eos === $this->inMessageFormatPattern($nestingLevel)) {
                     throw new InvalidArgumentException(
@@ -1160,7 +1179,6 @@ final class MessagePattern implements Iterator
      */
     private function skipIdentifier(int $index): int
     {
-
         // ICU Pattern_Syntax + Pattern_White_Space (exact, hard-coded)
         // Convert character offset to byte offset for preg_match
         $byteOffset = strlen(mb_substr($this->msg, 0, $index));
