@@ -6,12 +6,12 @@ declare(strict_types=1);
 namespace Matecat\Tests\ICU;
 
 use Exception;
-use InvalidArgumentException;
+use Matecat\ICU\Exceptions\InvalidArgumentException;
+use Matecat\ICU\Exceptions\OutOfBoundsException;
 use Matecat\ICU\MessagePattern;
 use Matecat\ICU\Tokens\ArgType;
 use Matecat\ICU\Tokens\Part;
 use Matecat\ICU\Tokens\TokenType;
-use OutOfBoundsException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

@@ -9,6 +9,7 @@
 
 namespace Matecat\ICU;
 
+use Exception;
 use Matecat\ICU\Plurals\PluralArgumentWarning;
 use Matecat\ICU\Plurals\PluralComplianceException;
 use Matecat\ICU\Plurals\PluralComplianceWarning;
@@ -18,6 +19,8 @@ use Matecat\ICU\Tokens\TokenType;
 
 class MessagePatternValidator
 {
+
+    private ?Exception $parsingException = null;
 
     public function __construct(
         protected string $language = 'en-US',
@@ -43,8 +46,7 @@ class MessagePatternValidator
      */
     public function containsComplexSyntax(): bool
     {
-
-        $this->checkForPatternInitialyzed();
+        $this->checkForPatternInitialized();
 
         foreach ($this->pattern as $part) {
             $argType = $part->getArgType();
@@ -63,14 +65,18 @@ class MessagePatternValidator
      * Checks if the pattern hasn't been analyzed yet. If not, it will be parsed.
      * @return void
      */
-    private function checkForPatternInitialyzed(): void
+    private function checkForPatternInitialized(): void
     {
         if ($this->pattern === null) {
             $this->pattern = new MessagePattern();
         }
 
         if ($this->pattern->countParts() === 0 && $this->patternString !== null) {
-            $this->pattern->parse($this->patternString);
+            try {
+                $this->pattern->parse($this->patternString);
+            } catch (Exception $e) {
+                $this->parsingException = $e;
+            }
         }
     }
 
@@ -97,12 +103,16 @@ class MessagePatternValidator
      *
      * @return PluralComplianceWarning|null Returns a warning object if there are compliance issues, null otherwise.
      * @throws PluralComplianceException Only if a selector is not a valid CLDR category name.
+     * @throws Exception
      *
      */
     public function validatePluralCompliance(): ?PluralComplianceWarning
     {
+        $this->checkForPatternInitialized();
 
-        $this->checkForPatternInitialyzed();
+        if ($this->parsingException) {
+            throw $this->parsingException;
+        }
 
         $allInvalidSelectors = [];      // Non-existent categories (like 'some') - throws exception
         $allFoundSelectors = [];

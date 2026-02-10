@@ -2,12 +2,12 @@
 
 namespace Matecat\ICU;
 
-use InvalidArgumentException;
+use Matecat\ICU\Exceptions\InvalidArgumentException;
+use Matecat\ICU\Exceptions\OutOfBoundsException;
 use Iterator;
 use Matecat\ICU\Tokens\ArgType;
 use Matecat\ICU\Tokens\Part;
 use Matecat\ICU\Tokens\TokenType;
-use OutOfBoundsException;
 
 /**
  * This is a porting of The ICU MessageFormat Parser by Markus Scherer:
@@ -150,6 +150,10 @@ final class MessagePattern implements Iterator
     private int $msgLength = 0;
 
 
+    /**
+     * @throws OutOfBoundsException
+     * @throws InvalidArgumentException
+     */
     public function __construct(?string $pattern = null, string $apostropheMode = self::APOSTROPHE_DOUBLE_OPTIONAL)
     {
         $this->aposMode = $apostropheMode;
@@ -162,10 +166,9 @@ final class MessagePattern implements Iterator
      * Parses a MessageFormat pattern string.
      * @param string $pattern a MessageFormat pattern string
      * @return $this
-     * @throws InvalidArgumentException for syntax errors in the pattern string
+     * @throws InvalidArgumentException for syntax errors in the pattern string or if a number could not be parsed
      * @throws OutOfBoundsException if certain limits are exceeded
      *         (e.g., argument number too high, argument name too long, etc.)
-     * @throws InvalidArgumentException if a number could not be parsed
      */
     public function parse(string $pattern): self
     {
@@ -179,9 +182,8 @@ final class MessagePattern implements Iterator
      * Parses a ChoiceFormat pattern string.
      * @param string $pattern a ChoiceFormat pattern string
      * @return $this
-     * @throws InvalidArgumentException for syntax errors in the pattern string
+     * @throws InvalidArgumentException for syntax errors in the pattern string or if a number could not be parsed
      * @throws OutOfBoundsException if certain limits are exceeded
-     * @throws InvalidArgumentException if a number could not be parsed
      */
     public function parseChoiceStyle(string $pattern): self
     {
@@ -195,9 +197,8 @@ final class MessagePattern implements Iterator
      * Parses a PluralFormat pattern string.
      * @param string $pattern a PluralFormat pattern string
      * @return $this
-     * @throws InvalidArgumentException for syntax errors in the pattern string
+     * @throws InvalidArgumentException for syntax errors in the pattern string or if a number could not be parsed
      * @throws OutOfBoundsException if certain limits are exceeded
-     * @throws InvalidArgumentException if a number could not be parsed
      */
     public function parsePluralStyle(string $pattern): self
     {
@@ -211,9 +212,8 @@ final class MessagePattern implements Iterator
      * Parses a SelectFormat pattern string.
      * @param string $pattern a SelectFormat pattern string
      * @return $this
-     * @throws InvalidArgumentException for syntax errors in the pattern string
+     * @throws InvalidArgumentException for syntax errors in the pattern string or if a number could not be parsed
      * @throws OutOfBoundsException if certain limits are exceeded
-     * @throws InvalidArgumentException if a number could not be parsed
      */
     public function parseSelectStyle(string $pattern): self
     {

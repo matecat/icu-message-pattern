@@ -507,6 +507,7 @@ vendor/bin/phpstan analyze
 - Part/token model: `src/ICU/Tokens/Part.php`
 - Token types: `src/ICU/Tokens/TokenType.php`
 - Argument types: `src/ICU/Tokens/ArgType.php`
+- Custom Exceptions: `src/ICU/Exceptions/InvalidArgumentException.php`, `src/ICU/Exceptions/OutOfBoundsException.php`
 - Plural Rules: `src/ICU/Plurals/PluralRules.php`
 - Plural Compliance Warning: `src/ICU/Plurals/PluralComplianceWarning.php`
 - Plural Argument Warning: `src/ICU/Plurals/PluralArgumentWarning.php`
