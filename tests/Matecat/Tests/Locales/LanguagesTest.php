@@ -28,6 +28,11 @@ final class LanguagesTest extends TestCase
     // Singleton Tests
     // =========================================================================
 
+    /**
+     * Tests that getInstance returns the same singleton instance.
+     *
+     * @return void
+     */
     public function testGetInstanceReturnsSameInstance(): void
     {
         $instance1 = Languages::getInstance();
@@ -36,6 +41,11 @@ final class LanguagesTest extends TestCase
         self::assertSame($instance1, $instance2);
     }
 
+    /**
+     * Tests that getInstance returns a Languages instance.
+     *
+     * @return void
+     */
     public function testGetInstanceReturnsLanguagesInstance(): void
     {
         $instance = Languages::getInstance();
@@ -47,6 +57,13 @@ final class LanguagesTest extends TestCase
     // RTL Language Tests
     // =========================================================================
 
+    /**
+     * Tests that isRTL returns true for RTL languages.
+     *
+     * @param string $code The language code to test.
+     *
+     * @return void
+     */
     #[DataProvider('rtlLanguagesProvider')]
     public function testIsRTLReturnsTrueForRTLLanguages(string $code): void
     {
@@ -68,6 +85,13 @@ final class LanguagesTest extends TestCase
         ];
     }
 
+    /**
+     * Tests that isRTL returns false for LTR languages.
+     *
+     * @param string $code The language code to test.
+     *
+     * @return void
+     */
     #[DataProvider('ltrLanguagesProvider')]
     public function testIsRTLReturnsFalseForLTRLanguages(string $code): void
     {
@@ -93,6 +117,11 @@ final class LanguagesTest extends TestCase
         ];
     }
 
+    /**
+     * Tests that getRTLLangs returns an array of RTL codes.
+     *
+     * @return void
+     */
     public function testGetRTLLangsReturnsArrayOfRTLCodes(): void
     {
         $langs = Languages::getInstance();
@@ -113,6 +142,13 @@ final class LanguagesTest extends TestCase
     // Language Enabled Tests
     // =========================================================================
 
+    /**
+     * Tests that isEnabled returns true for enabled languages.
+     *
+     * @param string $code The language code to test.
+     *
+     * @return void
+     */
     #[DataProvider('enabledLanguagesProvider')]
     public function testIsEnabledReturnsTrueForEnabledLanguages(string $code): void
     {
@@ -139,6 +175,11 @@ final class LanguagesTest extends TestCase
         ];
     }
 
+    /**
+     * Tests that getEnabledLanguages returns a non-empty array.
+     *
+     * @return void
+     */
     public function testGetEnabledLanguagesReturnsNonEmptyArray(): void
     {
         $langs = Languages::getInstance();
@@ -154,6 +195,11 @@ final class LanguagesTest extends TestCase
         self::assertArrayHasKey('direction', $firstLang);
     }
 
+    /**
+     * Tests that enabled languages are sorted alphabetically.
+     *
+     * @return void
+     */
     public function testGetEnabledLanguagesAreSortedAlphabetically(): void
     {
         $langs = Languages::getInstance();
@@ -170,6 +216,11 @@ final class LanguagesTest extends TestCase
     // Localized Name Tests
     // =========================================================================
 
+    /**
+     * Tests that getLocalizedName returns a non-empty string.
+     *
+     * @return void
+     */
     public function testGetLocalizedNameReturnsNonEmptyString(): void
     {
         $langs = Languages::getInstance();
@@ -184,6 +235,11 @@ final class LanguagesTest extends TestCase
         }
     }
 
+    /**
+     * Tests that getLocalizedName returns consistent results.
+     *
+     * @return void
+     */
     public function testGetLocalizedNameReturnsConsistentResults(): void
     {
         $langs = Languages::getInstance();
@@ -196,7 +252,11 @@ final class LanguagesTest extends TestCase
     }
 
     /**
+     * Tests that getLocalizedNameRFC returns a non-empty string.
+     *
      * @throws InvalidLanguageException
+     *
+     * @return void
      */
     public function testGetLocalizedNameRFCReturnsNonEmptyString(): void
     {
@@ -207,6 +267,13 @@ final class LanguagesTest extends TestCase
         self::assertIsString($name);
     }
 
+    /**
+     * Tests that getLocalizedNameRFC throws exception for invalid code.
+     *
+     * @throws InvalidLanguageException
+     *
+     * @return void
+     */
     public function testGetLocalizedNameRFCThrowsExceptionForInvalidCode(): void
     {
         $langs = Languages::getInstance();
@@ -215,6 +282,13 @@ final class LanguagesTest extends TestCase
         $langs->getLocalizedNameRFC('invalid-code');
     }
 
+    /**
+     * Tests that getLocalizedNameRFC throws exception for null code.
+     *
+     * @throws InvalidLanguageException
+     *
+     * @return void
+     */
     public function testGetLocalizedNameRFCThrowsExceptionForNullCode(): void
     {
         $langs = Languages::getInstance();
@@ -227,6 +301,11 @@ final class LanguagesTest extends TestCase
     // Code Conversion Tests
     // =========================================================================
 
+    /**
+     * Tests that get3066Code returns a valid code.
+     *
+     * @return void
+     */
     public function testGet3066CodeReturnsValidCode(): void
     {
         $langs = Languages::getInstance();
@@ -241,6 +320,11 @@ final class LanguagesTest extends TestCase
         self::assertStringContainsString('-', $rfcCode);
     }
 
+    /**
+     * Tests that getIsoCode returns a valid code.
+     *
+     * @return void
+     */
     public function testGetIsoCodeReturnsValidCode(): void
     {
         $langs = Languages::getInstance();
@@ -255,6 +339,14 @@ final class LanguagesTest extends TestCase
         self::assertLessThanOrEqual(3, strlen($isoCode));
     }
 
+    /**
+     * Tests conversion of language to ISO code.
+     *
+     * @param string $rfcCode         The RFC code to convert.
+     * @param string $expectedIsoCode The expected ISO code.
+     *
+     * @return void
+     */
     #[DataProvider('convertToIsoCodeProvider')]
     public function testConvertLanguageToIsoCode(string $rfcCode, string $expectedIsoCode): void
     {
@@ -279,11 +371,21 @@ final class LanguagesTest extends TestCase
         ];
     }
 
+    /**
+     * Tests that convertLanguageToIsoCode returns null for invalid code.
+     *
+     * @return void
+     */
     public function testConvertLanguageToIsoCodeReturnsNullForInvalidCode(): void
     {
         self::assertNull(Languages::convertLanguageToIsoCode('invalid-XX'));
     }
 
+    /**
+     * Tests that getLangRegionCode returns a correct code.
+     *
+     * @return void
+     */
     public function testGetLangRegionCodeReturnsCorrectCode(): void
     {
         $langs = Languages::getInstance();
@@ -297,6 +399,11 @@ final class LanguagesTest extends TestCase
     // Language Validation Tests
     // =========================================================================
 
+    /**
+     * Tests that isValidLanguage returns true for valid languages.
+     *
+     * @return void
+     */
     public function testIsValidLanguageReturnsTrueForValidLanguages(): void
     {
         self::assertTrue(Languages::isValidLanguage('en-US'));
@@ -305,6 +412,11 @@ final class LanguagesTest extends TestCase
         self::assertTrue(Languages::isValidLanguage('ar-SA'));
     }
 
+    /**
+     * Tests that isValidLanguage returns false for invalid languages.
+     *
+     * @return void
+     */
     public function testIsValidLanguageReturnsFalseForInvalidLanguages(): void
     {
         self::assertFalse(Languages::isValidLanguage('xx-XX'));
@@ -312,7 +424,11 @@ final class LanguagesTest extends TestCase
     }
 
     /**
+     * Tests that validateLanguage returns a normalized code.
+     *
      * @throws InvalidLanguageException
+     *
+     * @return void
      */
     public function testValidateLanguageReturnsNormalizedCode(): void
     {
@@ -322,6 +438,13 @@ final class LanguagesTest extends TestCase
         self::assertSame('fr-FR', $langs->validateLanguage('fr-FR'));
     }
 
+    /**
+     * Tests that validateLanguage throws exception for empty code.
+     *
+     * @throws InvalidLanguageException
+     *
+     * @return void
+     */
     public function testValidateLanguageThrowsExceptionForEmptyCode(): void
     {
         $langs = Languages::getInstance();
@@ -330,6 +453,13 @@ final class LanguagesTest extends TestCase
         $langs->validateLanguage('');
     }
 
+    /**
+     * Tests that validateLanguage throws exception for null code.
+     *
+     * @throws InvalidLanguageException
+     *
+     * @return void
+     */
     public function testValidateLanguageThrowsExceptionForNullCode(): void
     {
         $langs = Languages::getInstance();
@@ -339,7 +469,11 @@ final class LanguagesTest extends TestCase
     }
 
     /**
+     * Tests that validateLanguageList returns a validated list.
+     *
      * @throws InvalidLanguageException
+     *
+     * @return void
      */
     public function testValidateLanguageListReturnsValidatedList(): void
     {
@@ -353,6 +487,13 @@ final class LanguagesTest extends TestCase
         self::assertContains('de-DE', $result);
     }
 
+    /**
+     * Tests that validateLanguageList throws exception for empty list.
+     *
+     * @throws InvalidLanguageException
+     *
+     * @return void
+     */
     public function testValidateLanguageListThrowsExceptionForEmptyList(): void
     {
         $langs = Languages::getInstance();
@@ -362,7 +503,11 @@ final class LanguagesTest extends TestCase
     }
 
     /**
+     * Tests that validateLanguageListAsString returns a comma-separated string.
+     *
      * @throws InvalidLanguageException
+     *
+     * @return void
      */
     public function testValidateLanguageListAsStringReturnsCommaSeparatedString(): void
     {
@@ -376,7 +521,11 @@ final class LanguagesTest extends TestCase
     }
 
     /**
+     * Tests that validateLanguageListAsString works with custom separator.
+     *
      * @throws InvalidLanguageException
+     *
+     * @return void
      */
     public function testValidateLanguageListAsStringWithCustomSeparator(): void
     {
@@ -393,6 +542,11 @@ final class LanguagesTest extends TestCase
     // Localized Language Static Method Tests
     // =========================================================================
 
+    /**
+     * Tests that getLocalizedLanguage returns a non-empty string.
+     *
+     * @return void
+     */
     public function testGetLocalizedLanguageReturnsNonEmptyString(): void
     {
         $codes = ['en-US', 'fr-FR', 'de-DE', 'it-IT', 'ar-SA'];
@@ -404,6 +558,11 @@ final class LanguagesTest extends TestCase
         }
     }
 
+    /**
+     * Tests that getLocalizedLanguage returns null for invalid code.
+     *
+     * @return void
+     */
     public function testGetLocalizedLanguageReturnsNullForInvalidCode(): void
     {
         self::assertNull(Languages::getLocalizedLanguage('invalid-XX'));
@@ -414,6 +573,11 @@ final class LanguagesTest extends TestCase
     // OCR Support Tests
     // =========================================================================
 
+    /**
+     * Tests that getLanguagesWithOcrSupported returns a non-empty array.
+     *
+     * @return void
+     */
     public function testGetLanguagesWithOcrSupportedReturnsNonEmptyArray(): void
     {
         $ocrSupported = Languages::getLanguagesWithOcrSupported();
@@ -421,6 +585,11 @@ final class LanguagesTest extends TestCase
         self::assertNotEmpty($ocrSupported);
     }
 
+    /**
+     * Tests that getLanguagesWithOcrNotSupported returns an array.
+     *
+     * @return void
+     */
     public function testGetLanguagesWithOcrNotSupportedReturnsArray(): void
     {
         // This may or may not be empty depending on the data
@@ -434,6 +603,11 @@ final class LanguagesTest extends TestCase
     // Language Code Normalization Tests
     // =========================================================================
 
+    /**
+     * Tests language code normalization with different formats.
+     *
+     * @return void
+     */
     public function testLanguageCodeNormalizationWithDifferentFormats(): void
     {
         $langs = Languages::getInstance();
@@ -448,12 +622,22 @@ final class LanguagesTest extends TestCase
         self::assertTrue($langs->isEnabled('En-Us'));
     }
 
+    /**
+     * Tests language code normalization with three parts.
+     *
+     * @return void
+     */
     public function testLanguageCodeNormalizationWithThreeParts(): void
     {
         // Languages like sr-Latn-RS (Serbian Latin)
         self::assertTrue(Languages::isValidLanguage('sr-Latn-RS'));
     }
 
+    /**
+     * Tests ISO code fallback.
+     *
+     * @return void
+     */
     public function testISOCodeFallback(): void
     {
         // Test that ISO codes are properly mapped to RFC codes
@@ -470,6 +654,11 @@ final class LanguagesTest extends TestCase
     // Edge Case Tests for Full Coverage
     // =========================================================================
 
+    /**
+     * Tests that normalizeLanguageCode returns null for codes with four parts.
+     *
+     * @return void
+     */
     public function testNormalizeLanguageCodeWithFourPartsReturnsNull(): void
     {
         // Language code with more than 3 parts should return null from normalizeLanguageCode

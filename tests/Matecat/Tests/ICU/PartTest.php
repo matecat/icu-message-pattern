@@ -2,16 +2,27 @@
 
 namespace Matecat\Tests\ICU;
 
+use Matecat\ICU\Exceptions\InvalidArgumentException;
+use Matecat\ICU\Exceptions\OutOfBoundsException;
 use Matecat\ICU\MessagePattern;
 use Matecat\ICU\Tokens\ArgType;
 use Matecat\ICU\Tokens\TokenType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Tests the functionality of the `Part` class.
+ *
+ * This test suite validates the behavior of Part objects, including
+ * their string representation and various accessor methods.
+ */
 final class PartTest extends TestCase
 {
     /**
-     * Test Part __toString() method with ARG_START
+     * Tests Part __toString() method with ARG_START.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     #[Test]
     public function testPartToStringWithArgStart(): void
@@ -38,7 +49,10 @@ final class PartTest extends TestCase
     }
 
     /**
-     * Test Part __toString() method with ARG_LIMIT
+     * Tests Part __toString() method with ARG_LIMIT.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     #[Test]
     public function testPartToStringWithArgLimit(): void
@@ -64,7 +78,10 @@ final class PartTest extends TestCase
     }
 
     /**
-     * Test Part __toString() method with value-based part (MSG_START)
+     * Tests Part __toString() method with value-based part (MSG_START).
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     #[Test]
     public function testPartToStringWithMsgStart(): void
@@ -85,7 +102,10 @@ final class PartTest extends TestCase
     }
 
     /**
-     * Test Part __toString() method with INSERT_CHAR part
+     * Tests Part __toString() method with INSERT_CHAR part.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     #[Test]
     public function testPartToStringWithInsertChar(): void
@@ -111,7 +131,10 @@ final class PartTest extends TestCase
     }
 
     /**
-     * Test Part __toString() method with plural argument
+     * Tests Part __toString() method with plural argument.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     #[Test]
     public function testPartToStringWithPluralArgument(): void

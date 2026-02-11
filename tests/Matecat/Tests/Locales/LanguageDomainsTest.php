@@ -23,6 +23,11 @@ final class LanguageDomainsTest extends TestCase
     // Singleton Tests
     // =========================================================================
 
+    /**
+     * Tests that getInstance returns the same singleton instance.
+     *
+     * @return void
+     */
     public function testGetInstanceReturnsSameInstance(): void
     {
         $instance1 = LanguageDomains::getInstance();
@@ -34,6 +39,12 @@ final class LanguageDomainsTest extends TestCase
     // =========================================================================
     // Enabled Domains Tests
     // =========================================================================
+
+    /**
+     * Tests that getEnabledDomains returns a non-empty array.
+     *
+     * @return void
+     */
     #[Depends('testGetInstanceReturnsSameInstance')]
     public function testGetEnabledDomainsReturnsNonEmptyArray(): void
     {
@@ -42,6 +53,11 @@ final class LanguageDomainsTest extends TestCase
         self::assertNotEmpty($domains);
     }
 
+    /**
+     * Tests that enabled domains have the correct structure.
+     *
+     * @return void
+     */
     #[Depends('testGetInstanceReturnsSameInstance')]
     public function testGetEnabledDomainsHasCorrectStructure(): void
     {
@@ -54,6 +70,11 @@ final class LanguageDomainsTest extends TestCase
         }
     }
 
+    /**
+     * Tests that enabled domains contain expected domain entries.
+     *
+     * @return void
+     */
     #[Depends('testGetInstanceReturnsSameInstance')]
     public function testGetEnabledDomainsContainsExpectedDomains(): void
     {
@@ -71,6 +92,12 @@ final class LanguageDomainsTest extends TestCase
     // =========================================================================
     // Hash Map Tests
     // =========================================================================
+
+    /**
+     * Tests that getEnabledHashMap returns an array.
+     *
+     * @return void
+     */
     #[Depends('testGetInstanceReturnsSameInstance')]
     public function testGetEnabledHashMapReturnsArray(): void
     {
@@ -79,6 +106,11 @@ final class LanguageDomainsTest extends TestCase
         self::assertNotEmpty($hashMap);
     }
 
+    /**
+     * Tests that hash map has string keys and values.
+     *
+     * @return void
+     */
     #[Depends('testGetInstanceReturnsSameInstance')]
     public function testGetEnabledHashMapHasStringKeysAndValues(): void
     {
@@ -90,6 +122,11 @@ final class LanguageDomainsTest extends TestCase
         }
     }
 
+    /**
+     * Tests that hash map matches enabled domains data.
+     *
+     * @return void
+     */
     #[Depends('testGetInstanceReturnsSameInstance')]
     public function testGetEnabledHashMapMatchesEnabledDomains(): void
     {
@@ -109,6 +146,12 @@ final class LanguageDomainsTest extends TestCase
     // =========================================================================
     // Data Consistency Tests
     // =========================================================================
+
+    /**
+     * Tests that domain keys are unique.
+     *
+     * @return void
+     */
     #[Depends('testGetInstanceReturnsSameInstance')]
     public function testDomainsKeysAreUnique(): void
     {
@@ -119,6 +162,11 @@ final class LanguageDomainsTest extends TestCase
         self::assertCount(count($keys), $uniqueKeys, 'Domain keys should be unique');
     }
 
+    /**
+     * Tests that domain keys are not empty.
+     *
+     * @return void
+     */
     #[Depends('testGetInstanceReturnsSameInstance')]
     public function testDomainsKeysAreNotEmpty(): void
     {
@@ -129,6 +177,11 @@ final class LanguageDomainsTest extends TestCase
         }
     }
 
+    /**
+     * Tests that domain display names are not empty.
+     *
+     * @return void
+     */
     #[Depends('testGetInstanceReturnsSameInstance')]
     public function testDomainsDisplayNamesAreNotEmpty(): void
     {
@@ -143,6 +196,11 @@ final class LanguageDomainsTest extends TestCase
     // Instance Initialization Tests
     // =========================================================================
 
+    /**
+     * Tests that instance initializes correctly from JSON.
+     *
+     * @return void
+     */
     #[Depends('testGetInstanceReturnsSameInstance')]
     public function testInstanceInitializesCorrectlyFromJson(): void
     {
@@ -161,6 +219,11 @@ final class LanguageDomainsTest extends TestCase
     // Static Method Access Tests
     // =========================================================================
 
+    /**
+     * Tests that static methods work without explicit getInstance call.
+     *
+     * @return void
+     */
     #[Depends('testGetInstanceReturnsSameInstance')]
     public function testStaticMethodsWorkWithoutExplicitGetInstance(): void
     {
@@ -176,6 +239,12 @@ final class LanguageDomainsTest extends TestCase
     // =========================================================================
     // Multiple Access Tests
     // =========================================================================
+
+    /**
+     * Tests that multiple access returns consistent data.
+     *
+     * @return void
+     */
     #[Depends('testGetInstanceReturnsSameInstance')]
     public function testMultipleAccessReturnsConsistentData(): void
     {

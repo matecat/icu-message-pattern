@@ -40,6 +40,12 @@ use PHPUnit\Framework\TestCase;
 final class MessagePatternTest extends TestCase
 {
 
+    /**
+     * Tests parsing an empty message pattern.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseEmpty(): void
     {
@@ -47,6 +53,12 @@ final class MessagePatternTest extends TestCase
         self::assertEquals(2, $pattern->parse('Hi')->countParts());
     }
 
+    /**
+     * Tests parsing a simple message pattern with an argument.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParse(): void
     {
@@ -54,6 +66,11 @@ final class MessagePatternTest extends TestCase
         self::assertTrue($pattern->parse('Hi {0}')->countParts() > 2);
     }
 
+    /**
+     * Tests the validation of argument names.
+     *
+     * @return void
+     */
     #[Test]
     public function testValidateArgumentName(): void
     {
@@ -65,6 +82,12 @@ final class MessagePatternTest extends TestCase
         self::assertSame(MessagePattern::ARG_NAME_NOT_VALID, MessagePattern::validateArgumentName('bad name'));
     }
 
+    /**
+     * Tests parsing a pattern with both named and numbered arguments.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseSimpleNamedAndNumberedArgs(): void
     {
@@ -93,6 +116,12 @@ final class MessagePatternTest extends TestCase
         self::assertTrue($argNameFound);
     }
 
+    /**
+     * Tests parsing a choice-style pattern.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseChoiceStyle(): void
     {
@@ -115,6 +144,12 @@ final class MessagePatternTest extends TestCase
         self::assertTrue($countSelectors === 3);
     }
 
+    /**
+     * Tests parsing a plural-style pattern with offset.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParsePluralStyleAndOffset(): void
     {
@@ -134,6 +169,12 @@ final class MessagePatternTest extends TestCase
         self::assertTrue($hasReplaceNumber);
     }
 
+    /**
+     * Tests parsing a select-style pattern.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseSelectStyle(): void
     {
@@ -152,6 +193,12 @@ final class MessagePatternTest extends TestCase
         self::assertTrue($hasOtherSelector);
     }
 
+    /**
+     * Tests auto-quoting of apostrophes in a message pattern.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testAutoQuoteApostropheDeep(): void
     {
@@ -161,6 +208,12 @@ final class MessagePatternTest extends TestCase
         self::assertSame("I don''t {name}", $pattern->autoQuoteApostropheDeep());
     }
 
+    /**
+     * Tests parsing a plural argument within a MessageFormat pattern.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParsePluralInMessageFormatPattern(): void
     {
@@ -182,6 +235,12 @@ final class MessagePatternTest extends TestCase
         self::assertSame(ArgType::PLURAL, $argType);
     }
 
+    /**
+     * Tests parsing nested select and plural patterns.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseNestedSelectAndPlural(): void
     {
@@ -195,7 +254,7 @@ final class MessagePatternTest extends TestCase
         for ($i = 0; $i < $pattern->countParts(); $i++) {
             $part = $pattern->getPart($i);
             if ($part->getType() === TokenType::ARG_START) {
-                if ($part->getArgType() === \Matecat\ICU\Tokens\ArgType::SELECT) {
+                if ($part->getArgType() === ArgType::SELECT) {
                     $hasSelect = true;
                 }
                 if ($part->getArgType() === ArgType::PLURAL) {
@@ -212,6 +271,12 @@ final class MessagePatternTest extends TestCase
         self::assertTrue($hasReplaceNumber);
     }
 
+    /**
+     * Tests parsing a selectordinal-style pattern.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseSelectOrdinalStyle(): void
     {
@@ -230,6 +295,12 @@ final class MessagePatternTest extends TestCase
         self::assertTrue($hasSelectOrdinal);
     }
 
+    /**
+     * Tests parsing a choice-style pattern with infinity and less-than-or-equal operators.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseChoiceStyleWithInfinityAndLeq(): void
     {
@@ -297,6 +368,12 @@ final class MessagePatternTest extends TestCase
         }
     }
 
+    /**
+     * Tests parsing a complex pattern with quoted literals.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseComplexQuotedPattern(): void
     {
@@ -426,6 +503,12 @@ MSG;
         }
     }
 
+    /**
+     * Tests parsing a plural-style pattern with an explicit selector.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParsePluralStyleWithExplicitSelector(): void
     {
@@ -443,6 +526,12 @@ MSG;
         self::assertTrue(in_array(0.0, $numericValues, true));
     }
 
+    /**
+     * Tests auto-quoting with quoted literals.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testAutoQuoteApostropheWithQuotedLiterals(): void
     {
@@ -452,6 +541,12 @@ MSG;
         self::assertSame("He said it''s(?!) '{name}' and it''s ok", $pattern->autoQuoteApostropheDeep());
     }
 
+    /**
+     * Tests the clear() method to reset the pattern.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testClear(): void
     {
@@ -466,6 +561,12 @@ MSG;
         self::assertFalse($pattern->hasNumberedArguments());
     }
 
+    /**
+     * Tests clearPatternAndSetApostropheMode() method.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testClearPatternAndSetApostropheMode(): void
     {
@@ -477,6 +578,11 @@ MSG;
         self::assertSame(MessagePattern::APOSTROPHE_DOUBLE_REQUIRED, $pattern->getApostropheMode());
     }
 
+    /**
+     * Tests getting the apostrophe mode when set to DOUBLE_REQUIRED.
+     *
+     * @return void
+     */
     #[Test]
     public function testGetApostropheModeDoubleRequired(): void
     {
@@ -484,6 +590,12 @@ MSG;
         self::assertSame(MessagePattern::APOSTROPHE_DOUBLE_REQUIRED, $pattern->getApostropheMode());
     }
 
+    /**
+     * Tests the partSubstringMatches() method.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testPartSubstringMatches(): void
     {
@@ -496,6 +608,12 @@ MSG;
         self::assertFalse($pattern->partSubstringMatches($part, 'names'));
     }
 
+    /**
+     * Tests getNumericValue() with a non-numeric part.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testGetNumericValueWithNonNumeric(): void
     {
@@ -506,6 +624,12 @@ MSG;
         self::assertSame(MessagePattern::NO_NUMERIC_VALUE, $pattern->getNumericValue($part));
     }
 
+    /**
+     * Tests getPluralOffset() when no offset is specified.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testGetPluralOffsetWithoutOffset(): void
     {
@@ -515,6 +639,12 @@ MSG;
         self::assertSame(0.0, $pattern->getPluralOffset(0));
     }
 
+    /**
+     * Tests getPatternIndex() method.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testGetPatternIndex(): void
     {
@@ -524,6 +654,12 @@ MSG;
         self::assertSame(0, $pattern->getPatternIndex(0));
     }
 
+    /**
+     * Tests that getPart() throws OutOfBoundsException for invalid index.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testGetPartOutOfBounds(): void
     {
@@ -534,6 +670,12 @@ MSG;
         $pattern->getPart(999);
     }
 
+    /**
+     * Tests that unmatched opening braces throw InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testUnmatchedOpeningBrace(): void
     {
@@ -544,6 +686,12 @@ MSG;
         $pattern->parse('Hi {name');
     }
 
+    /**
+     * Tests that bad argument syntax without comma or brace throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testBadArgumentSyntaxNoCommaOrBrace(): void
     {
@@ -554,6 +702,12 @@ MSG;
         $pattern->parse('Hi {name?}');
     }
 
+    /**
+     * Tests that invalid characters in argument syntax throw InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testBadArgumentSyntaxInvalidChar(): void
     {
@@ -564,6 +718,12 @@ MSG;
         $pattern->parse('Hi {na me}');
     }
 
+    /**
+     * Tests that overly large argument numbers throw OutOfBoundsException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testArgumentNumberTooLarge(): void
     {
@@ -574,6 +734,12 @@ MSG;
         $pattern->parse('{99999999999999999999}');
     }
 
+    /**
+     * Tests that overly long argument names throw OutOfBoundsException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testArgumentNameTooLong(): void
     {
@@ -585,6 +751,12 @@ MSG;
         $pattern->parse("{{$longName}}");
     }
 
+    /**
+     * Tests that overly long argument type names throw OutOfBoundsException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testArgumentTypeNameTooLong(): void
     {
@@ -596,6 +768,12 @@ MSG;
         $pattern->parse("{name, $longType}");
     }
 
+    /**
+     * Tests that missing style for complex argument throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testNoStyleForComplexArgument(): void
     {
@@ -606,6 +784,12 @@ MSG;
         $pattern->parse('{name, plural}');
     }
 
+    /**
+     * Tests that unterminated quoted literal in simple style throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testSimpleStyleQuotedLiteralUnterminated(): void
     {
@@ -616,6 +800,12 @@ MSG;
         $pattern->parse("{name, number, '#.00}");
     }
 
+    /**
+     * Tests that overly long simple style throws OutOfBoundsException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testSimpleStyleTooLong(): void
     {
@@ -627,6 +817,12 @@ MSG;
         $pattern->parse("{name, number, $longStyle}");
     }
 
+    /**
+     * Tests that missing pattern in choice style throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testChoiceStyleMissingPattern(): void
     {
@@ -637,6 +833,12 @@ MSG;
         $pattern->parseChoiceStyle('');
     }
 
+    /**
+     * Tests that bad syntax in choice style throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testChoiceStyleBadSyntax(): void
     {
@@ -647,6 +849,12 @@ MSG;
         $pattern->parseChoiceStyle('abc#test');
     }
 
+    /**
+     * Tests that overly long choice numbers throw OutOfBoundsException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testChoiceNumberTooLong(): void
     {
@@ -658,6 +866,12 @@ MSG;
         $pattern->parseChoiceStyle("$longNumber#test");
     }
 
+    /**
+     * Tests that invalid choice style separator throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testChoiceStyleInvalidSeparator(): void
     {
@@ -668,6 +882,12 @@ MSG;
         $pattern->parseChoiceStyle('0?test');
     }
 
+    /**
+     * Tests that missing 'other' in plural style throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testPluralStyleMissingOther(): void
     {
@@ -678,6 +898,12 @@ MSG;
         $pattern->parsePluralStyle('one{# item}');
     }
 
+    /**
+     * Tests that bad syntax in explicit plural selector throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testPluralStyleExplicitSelectorBadSyntax(): void
     {
@@ -688,6 +914,12 @@ MSG;
         $pattern->parsePluralStyle('={none} other{items}');
     }
 
+    /**
+     * Tests that offset not first in plural style throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testPluralStyleOffsetNotFirst(): void
     {
@@ -698,6 +930,12 @@ MSG;
         $pattern->parsePluralStyle('one{# item} offset:1 other{# items}');
     }
 
+    /**
+     * Tests that missing offset value in plural style throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testPluralStyleOffsetMissingValue(): void
     {
@@ -708,6 +946,12 @@ MSG;
         $pattern->parsePluralStyle('offset: other{# items}');
     }
 
+    /**
+     * Tests that overly long offset value in plural style throws OutOfBoundsException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testPluralStyleOffsetValueTooLong(): void
     {
@@ -719,6 +963,12 @@ MSG;
         $pattern->parsePluralStyle("offset:$longNumber other{# items}");
     }
 
+    /**
+     * Tests that overly long selector in plural style throws OutOfBoundsException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testPluralStyleSelectorTooLong(): void
     {
@@ -730,6 +980,12 @@ MSG;
         $pattern->parsePluralStyle("$longSelector{test} other{items}");
     }
 
+    /**
+     * Tests that missing message after selector in select style throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testSelectStyleNoMessageAfterSelector(): void
     {
@@ -740,6 +996,12 @@ MSG;
         $pattern->parseSelectStyle('male other{They}');
     }
 
+    /**
+     * Tests that plural without 'other' in message pattern throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testMessagePatternPluralWithoutOther(): void
     {
@@ -752,6 +1014,12 @@ MSG;
         $pattern->parse('{count, plural, one{# item}}');
     }
 
+    /**
+     * Tests that plural with 'few' but without 'other' throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testMessagePatternPluralFewWithoutOther(): void
     {
@@ -764,6 +1032,12 @@ MSG;
         $pattern->parse('{count, plural, one{# item} few{# items} many{# items}}');
     }
 
+    /**
+     * Tests auto-quoting when no changes are needed.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testAutoQuoteApostropheDeepNoChanges(): void
     {
@@ -773,6 +1047,12 @@ MSG;
         self::assertSame('Hi {name} test', $pattern->autoQuoteApostropheDeep());
     }
 
+    /**
+     * Tests parsing in DOUBLE_REQUIRED mode with quoting.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseDoubleRequiredModeWithQuoting(): void
     {
@@ -782,6 +1062,12 @@ MSG;
         self::assertGreaterThan(2, $pattern->countParts());
     }
 
+    /**
+     * Tests parsing a simple argument with type and style.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseSimpleArgWithType(): void
     {
@@ -804,6 +1090,12 @@ MSG;
         self::assertTrue($hasArgStyle);
     }
 
+    /**
+     * Tests parsing nested braces in simple style.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseNestedBracesInSimpleStyle(): void
     {
@@ -821,6 +1113,12 @@ MSG;
         self::assertTrue($styleFound);
     }
 
+    /**
+     * Tests parsing negative double values in choice style.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseNegativeDoubleInChoice(): void
     {
@@ -840,6 +1138,12 @@ MSG;
         self::assertContains(5.5, $numericValues);
     }
 
+    /**
+     * Tests parsing large integer values.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseLargeIntegerValue(): void
     {
@@ -857,6 +1161,12 @@ MSG;
         self::assertTrue($hasDouble);
     }
 
+    /**
+     * Tests parsing negative infinity in choice style.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseNegativeInfinity(): void
     {
@@ -878,6 +1188,12 @@ MSG;
         self::assertTrue($hasNegInf);
     }
 
+    /**
+     * Tests that bad infinity syntax throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testBadSyntaxInfinity(): void
     {
@@ -888,6 +1204,11 @@ MSG;
         $pattern->parseChoiceStyle('∞5#bad');
     }
 
+    /**
+     * Tests validation of argument names with leading zeros.
+     *
+     * @return void
+     */
     #[Test]
     public function testValidateArgumentNameLeadingZero(): void
     {
@@ -895,12 +1216,22 @@ MSG;
         self::assertSame(MessagePattern::ARG_NAME_NOT_VALID, MessagePattern::validateArgumentName('0123'));
     }
 
+    /**
+     * Tests validation of empty argument names.
+     *
+     * @return void
+     */
     #[Test]
     public function testValidateArgumentNameEmpty(): void
     {
         self::assertSame(MessagePattern::ARG_NAME_NOT_VALID, MessagePattern::validateArgumentName(''));
     }
 
+    /**
+     * Tests validation of mixed alphanumeric argument names.
+     *
+     * @return void
+     */
     #[Test]
     public function testValidateArgumentNameMixed(): void
     {
@@ -908,6 +1239,12 @@ MSG;
         self::assertSame(MessagePattern::ARG_NAME_NOT_NUMBER, MessagePattern::validateArgumentName('a1'));
     }
 
+    /**
+     * Tests parsing plural with positive explicit number.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParsePluralWithPositiveExplicitNumber(): void
     {
@@ -926,6 +1263,12 @@ MSG;
         self::assertTrue($found);
     }
 
+    /**
+     * Tests that excessive nesting throws OutOfBoundsException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testExcessiveNesting(): void
     {
@@ -937,6 +1280,12 @@ MSG;
         $pattern->parse($nested);
     }
 
+    /**
+     * Tests that unmatched nested braces throw InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testUnmatchedNestedBraces(): void
     {
@@ -948,6 +1297,12 @@ MSG;
         $pattern->parse($nested);
     }
 
+    /**
+     * Tests that unmatched braces throw InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testUnmatchedBraces(): void
     {
@@ -959,6 +1314,12 @@ MSG;
         $pattern->parse($nested);
     }
 
+    /**
+     * Tests that unmatched braces after argument throw InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testUnmatchedBracesAfterArgument(): void
     {
@@ -970,6 +1331,12 @@ MSG;
         $pattern->parse($nested);
     }
 
+    /**
+     * Tests that bad argument syntax throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testBadArgumentSyntax(): void
     {
@@ -981,6 +1348,12 @@ MSG;
         $pattern->parse($nested);
     }
 
+    /**
+     * Tests parsing choice argument in MessageFormat.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testChoiceInMessageFormat(): void
     {
@@ -991,7 +1364,7 @@ MSG;
         for ($i = 0; $i < $pattern->countParts(); $i++) {
             $part = $pattern->getPart($i);
             if ($part->getType() === TokenType::ARG_START && $part->getArgType(
-                ) === \Matecat\ICU\Tokens\ArgType::CHOICE) {
+                ) === ArgType::CHOICE) {
                 $hasChoice = true;
                 break;
             }
@@ -1000,6 +1373,12 @@ MSG;
         self::assertTrue($hasChoice);
     }
 
+    /**
+     * Tests parsing plural with explicit decimal value.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParsePluralExplicitDecimal(): void
     {
@@ -1018,6 +1397,12 @@ MSG;
         self::assertTrue($found);
     }
 
+    /**
+     * Tests that bad syntax with ending curly in choice style throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testChoiceStyleBadSyntaxEndingCurly(): void
     {
@@ -1028,6 +1413,12 @@ MSG;
         $pattern->parseChoiceStyle('0#test}');
     }
 
+    /**
+     * Tests that leading zero number in argument throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseWithLeadingZeroNumber(): void
     {
@@ -1038,6 +1429,12 @@ MSG;
         $pattern->parse('{01}');
     }
 
+    /**
+     * Tests parsing plural style with decimal offset.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParsePluralStyleWithDecimalOffset(): void
     {
@@ -1048,6 +1445,12 @@ MSG;
     }
 
 
+    /**
+     * Tests that too many numeric values throw OutOfBoundsException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testTooManyNumericValues(): void
     {
@@ -1071,6 +1474,10 @@ MSG;
         $pattern->parseChoiceStyle($choices);
     }
 
+    /**
+     * Tests parsing of invalid numeric values.
+     *
+     */
     #[Test]
     public function testInvalidNumericValues(): void
     {
@@ -1101,6 +1508,14 @@ MSG;
         ];
     }
 
+    /**
+     * Tests that invalid number value throws InvalidArgumentException.
+     *
+     * @param string $patternString The pattern string to test.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[DataProvider('gimmeBadICUPatterns')]
     #[Test]
     public function testInvalidNumberValueForValue(string $patternString): void
@@ -1111,6 +1526,12 @@ MSG;
         new MessagePattern($patternString);
     }
 
+    /**
+     * Tests parsing plural with explicit positive number.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParsePluralWithExplicitPlusNumber(): void
     {
@@ -1134,6 +1555,12 @@ MSG;
         self::assertTrue($hasReplaceNumber);
     }
 
+    /**
+     * Tests that overly long argument selector throws OutOfBoundsException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testArgumentSelectorTooLong(): void
     {
@@ -1145,6 +1572,12 @@ MSG;
         );
     }
 
+    /**
+     * Tests parsing unsupported date/time style.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseArgTypeUnsupportedLength(): void
     {
@@ -1163,6 +1596,12 @@ MSG;
         self::assertTrue($hasSimple);
     }
 
+    /**
+     * Tests unterminated quote at end with DOUBLE_OPTIONAL mode.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testUnterminatedQuoteAtEndWithDoubleOptional(): void
     {
@@ -1180,6 +1619,12 @@ MSG;
         self::assertTrue($hasInsertChar);
     }
 
+    /**
+     * Tests unterminated apostrophe at end of pattern.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testUnterminatedApostropheAtEnd(): void
     {
@@ -1190,6 +1635,12 @@ MSG;
         self::assertStringContainsString("'", $result);
     }
 
+    /**
+     * Tests that empty selector in plural style throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParsePluralBadSyntaxEmptySelector(): void
     {
@@ -1200,6 +1651,12 @@ MSG;
         $pattern->parsePluralStyle('{test} other{items}');
     }
 
+    /**
+     * Tests that closing brace in selector throws InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseSelectorBadSyntaxClosingBrace(): void
     {
@@ -1210,6 +1667,12 @@ MSG;
         $pattern->parsePluralStyle('}');
     }
 
+    /**
+     * Tests parsing choice style with scientific notation.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testChoiceWithScientificNotation(): void
     {
@@ -1231,6 +1694,12 @@ MSG;
         self::assertTrue($hasLargeNumber);
     }
 
+    /**
+     * Tests parsing complex nested choice patterns.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseComplexNestedChoice(): void
     {
@@ -1248,6 +1717,12 @@ MSG;
         self::assertSame(2, $choiceCount);
     }
 
+    /**
+     * Tests parsing complex pattern with apostrophe and select.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testParseComplexApostropheAndSelectPattern(): void
     {
@@ -1283,7 +1758,7 @@ MSG;
 
         // 4: ARG_START(SELECT)@17
         self::assertSame(TokenType::ARG_START, $pattern->getPartType(4));
-        self::assertSame(\Matecat\ICU\Tokens\ArgType::SELECT, $pattern->getPart(4)->getArgType());
+        self::assertSame(ArgType::SELECT, $pattern->getPart(4)->getArgType());
 
         // 5: ARG_NAME(0)@18 ("gender")
         self::assertSame(TokenType::ARG_NAME, $pattern->getPartType(5));
@@ -1331,7 +1806,9 @@ MSG;
     }
 
     /**
-     * Test appendReducedApostrophes with doubled apostrophes
+     * Test appendReducedApostrophes with doubled apostrophes.
+     *
+     * @return void
      */
     #[Test]
     public function testAppendReducedApostrophes(): void
@@ -1352,7 +1829,9 @@ MSG;
     }
 
     /**
-     * Test appendReducedApostrophes with no apostrophes
+     * Test appendReducedApostrophes with no apostrophes.
+     *
+     * @return void
      */
     #[Test]
     public function testAppendReducedApostrophesNoApostrophes(): void
@@ -1364,7 +1843,9 @@ MSG;
     }
 
     /**
-     * Test appendReducedApostrophes with partial range
+     * Test appendReducedApostrophes with partial range.
+     *
+     * @return void
      */
     #[Test]
     public function testAppendReducedApostrophesPartialRange(): void
@@ -1377,7 +1858,9 @@ MSG;
     }
 
     /**
-     * Test appendReducedApostrophes with apostrophe at boundary
+     * Test appendReducedApostrophes with apostrophe at boundary.
+     *
+     * @return void
      */
     #[Test]
     public function testAppendReducedApostrophesApostropheAtBoundary(): void
@@ -1389,7 +1872,10 @@ MSG;
     }
 
     /**
-     * Test explicit numeric selector with MAX_LENGTH exceeded
+     * Test explicit numeric selector with MAX_LENGTH exceeded.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     #[Test]
     public function testPluralExplicitSelectorMaxLengthExceeded(): void
@@ -1403,7 +1889,10 @@ MSG;
     }
 
     /**
-     * Test plural offset not first with other content
+     * Test plural offset not first with other content.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     #[Test]
     public function testPluralOffsetNotFirst(): void
@@ -1417,7 +1906,10 @@ MSG;
     }
 
     /**
-     * Test plural offset too long value
+     * Test plural offset too long value.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     #[Test]
     public function testPluralOffsetValueTooLong(): void
@@ -1431,7 +1923,10 @@ MSG;
     }
 
     /**
-     * Test keyword selector too long
+     * Test keyword selector too long.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     #[Test]
     public function testKeywordSelectorTooLong(): void
@@ -1445,7 +1940,10 @@ MSG;
     }
 
     /**
-     * Test auto-quoting with unterminated quoted literal in simple style
+     * Test auto-quoting with unterminated quoted literal in simple style.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     #[Test]
     public function testAutoQuoteUnterminatedQuotedLiteralSimpleStyle(): void
@@ -1459,7 +1957,10 @@ MSG;
     }
 
     /**
-     * Test select style with keyword selector too long
+     * Test select style with keyword selector too long.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     #[Test]
     public function testSelectStyleKeywordSelectorTooLong(): void
@@ -1473,7 +1974,10 @@ MSG;
     }
 
     /**
-     * Test choice style with long selector number
+     * Test choice style with long selector number.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     #[Test]
     public function testChoiceStyleLongSelectorNumber(): void
@@ -1508,6 +2012,15 @@ MSG;
         ];
     }
 
+    /**
+     * Tests unterminated quote auto-insertion in plural patterns.
+     *
+     * @param string $patternString The pattern string to test.
+     * @param string $expected The expected result after auto-quoting.
+     *
+     * @return void
+     * @throws OutOfBoundsException
+     */
     #[DataProvider('gimmeICUPatterns')]
     #[Test]
     public function testUnterminatedQuoteAutoInsertionInPlural(string $patternString, string $expected): void
@@ -1540,6 +2053,12 @@ MSG;
         self::assertEquals($expected, $result);
     }
 
+    /**
+     * Tests that unclosed braces in simple pattern throw InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testSimplePatternUnclosedBracesException(): void
     {
@@ -1550,6 +2069,12 @@ MSG;
         $pattern->parse('test {argName, number, currency');
     }
 
+    /**
+     * Tests the iterator implementation.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testIterator(): void
     {
@@ -1566,6 +2091,12 @@ MSG;
         self::assertSame($pattern->countParts(), $count);
     }
 
+    /**
+     * Tests the Part __toString() method.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testPartToString(): void
     {
@@ -1586,6 +2117,12 @@ MSG;
         self::assertSame('ARG_SELECTOR(0)@13', (string)$selectorPart);
     }
 
+    /**
+     * Tests the Part getLimit() method.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     */
     #[Test]
     public function testPartGetLimit(): void
     {
@@ -1612,7 +2149,10 @@ MSG;
     }
 
     /**
-     * Test keyword selector too long
+     * Tests that no exceptions are raised with UTF-8 selectors.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     #[Test]
     public function testKeywordSelectorNoExceptionsRaisedWithUTF8(): void
@@ -1626,7 +2166,10 @@ MSG;
     }
 
     /**
-     * Test keyword selector too long
+     * Tests that unmatched curly braces at the end throw InvalidArgumentException.
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     #[Test]
     public function testUnmatchedCurlyBracesAtTheEndOfMessage(): void

@@ -46,6 +46,15 @@ final class PluralRulesTest extends TestCase
     // Languages: Japanese, Chinese, Korean, Vietnamese, Thai, Indonesian, etc.
     // =========================================================================
 
+    /**
+     * Tests Rule 0: Languages with no plural forms.
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule0Provider')]
     public function testRule0NoPluralForms(string $locale, int $n, int $expected): void
     {
@@ -91,6 +100,15 @@ final class PluralRulesTest extends TestCase
     // Languages: English, German, Spanish, Italian, Dutch, etc.
     // =========================================================================
 
+    /**
+     * Tests Rule 1: Two forms, singular for n=1.
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule1Provider')]
     public function testRule1TwoFormsSingularOne(string $locale, int $n, int $expected): void
     {
@@ -159,6 +177,15 @@ final class PluralRulesTest extends TestCase
     // Languages: French, Brazilian Portuguese, Occitan, etc.
     // =========================================================================
 
+    /**
+     * Tests Rule 2: Two forms, singular for n=0 or n=1.
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule2Provider')]
     public function testRule2TwoFormsSingularZeroOne(string $locale, int $n, int $expected): void
     {
@@ -199,6 +226,15 @@ final class PluralRulesTest extends TestCase
     // Languages: Russian, Ukrainian, Serbian, Croatian, Belarusian, Bosnian
     // =========================================================================
 
+    /**
+     * Tests Rule 3: Slavic languages with 3 forms.
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule3Provider')]
     public function testRule3Slavic(string $locale, int $n, int $expected): void
     {
@@ -261,6 +297,15 @@ final class PluralRulesTest extends TestCase
     // Rule 4: Czech and Slovak (nplurals=3)
     // =========================================================================
 
+    /**
+     * Tests Rule 4: Czech and Slovak with 3 forms.
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule4Provider')]
     public function testRule4CzechSlovak(string $locale, int $n, int $expected): void
     {
@@ -298,6 +343,15 @@ final class PluralRulesTest extends TestCase
     // Rule 5: Irish (nplurals=5)
     // =========================================================================
 
+    /**
+     * Tests Rule 5: Irish with 5 forms.
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule5Provider')]
     public function testRule5Irish(string $locale, int $n, int $expected): void
     {
@@ -332,6 +386,15 @@ final class PluralRulesTest extends TestCase
     // Rule 6: Lithuanian (nplurals=3)
     // =========================================================================
 
+    /**
+     * Tests Rule 6: Lithuanian with 3 forms.
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule6Provider')]
     public function testRule6Lithuanian(string $locale, int $n, int $expected): void
     {
@@ -365,6 +428,15 @@ final class PluralRulesTest extends TestCase
     // Rule 7: Slovenian (nplurals=4)
     // =========================================================================
 
+    /**
+     * Tests Rule 7: Slovenian with 4 forms.
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule7Provider')]
     public function testRule7Slovenian(string $locale, int $n, int $expected): void
     {
@@ -398,6 +470,15 @@ final class PluralRulesTest extends TestCase
     // Rule 8: Macedonian (nplurals=2 - CLDR 48)
     // =========================================================================
 
+    /**
+     * Tests Rule 8: Macedonian with 2 forms (CLDR 48).
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule8Provider')]
     public function testRule8Macedonian(string $locale, int $n, int $expected): void
     {
@@ -431,6 +512,15 @@ final class PluralRulesTest extends TestCase
     // Rule 9: Maltese (nplurals=4)
     // =========================================================================
 
+    /**
+     * Tests Rule 9: Maltese with 4 forms.
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule9Provider')]
     public function testRule9Maltese(string $locale, int $n, int $expected): void
     {
@@ -465,6 +555,15 @@ final class PluralRulesTest extends TestCase
     // Category order: zero, one, other
     // =========================================================================
 
+    /**
+     * Tests Rule 10: Latvian with 3 forms (CLDR 48).
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule10Provider')]
     public function testRule10Latvian(string $locale, int $n, int $expected): void
     {
@@ -495,6 +594,15 @@ final class PluralRulesTest extends TestCase
     // Rule 11: Polish (nplurals=3)
     // =========================================================================
 
+    /**
+     * Tests Rule 11: Polish with 3 forms.
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule11Provider')]
     public function testRule11Polish(string $locale, int $n, int $expected): void
     {
@@ -535,6 +643,15 @@ final class PluralRulesTest extends TestCase
     // Rule 12: Romanian (nplurals=3)
     // =========================================================================
 
+    /**
+     * Tests Rule 12: Romanian with 3 forms.
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule12Provider')]
     public function testRule12Romanian(string $locale, int $n, int $expected): void
     {
@@ -565,6 +682,15 @@ final class PluralRulesTest extends TestCase
     // Rule 13: Arabic (nplurals=6)
     // =========================================================================
 
+    /**
+     * Tests Rule 13: Arabic with 6 forms.
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule13Provider')]
     public function testRule13Arabic(string $locale, int $n, int $expected): void
     {
@@ -605,6 +731,15 @@ final class PluralRulesTest extends TestCase
     // Category order: zero, one, two, few, many, other
     // =========================================================================
 
+    /**
+     * Tests Rule 14: Welsh with 6 forms (CLDR 48).
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule14Provider')]
     public function testRule14Welsh(string $locale, int $n, int $expected): void
     {
@@ -671,6 +806,15 @@ final class PluralRulesTest extends TestCase
     // Rule 15: Icelandic (nplurals=2)
     // =========================================================================
 
+    /**
+     * Tests Rule 15: Icelandic with 2 forms.
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule15Provider')]
     public function testRule15Icelandic(string $locale, int $n, int $expected): void
     {
@@ -700,6 +844,15 @@ final class PluralRulesTest extends TestCase
     // Rule 16: Scottish Gaelic (nplurals=4)
     // =========================================================================
 
+    /**
+     * Tests Rule 16: Scottish Gaelic with 4 forms.
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule16Provider')]
     public function testRule16ScottishGaelic(string $locale, int $n, int $expected): void
     {
@@ -731,6 +884,15 @@ final class PluralRulesTest extends TestCase
     // Category order: one, two, few, many, other
     // =========================================================================
 
+    /**
+     * Tests Rule 17: Breton with 5 forms (CLDR 48).
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule17Provider')]
     public function testRule17Breton(string $locale, int $n, int $expected): void
     {
@@ -774,6 +936,15 @@ final class PluralRulesTest extends TestCase
     // Category order: one, two, few, other
     // =========================================================================
 
+    /**
+     * Tests Rule 18: Manx with 4 forms (CLDR 48).
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule18Provider')]
     public function testRule18Manx(string $locale, int $n, int $expected): void
     {
@@ -812,6 +983,15 @@ final class PluralRulesTest extends TestCase
     // Category order: one, two, many, other
     // =========================================================================
 
+    /**
+     * Tests Rule 19: Hebrew with 4 forms (CLDR 48).
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule19Provider')]
     public function testRule19Hebrew(string $locale, int $n, int $expected): void
     {
@@ -848,6 +1028,15 @@ final class PluralRulesTest extends TestCase
     // Category order: one, many, other
     // =========================================================================
 
+    /**
+     * Tests Rule 20: Italian, Spanish, French, Portuguese, Catalan with 3 forms (CLDR 49).
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
     #[DataProvider('rule20Provider')]
     public function testRule20OneManyOther(string $locale, int $n, int $expected): void
     {
