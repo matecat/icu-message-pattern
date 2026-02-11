@@ -1100,13 +1100,13 @@ class MessagePatternValidatorTest extends TestCase
      * @throws OutOfBoundsException
      */
     #[Test]
-    public function testFromPatternUsesProvidedPattern(): void
+    public function testFromPatternUsesProvidedPatternNotPreParsed(): void
     {
         $pattern = new MessagePattern();
-        $pattern->parse('{count, plural, one{# item} other{# items}}');
 
         // Create validator using factory method
         $validator = MessagePatternValidator::fromPattern('en', $pattern);
+        $validator->setPatternString('{count, plural, one{# item} other{# items}}');
 
         // Validator should use the pre-parsed pattern
         $warning = $validator->validatePluralCompliance();
