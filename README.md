@@ -7,27 +7,37 @@
 
 ----
 
-A PHP port of ICU4J's MessagePattern parser with locale utilities. Parses ICU MessageFormat patterns into an inspectable AST and provides locale data support for internationalization in PHP.
+A PHP port of ICU4J's MessagePattern parser with locale utilities. Parses ICU MessageFormat patterns into an inspectable
+AST and provides locale data support for internationalization in PHP.
 
 This package focuses on:
-1. **ICU MessagePattern Parser** - Parsing ICU MessageFormat patterns into a precise token stream and AST (Abstract Syntax Tree), exposing the internal structure of messages (literals, arguments, selects, plurals, nested sub-messages, offsets, quoted text, etc.).
+
+1. **ICU MessagePattern Parser** - Parsing ICU MessageFormat patterns into a precise token stream and AST (Abstract
+   Syntax Tree), exposing the internal structure of messages (literals, arguments, selects, plurals, nested
+   sub-messages, offsets, quoted text, etc.).
 2. **Locale Utilities** - Access language data, plural rules, and locale validation for internationalization support.
 
-This package does not provide locale-aware date/number formatting itself — it provides the pattern model and utilities so you can build formatters or validators that interoperate with PHP's intl extension or other formatting libraries.
+This package does not provide locale-aware date/number formatting itself — it provides the pattern model and utilities
+so you can build formatters or validators that interoperate with PHP's intl extension or other formatting libraries.
 
 ## Authors
+
 - Domenico Lupinetti — [Ostico](https://github.com/Ostico) — domenico@translated.net / ostico@gmail.com
 
 ## Features
 
 ### ICU MessagePattern Parser
-- Full tokenization of ICU MessageFormat patterns (braces, argument names/indexes, type specifiers, selectors, offsets, quoted text, etc.).
-- AST representation of a parsed message pattern (message, message parts, argument placeholders, plural/select blocks, and their sub-messages).
+
+- Full tokenization of ICU MessageFormat patterns (braces, argument names/indexes, type specifiers, selectors, offsets,
+  quoted text, etc.).
+- AST representation of a parsed message pattern (message, message parts, argument placeholders, plural/select blocks,
+  and their sub-messages).
 - Utilities for traversing, validating, and reconstructing patterns.
 - Error reporting with position information for malformed patterns.
 - Mirrored behavior of ICU4J MessagePattern parsing logic (same parsing rules and edge-case handling).
 
 ### Locale Utilities
+
 - **Languages**: Comprehensive language data including localized names, RTL detection, and language code validation.
 - **Plural Rules**: CLDR-based plural rules for 140+ languages to determine the correct plural form for any number.
 - **Language Domains**: Domain-specific language groupings for translation workflows.
@@ -35,11 +45,13 @@ This package does not provide locale-aware date/number formatting itself — it 
 ## Installation
 
 ### Install via Composer:
+
 ```bash
 composer require matecat/icu-intl
 ```
 
 ### Requirements
+
 - PHP 8.3+
 - ext-mbstring required
 - ext-intl recommended for full formatting integration (not required for parsing)
@@ -123,6 +135,7 @@ foreach ($pattern as $i => $part) {
 ```
 
 #### Simple placeholders
+
 ```php
 $pattern = new MessagePattern("Hello {name}, welcome!");
 /*
@@ -135,12 +148,14 @@ $pattern = new MessagePattern("Hello {name}, welcome!");
 ```
 
 #### Plural example
+
 ```php
 $pattern = new MessagePattern();
 $pattern->parse("You have {count, plural, =0{no messages} one{# message} other{# messages}}.");
 ```
 
 #### Nested selects and plurals
+
 ```php
 $pattern = MessagePattern::parse("{gender, select, female{{num, plural, one{She has one file} other{She has # files}}} male{{num, plural, one{He has one file} other{He has # files}}} other{{num, plural, one{They have one file} other{They have # files}}}}");
 /*
@@ -159,6 +174,7 @@ $pattern = MessagePattern::parse("{gender, select, female{{num, plural, one{She 
 ### Locale Utilities
 
 #### Languages
+
 ```php
 use Matecat\Locales\Languages;
 
@@ -221,7 +237,8 @@ if (PluralRules::getCardinalCategoryName('en', $count) === PluralRules::CATEGORY
 
 #### Plural Compliance Validation
 
-The `MessagePatternValidator` validates that plural/selectordinal selectors comply with CLDR plural categories for a given locale. It provides per-argument warnings for detailed feedback.
+The `MessagePatternValidator` validates that plural/selectordinal selectors comply with CLDR plural categories for a
+given locale. It provides per-argument warnings for detailed feedback.
 
 ##### Simplified API (recommended)
 
@@ -267,7 +284,8 @@ $validator->getSyntaxException(); // "Unmatched '{' braces in message..."
 
 ##### Factory Method (with pre-parsed MessagePattern)
 
-Use the `fromPattern()` factory method when you have a pre-parsed `MessagePattern` or want to validate the same pattern against multiple locales:
+Use the `fromPattern()` factory method when you have a pre-parsed `MessagePattern` or want to validate the same pattern
+against multiple locales:
 
 ```php
 use Matecat\ICU\MessagePattern;
@@ -364,15 +382,134 @@ $warning = $validator->validatePluralCompliance(); // null - English ordinal use
 
 ##### Validation Behavior Summary
 
-| Selector Type | Behavior |
-|---------------|----------|
-| Non-existent CLDR category (e.g., 'some') | Throws `PluralComplianceException` |
-| Valid CLDR category wrong for locale (e.g., 'few' in English) | Returns warning in `wrongLocaleSelectors` |
-| Missing required category for locale | Returns warning in `missingCategories` |
-| Explicit numeric selector (=0, =1, etc.) | Always valid, tracked in `numericSelectors` |
-| 'other' category | Always valid (ICU requires it as fallback) |
+| Selector Type                                                 | Behavior                                    |
+|---------------------------------------------------------------|---------------------------------------------|
+| Non-existent CLDR category (e.g., 'some')                     | Throws `PluralComplianceException`          |
+| Valid CLDR category wrong for locale (e.g., 'few' in English) | Returns warning in `wrongLocaleSelectors`   |
+| Missing required category for locale                          | Returns warning in `missingCategories`      |
+| Explicit numeric selector (=0, =1, etc.)                      | Always valid, tracked in `numericSelectors` |
+| 'other' category                                              | Always valid (ICU requires it as fallback)  |
+
+#### Pattern Comparison for Translations
+
+The `MessagePatternComparator` validates that translated ICU patterns maintain the same complex forms (plural, select,
+choice, selectordinal) as the source pattern. This ensures translations don't accidentally lose required argument
+structures.
+
+##### Basic Usage
+
+```php
+use Matecat\ICU\MessagePatternComparator;
+use Matecat\ICU\Exceptions\MissingComplexFormException;
+
+// Compare source and target patterns
+$comparator = new MessagePatternComparator(
+    'en-US',                                                    // source locale
+    'fr-FR',                                                    // target locale
+    '{count, plural, one{# item} other{# items}}',              // source pattern
+    '{count, plural, one{# article} many{# articles} other{# articles}}'  // target pattern
+);
+
+// Validate - throws exception if target is missing complex forms from source
+$comparator->validate();
+```
+
+##### Factory Methods
+
+Use factory methods when you have pre-configured validators or pre-parsed patterns:
+
+```php
+use Matecat\ICU\MessagePattern;
+use Matecat\ICU\MessagePatternComparator;
+use Matecat\ICU\MessagePatternValidator;
+
+// From pre-configured validators
+$sourceValidator = new MessagePatternValidator('en', '{count, plural, one{# item} other{# items}}');
+$targetValidator = new MessagePatternValidator('fr', '{count, plural, one{# article} other{# articles}}');
+$comparator = MessagePatternComparator::fromValidators($sourceValidator, $targetValidator);
+
+// From pre-parsed patterns (useful for comparing same patterns against multiple locale pairs)
+$sourcePattern = new MessagePattern('{count, plural, one{# item} other{# items}}');
+$targetPattern = new MessagePattern('{count, plural, one{# article} other{# articles}}');
+$comparator = MessagePatternComparator::fromPatterns('en', 'fr', $sourcePattern, $targetPattern);
+```
+
+##### Exception Handling
+
+```php
+use Matecat\ICU\MessagePatternComparator;
+use Matecat\ICU\Exceptions\MissingComplexFormException;
+
+// Missing plural form in target
+$comparator = new MessagePatternComparator(
+    'en', 'fr',
+    '{count, plural, one{# item} other{# items}}',
+    'Les articles {count}'  // Missing plural form!
+);
+
+try {
+    $comparator->validate();
+} catch (MissingComplexFormException $e) {
+    echo $e->getMessage();
+    // "Argument 'count' has complex form 'PLURAL' in source (en) but is missing in target (fr)."
+    
+    echo $e->argumentName;     // 'count'
+    echo $e->sourceArgType;    // ArgType::PLURAL
+    echo $e->targetArgType;    // null (missing)
+    echo $e->sourceLocale;     // 'en'
+    echo $e->targetLocale;     // 'fr'
+}
+
+// Mismatched complex form types
+$comparator = new MessagePatternComparator(
+    'en', 'fr',
+    '{count, plural, one{# item} other{# items}}',
+    '{count, select, one{un article} other{des articles}}'  // SELECT instead of PLURAL!
+);
+
+try {
+    $comparator->validate();
+} catch (MissingComplexFormException $e) {
+    echo $e->getMessage();
+    // "Argument 'count' has complex form 'PLURAL' in source (en) but has 'SELECT' in target (fr)."
+    
+    echo $e->targetArgType;    // ArgType::SELECT
+}
+```
+
+##### Helper Methods
+
+```php
+use Matecat\ICU\MessagePatternComparator;
+
+$comparator = new MessagePatternComparator(
+    'en', 'fr',
+    '{count, plural, one{# item} other{# items}}',
+    '{count, plural, one{# article} other{# articles}}'
+);
+
+// Check if patterns contain complex syntax
+$comparator->sourceContainsComplexSyntax();  // true
+$comparator->targetContainsComplexSyntax();  // true
+
+// Get locales
+$comparator->getSourceLocale();  // 'en'
+$comparator->getTargetLocale();  // 'fr'
+```
+
+##### Validation Rules
+
+| Scenario                                                 | Behavior                                  |
+|----------------------------------------------------------|-------------------------------------------|
+| Source has no complex forms                              | Validation passes (nothing to check)      |
+| Target has same complex forms for same arguments         | Validation passes                         |
+| Target is missing a complex form argument                | Throws `MissingComplexFormException`      |
+| Target has different complex form type for same argument | Throws `MissingComplexFormException`      |
+| PLURAL vs SELECTORDINAL                                  | Not interchangeable (different semantics) |
+| Target has extra complex forms                           | Allowed (no exception)                    |
 
 #### Language Domains
+
 ```php
 use Matecat\Locales\LanguageDomains;
 
@@ -387,12 +524,16 @@ $domain = $domains->getDomain('technical');
 ### Notes about formatting
 
 This library focuses on parsing and structure. If you want to format values using parsed plural/select patterns:
-- Use PHP's Intl MessageFormatter (intl extension) for end-to-end ICU MessageFormat formatting (it accepts message strings and values).
-- Or, implement a custom formatter that walks the AST and applies number/date formatting from ext-intl or other libraries.
+
+- Use PHP's Intl MessageFormatter (intl extension) for end-to-end ICU MessageFormat formatting (it accepts message
+  strings and values).
+- Or, implement a custom formatter that walks the AST and applies number/date formatting from ext-intl or other
+  libraries.
 
 ## High-level API
 
 ### Matecat\ICU\MessagePattern
+
 - `__construct(?string $pattern = null, int $apostropheMode = MessagePattern::APOSTROPHE_DOUBLE_OPTIONAL)`
 - `parse(string $pattern): self`
 - `parseChoiceStyle(string $pattern): self`
@@ -413,7 +554,9 @@ This library focuses on parsing and structure. If you want to format values usin
 - Implements `Iterator` to iterate parts.
 
 ### Matecat\ICU\Part
+
 Represents a parsed token/part with accessors:
+
 - `getType(): Parts\TokenType`
 - `getIndex(): int`
 - `getLength(): int`
@@ -424,22 +567,49 @@ Represents a parsed token/part with accessors:
 - `Part::MAX_VALUE`
 
 ### Matecat\ICU\Parts\TokenType (enum)
-Token types used by the parser: `MSG_START`, `MSG_LIMIT`, `ARG_START`, `ARG_NAME`, `ARG_NUMBER`, `ARG_INT`, `ARG_DOUBLE`, `ARG_TYPE`, `ARG_STYLE`, `ARG_SELECTOR`, `ARG_LIMIT`, `INSERT_CHAR`, `REPLACE_NUMBER`, `SKIP_SYNTAX`, etc.
+
+Token types used by the parser: `MSG_START`, `MSG_LIMIT`, `ARG_START`, `ARG_NAME`, `ARG_NUMBER`, `ARG_INT`,
+`ARG_DOUBLE`, `ARG_TYPE`, `ARG_STYLE`, `ARG_SELECTOR`, `ARG_LIMIT`, `INSERT_CHAR`, `REPLACE_NUMBER`, `SKIP_SYNTAX`, etc.
 
 ### Matecat\ICU\ArgType (enum)
+
 Argument classifications: `NONE`, `SIMPLE`, `CHOICE`, `PLURAL`, `SELECT`, `SELECTORDINAL`.
 
 ### Matecat\ICU\MessagePatternValidator
-- `__construct(string $language = 'en-US', ?string $patternString = null)` - Creates a validator with the specified locale and optional pattern string
-- `static fromPattern(string $language, MessagePattern $pattern): MessagePatternValidator` - Factory method to create a validator from a pre-parsed MessagePattern (useful for validating the same pattern against multiple locales)
-- `setPatternString(string $patternString): static` - Sets the pattern string for lazy parsing, resets any stored parsing exception, and clears the internal pattern (fluent interface)
+
+- `__construct(string $language = 'en-US', ?string $patternString = null)` - Creates a validator with the specified
+  locale and optional pattern string
+- `static fromPattern(string $language, MessagePattern $pattern): MessagePatternValidator` - Factory method to create a
+  validator from a pre-parsed MessagePattern (useful for validating the same pattern against multiple locales)
+- `setPatternString(string $patternString): static` - Sets the pattern string for lazy parsing, resets any stored
+  parsing exception, and clears the internal pattern (fluent interface)
+- `getPattern(): MessagePattern` - Returns the parsed MessagePattern instance (triggers parsing if not already done)
 - `containsComplexSyntax(): bool` - Returns true if the pattern contains plural, select, choice, or selectordinal
-- `isValidSyntax(): bool` - Returns true if the pattern string has valid ICU MessageFormat syntax, false if there were parsing errors
-- `getSyntaxException(): ?string` - Returns the parsing exception message if the pattern has invalid syntax, null otherwise
-- `validatePluralCompliance(): ?PluralComplianceWarning` - Validates if plural forms comply with the locale's expected categories. Returns null if valid, a warning object if there are issues. Throws `PluralComplianceException` for invalid CLDR categories, or `InvalidArgumentException`/`OutOfBoundsException` for parsing errors.
+- `isValidSyntax(): bool` - Returns true if the pattern string has valid ICU MessageFormat syntax, false if there were
+  parsing errors
+- `getSyntaxException(): ?string` - Returns the parsing exception message if the pattern has invalid syntax, null
+  otherwise
+- `validatePluralCompliance(): ?PluralComplianceWarning` - Validates if plural forms comply with the locale's expected
+  categories. Returns null if valid, a warning object if there are issues. Throws `PluralComplianceException` for
+  invalid CLDR categories, or `InvalidArgumentException`/`OutOfBoundsException` for parsing errors.
+
+### Matecat\ICU\MessagePatternComparator
+
+Compares source and target ICU MessageFormat patterns for translation validation. Ensures target patterns maintain the same complex forms (plural, select, choice, selectordinal) as source patterns.
+
+- `__construct(string $sourceLocale, string $targetLocale, string $sourcePattern, string $targetPattern)` - Creates a comparator with source/target locales and pattern strings
+- `static fromValidators(MessagePatternValidator $sourceValidator, MessagePatternValidator $targetValidator): MessagePatternComparator` - Factory method to create a comparator from pre-configured validators
+- `static fromPatterns(string $sourceLocale, string $targetLocale, MessagePattern $sourcePattern, MessagePattern $targetPattern): MessagePatternComparator` - Factory method to create a comparator from pre-parsed patterns (useful for reusing parsed patterns across multiple locale comparisons)
+- `validate(): void` - Validates that all complex forms in source exist in target. Throws `MissingComplexFormException` if target is missing complex forms or has mismatched types
+- `sourceContainsComplexSyntax(): bool` - Returns true if source contains plural, select, choice, or selectordinal
+- `targetContainsComplexSyntax(): bool` - Returns true if target contains plural, select, choice, or selectordinal
+- `getSourceLocale(): string` - Returns the source locale
+- `getTargetLocale(): string` - Returns the target locale
 
 ### Matecat\ICU\Plurals\PluralComplianceWarning (readonly)
+
 Returned when plural selectors have compliance issues that don't warrant an exception.
+
 - `__construct(array $argumentWarnings)`
 - `getArgumentWarnings(): array<PluralArgumentWarning>` - Get all argument-level warnings
 - `getAllMissingCategories(): array<string>` - Get all missing categories across all arguments
@@ -449,7 +619,9 @@ Returned when plural selectors have compliance issues that don't warrant an exce
 - Implements `Stringable` interface
 
 ### Matecat\ICU\Plurals\PluralArgumentWarning (readonly)
+
 Detailed warning information for a single plural/selectordinal argument.
+
 - `argumentName: string` - The argument name (e.g., 'count', 'num_guests')
 - `argumentType: ArgType` - The argument type (PLURAL or SELECTORDINAL)
 - `expectedCategories: array<string>` - Valid CLDR categories for this argument type and locale
@@ -462,13 +634,26 @@ Detailed warning information for a single plural/selectordinal argument.
 - Implements `Stringable` interface
 
 ### Matecat\ICU\Plurals\PluralComplianceException
+
 Thrown when a selector is not a valid CLDR category name (e.g., 'some', 'foo').
+
 - `expectedCategories: array<string>` - Valid CLDR categories
 - `foundSelectors: array<string>` - All selectors found in the message
 - `invalidSelectors: array<string>` - Non-existent CLDR category names
 - `missingCategories: array<string>` - (Always empty, for interface compatibility)
 
+### Matecat\ICU\Exceptions\MissingComplexFormException
+
+Thrown when a target pattern is missing a complex form that exists in the source pattern, or when the complex form type doesn't match.
+
+- `argumentName: string` - The name of the argument with the missing/mismatched complex form
+- `sourceArgType: ArgType` - The argument type in the source pattern (PLURAL, SELECT, CHOICE, SELECTORDINAL)
+- `targetArgType: ?ArgType` - The argument type in the target pattern (null if argument is missing entirely)
+- `sourceLocale: string` - The source locale
+- `targetLocale: string` - The target locale
+
 ### Matecat\Locales\Languages
+
 - `getInstance(): Languages` (singleton)
 - `getLanguages(): array`
 - `getLanguage(string $rfc3066code): ?array`
@@ -476,14 +661,17 @@ Thrown when a selector is not a valid CLDR category name (e.g., 'some', 'foo').
 - `getPluralsCount(string $rfc3066code): int` (static)
 
 ### Matecat\ICU\Plurals\PluralRules
+
 - `getCardinalFormIndex(string $locale, int $n): int` (static) - Returns the plural form index for a number
-- `getCardinalCategoryName(string $locale, int $n): string` (static) - Returns the CLDR category name ('zero', 'one', 'two', 'few', 'many', 'other')
+- `getCardinalCategoryName(string $locale, int $n): string` (static) - Returns the CLDR category name ('zero', 'one', '
+  two', 'few', 'many', 'other')
 - `getCardinalCategories(string $locale): array` (static) - Returns all available cardinal category names for a locale
 - `getOrdinalCategories(string $locale): array` (static) - Returns all available ordinal category names for a locale
 - `getOrdinalFormIndex(string $locale, int $n): int` (static) - Returns the ordinal form index for a number
 - `isValidCategory(string $selector): bool` (static) - Checks if a selector is a valid CLDR category name
 
 #### Constants
+
 - `CATEGORY_ZERO` = 'zero'
 - `CATEGORY_ONE` = 'one'
 - `CATEGORY_TWO` = 'two'
@@ -493,28 +681,35 @@ Thrown when a selector is not a valid CLDR category name (e.g., 'some', 'foo').
 - `VALID_CATEGORIES` = ['zero', 'one', 'two', 'few', 'many', 'other']
 
 ### Matecat\Locales\LanguageDomains
+
 - `getInstance(): LanguageDomains` (singleton)
 - `getDomains(): array`
 - `getDomain(string $domainKey): ?array`
 
 ## Exceptions
+
 - `InvalidArgumentException` for syntax errors
 - `OutOfBoundsException` for excessive sizes/nesting and indexing errors
 - `Matecat\Locales\InvalidLanguageException` for invalid language codes
 - `Matecat\ICU\Plurals\PluralComplianceException` for invalid CLDR plural category names
+- `Matecat\ICU\Exceptions\MissingComplexFormException` for missing or mismatched complex forms in pattern comparisons
 
 ## Development
 
 ### Run tests
+
 ```bash
 vendor/bin/phpunit
 ```
+
 or
+
 ```bash
 composer test
 ```
 
 ### Run static analysis
+
 ```bash
 vendor/bin/phpstan analyze
 ```
@@ -523,10 +718,11 @@ vendor/bin/phpstan analyze
 
 - ICU Parser core: `src/ICU/MessagePattern.php`
 - Pattern Validator: `src/ICU/MessagePatternValidator.php`
+- Pattern Comparator: `src/ICU/MessagePatternComparator.php`
 - Part/token model: `src/ICU/Tokens/Part.php`
 - Token types: `src/ICU/Tokens/TokenType.php`
 - Argument types: `src/ICU/Tokens/ArgType.php`
-- Custom Exceptions: `src/ICU/Exceptions/InvalidArgumentException.php`, `src/ICU/Exceptions/OutOfBoundsException.php`
+- Custom Exceptions: `src/ICU/Exceptions/InvalidArgumentException.php`, `src/ICU/Exceptions/OutOfBoundsException.php`, `src/ICU/Exceptions/MissingComplexFormException.php`
 - Plural Rules: `src/ICU/Plurals/PluralRules.php`
 - Plural Compliance Warning: `src/ICU/Plurals/PluralComplianceWarning.php`
 - Plural Argument Warning: `src/ICU/Plurals/PluralArgumentWarning.php`
@@ -536,6 +732,7 @@ vendor/bin/phpstan analyze
 - Tests: `tests/`
 
 ## License
+
 This project is licensed under the GNU Lesser General Public License v3.0 or later.
 
 - SPDX-License-Identifier: `LGPL-3.0-or-later`
@@ -543,6 +740,8 @@ This project is licensed under the GNU Lesser General Public License v3.0 or lat
 - More info: https://www.gnu.org/licenses/lgpl-3.0.html
 
 ### Credits
+
 This PHP port mirrors ideas from ICU4J MessagePattern.java.
+
 - See `LICENSE` for project license and attribution to ICU4J sources: https://github.com/unicode-org/icu
 - Plural rules based on CLDR (Unicode Common Locale Data Repository): https://cldr.unicode.org/

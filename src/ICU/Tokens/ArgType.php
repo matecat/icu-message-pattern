@@ -71,4 +71,19 @@ enum ArgType
             default => false
         };
     }
+
+    /**
+     * @return bool true if the argument type is a complex form (plural, select, choice, selectordinal), false otherwise.
+     * Complex forms contain nested messages with selectors.
+     */
+    public function isComplexType(): bool
+    {
+        return match ($this) {
+            self::PLURAL,
+            self::SELECT,
+            self::CHOICE,
+            self::SELECTORDINAL => true,
+            default => false
+        };
+    }
 }

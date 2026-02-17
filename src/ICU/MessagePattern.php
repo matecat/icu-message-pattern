@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Matecat\ICU;
 
@@ -1096,6 +1097,7 @@ final class MessagePattern implements Iterator
      *
      * @return void
      * @throws InvalidArgumentException If the syntax for the numeric value is invalid.
+     * @throws OutOfBoundsException
      */
     private function parseDouble(int $start, int $limit, bool $allowInfinity): void
     {

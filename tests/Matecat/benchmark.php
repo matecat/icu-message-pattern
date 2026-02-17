@@ -29,61 +29,61 @@ $warmupIterations = (int)($argv[2] ?? 100);
  */
 $testPatterns = [
     // Simple patterns
-    'simple_text' => 'Hello, World!',
-    'simple_placeholder' => 'Hello, {name}!',
-    'simple_numbered' => 'Hello, {0}! Welcome to {1}.',
-    'multiple_placeholders' => 'Dear {title} {firstName} {lastName}, your order #{orderId} is ready.',
+        'simple_text' => 'Hello, World!',
+        'simple_placeholder' => 'Hello, {name}!',
+        'simple_numbered' => 'Hello, {0}! Welcome to {1}.',
+        'multiple_placeholders' => 'Dear {title} {firstName} {lastName}, your order #{orderId} is ready.',
 
     // Escaped patterns
-    'escaped_apostrophe' => "It''s a beautiful day!",
-    'escaped_braces' => "Use '{' and '}' for placeholders.",
-    'complex_escaping' => "Don''t forget: '{name}' means literal {name} but {actualName} is replaced.",
+        'escaped_apostrophe' => "It''s a beautiful day!",
+        'escaped_braces' => "Use '{' and '}' for placeholders.",
+        'complex_escaping' => "Don''t forget: '{name}' means literal {name} but {actualName} is replaced.",
 
     // Number/Date/Time formatting
-    'number_format' => '{count, number}',
-    'currency_format' => '{price, number, currency}',
-    'percent_format' => '{rate, number, percent}',
-    'date_format' => '{today, date, long}',
-    'time_format' => '{now, time, short}',
-    'datetime_format' => 'On {date, date, full} at {time, time, medium}',
+        'number_format' => '{count, number}',
+        'currency_format' => '{price, number, currency}',
+        'percent_format' => '{rate, number, percent}',
+        'date_format' => '{today, date, long}',
+        'time_format' => '{now, time, short}',
+        'datetime_format' => 'On {date, date, full} at {time, time, medium}',
 
     // Plural patterns
-    'plural_simple' => '{count, plural, one {# item} other {# items}}',
-    'plural_with_offset' => '{count, plural, offset:1 =0 {no one} =1 {yourself} one {yourself and # other} other {yourself and # others}}',
-    'plural_categories' => '{n, plural, zero {zero items} one {one item} two {two items} few {a few items} many {many items} other {# items}}',
-    'plural_explicit' => '{count, plural, =0 {no files} =1 {one file} =2 {a couple files} other {# files}}',
+        'plural_simple' => '{count, plural, one {# item} other {# items}}',
+        'plural_with_offset' => '{count, plural, offset:1 =0 {no one} =1 {yourself} one {yourself and # other} other {yourself and # others}}',
+        'plural_categories' => '{n, plural, zero {zero items} one {one item} two {two items} few {a few items} many {many items} other {# items}}',
+        'plural_explicit' => '{count, plural, =0 {no files} =1 {one file} =2 {a couple files} other {# files}}',
 
     // Select patterns
-    'select_simple' => '{gender, select, male {He} female {She} other {They}}',
-    'select_detailed' => '{gender, select, male {He is a good man.} female {She is a good woman.} other {They are good people.}}',
+        'select_simple' => '{gender, select, male {He} female {She} other {They}}',
+        'select_detailed' => '{gender, select, male {He is a good man.} female {She is a good woman.} other {They are good people.}}',
 
     // SelectOrdinal patterns
-    'selectordinal_simple' => '{pos, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}',
-    'selectordinal_full' => '{rank, selectordinal, one {#st place} two {#nd place} few {#rd place} other {#th place}}',
+        'selectordinal_simple' => '{pos, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}',
+        'selectordinal_full' => '{rank, selectordinal, one {#st place} two {#nd place} few {#rd place} other {#th place}}',
 
     // Nested patterns
-    'nested_select_plural' => '{gender, select, female {{count, plural, one {She has # cat} other {She has # cats}}} male {{count, plural, one {He has # cat} other {He has # cats}}} other {{count, plural, one {They have # cat} other {They have # cats}}}}',
-    'nested_plural_select' => '{count, plural, one {{gender, select, male {He} female {She} other {They}} has # item} other {{gender, select, male {He} female {She} other {They}} have # items}}',
+        'nested_select_plural' => '{gender, select, female {{count, plural, one {She has # cat} other {She has # cats}}} male {{count, plural, one {He has # cat} other {He has # cats}}} other {{count, plural, one {They have # cat} other {They have # cats}}}}',
+        'nested_plural_select' => '{count, plural, one {{gender, select, male {He} female {She} other {They}} has # item} other {{gender, select, male {He} female {She} other {They}} have # items}}',
 
     // Complex real-world patterns
-    'real_world_notification' => '{count, plural, =0 {You have no new messages} one {You have # new message from {sender}} other {You have # new messages, the latest from {sender}}}',
-    'real_world_purchase' => '{itemCount, plural, =0 {Your cart is empty} one {You have # item ({itemName}) totaling {total, number, currency}} other {You have # items totaling {total, number, currency}}}',
-    'real_world_time_ago' => '{minutes, plural, =0 {just now} =1 {a minute ago} other {# minutes ago}}',
+        'real_world_notification' => '{count, plural, =0 {You have no new messages} one {You have # new message from {sender}} other {You have # new messages, the latest from {sender}}}',
+        'real_world_purchase' => '{itemCount, plural, =0 {Your cart is empty} one {You have # item ({itemName}) totaling {total, number, currency}} other {You have # items totaling {total, number, currency}}}',
+        'real_world_time_ago' => '{minutes, plural, =0 {just now} =1 {a minute ago} other {# minutes ago}}',
 
     // Edge cases
-    'deeply_nested' => '{a, select, x {{b, select, y {{c, plural, one {deep #} other {deeper #}}} other {b-other}}} other {a-other}}',
-    'many_arguments' => '{a} {b} {c} {d} {e} {f} {g} {h} {i} {j} {k} {l} {m} {n} {o} {p}',
-    'long_text' => 'This is a very long text message that contains multiple sentences. ' .
-        'It should test how the parser handles longer strings without any placeholders. ' .
-        'The quick brown fox jumps over the lazy dog. ' .
-        'Pack my box with five dozen liquor jugs.',
-    'unicode_content' => '你好 {name}！欢迎来到 {place}。{count, plural, one {# 个项目} other {# 个项目}}',
-    'mixed_unicode' => '{greeting} мир! Привет {name}! 🎉 {count, plural, one {# элемент} other {# элементов}}',
+        'deeply_nested' => '{a, select, x {{b, select, y {{c, plural, one {deep #} other {deeper #}}} other {b-other}}} other {a-other}}',
+        'many_arguments' => '{a} {b} {c} {d} {e} {f} {g} {h} {i} {j} {k} {l} {m} {n} {o} {p}',
+        'long_text' => 'This is a very long text message that contains multiple sentences. ' .
+                'It should test how the parser handles longer strings without any placeholders. ' .
+                'The quick brown fox jumps over the lazy dog. ' .
+                'Pack my box with five dozen liquor jugs.',
+        'unicode_content' => '你好 {name}！欢迎来到 {place}。{count, plural, one {# 个项目} other {# 个项目}}',
+        'mixed_unicode' => '{greeting} мир! Привет {name}! 🎉 {count, plural, one {# элемент} other {# элементов}}',
 
     // Choice style patterns (parsed separately)
-    'choice_simple' => '0#no files|1#one file|1<many files',
-    'choice_complex' => '0#none|1#one|2#two|3<several|10<many|100≤hundreds',
-    'choice_infinity' => '-∞<negative|0#zero|0<positive|∞≤max',
+        'choice_simple' => '0#no files|1#one file|1<many files',
+        'choice_complex' => '0#none|1#one|2#two|3<several|10<many|100≤hundreds',
+        'choice_infinity' => '-∞<negative|0#zero|0<positive|∞≤max',
 ];
 
 /**
@@ -116,6 +116,9 @@ function formatTime(float $microseconds): string
 
 /**
  * Calculate statistics from an array of measurements
+ *
+ * @param array<int, float> $measurements
+ * @return array<string, float>
  */
 function calculateStats(array $measurements): array
 {
@@ -132,19 +135,26 @@ function calculateStats(array $measurements): array
     $stdDev = sqrt($variance / $count);
 
     return [
-        'min' => $measurements[0],
-        'max' => $measurements[$count - 1],
-        'mean' => $mean,
-        'median' => $measurements[(int)floor($count / 2)],
-        'p95' => $measurements[(int)floor($count * 0.95)],
-        'p99' => $measurements[(int)floor($count * 0.99)],
-        'stdDev' => $stdDev,
-        'total' => $sum,
+            'min' => $measurements[0],
+            'max' => $measurements[$count - 1],
+            'mean' => $mean,
+            'median' => $measurements[(int)floor($count / 2)],
+            'p95' => $measurements[(int)floor($count * 0.95)],
+            'p99' => $measurements[(int)floor($count * 0.99)],
+            'stdDev' => $stdDev,
+            'total' => $sum,
     ];
 }
 
 /**
  * Run benchmark for a single pattern
+ *
+ * @param string $pattern
+ * @param int $iterations
+ * @param bool $isChoiceStyle
+ * @return array<string, mixed>
+ * @throws \Matecat\ICU\Exceptions\InvalidArgumentException
+ * @throws \Matecat\ICU\Exceptions\OutOfBoundsException
  */
 function benchmarkPattern(string $pattern, int $iterations, bool $isChoiceStyle = false): array
 {
@@ -170,15 +180,20 @@ function benchmarkPattern(string $pattern, int $iterations, bool $isChoiceStyle 
     $memoryAfter = memory_get_usage(true);
 
     return [
-        'stats' => calculateStats($measurements),
-        'partsCount' => $partsCount,
-        'memoryDelta' => $memoryAfter - $memoryBefore,
-        'patternLength' => mb_strlen($pattern),
+            'stats' => calculateStats($measurements),
+            'partsCount' => $partsCount,
+            'memoryDelta' => $memoryAfter - $memoryBefore,
+            'patternLength' => mb_strlen($pattern),
     ];
 }
 
 /**
  * Run warmup iterations
+ *
+ * @param array<string, string> $patterns
+ * @param int $warmupIterations
+ * @throws \Matecat\ICU\Exceptions\InvalidArgumentException
+ * @throws \Matecat\ICU\Exceptions\OutOfBoundsException
  */
 function warmup(array $patterns, int $warmupIterations): void
 {
@@ -243,7 +258,9 @@ if (PHP_OS_FAMILY === 'Linux') {
     $cpuCores = (int)trim((string)@shell_exec('sysctl -n hw.ncpu 2>/dev/null'));
 } elseif (PHP_OS_FAMILY === 'Windows') {
     $cpuInfo = trim((string)@shell_exec('wmic cpu get name 2>nul | findstr /v "Name"'));
-    $cpuCores = (int)trim((string)@shell_exec('wmic cpu get NumberOfLogicalProcessors 2>nul | findstr /v "NumberOfLogicalProcessors"'));
+    $cpuCores = (int)trim(
+            (string)@shell_exec('wmic cpu get NumberOfLogicalProcessors 2>nul | findstr /v "NumberOfLogicalProcessors"')
+    );
 }
 
 echo "System Information:" . PHP_EOL;
@@ -322,8 +339,12 @@ echo "  • Total benchmark time: " . formatTime(($endTime - $startTime) / 1000)
 echo "  • Total patterns tested: " . $totalPatterns . PHP_EOL;
 echo "  • Total parse operations: " . number_format($totalPatterns * $iterations) . PHP_EOL;
 echo "  • Average mean parse time: " . formatTime($overallMean) . PHP_EOL;
-echo "  • Fastest pattern: " . $fastestPattern . " (" . formatTime($results[$fastestPattern]['stats']['mean']) . ")" . PHP_EOL;
-echo "  • Slowest pattern: " . $slowestPattern . " (" . formatTime($results[$slowestPattern]['stats']['mean']) . ")" . PHP_EOL;
+echo "  • Fastest pattern: " . $fastestPattern . " (" . formatTime(
+                $results[$fastestPattern]['stats']['mean']
+        ) . ")" . PHP_EOL;
+echo "  • Slowest pattern: " . $slowestPattern . " (" . formatTime(
+                $results[$slowestPattern]['stats']['mean']
+        ) . ")" . PHP_EOL;
 echo PHP_EOL;
 
 echo "Memory:" . PHP_EOL;
@@ -334,15 +355,22 @@ echo PHP_EOL;
 
 // Performance by category
 $categories = [
-    'Simple' => ['simple_text', 'simple_placeholder', 'simple_numbered', 'multiple_placeholders'],
-    'Escaped' => ['escaped_apostrophe', 'escaped_braces', 'complex_escaping'],
-    'Formatting' => ['number_format', 'currency_format', 'percent_format', 'date_format', 'time_format', 'datetime_format'],
-    'Plural' => ['plural_simple', 'plural_with_offset', 'plural_categories', 'plural_explicit'],
-    'Select' => ['select_simple', 'select_detailed', 'selectordinal_simple', 'selectordinal_full'],
-    'Nested' => ['nested_select_plural', 'nested_plural_select', 'deeply_nested'],
-    'Real-world' => ['real_world_notification', 'real_world_purchase', 'real_world_time_ago'],
-    'Edge cases' => ['many_arguments', 'long_text', 'unicode_content', 'mixed_unicode'],
-    'Choice style' => ['choice_simple', 'choice_complex', 'choice_infinity'],
+        'Simple' => ['simple_text', 'simple_placeholder', 'simple_numbered', 'multiple_placeholders'],
+        'Escaped' => ['escaped_apostrophe', 'escaped_braces', 'complex_escaping'],
+        'Formatting' => [
+                'number_format',
+                'currency_format',
+                'percent_format',
+                'date_format',
+                'time_format',
+                'datetime_format'
+        ],
+        'Plural' => ['plural_simple', 'plural_with_offset', 'plural_categories', 'plural_explicit'],
+        'Select' => ['select_simple', 'select_detailed', 'selectordinal_simple', 'selectordinal_full'],
+        'Nested' => ['nested_select_plural', 'nested_plural_select', 'deeply_nested'],
+        'Real-world' => ['real_world_notification', 'real_world_purchase', 'real_world_time_ago'],
+        'Edge cases' => ['many_arguments', 'long_text', 'unicode_content', 'mixed_unicode'],
+        'Choice style' => ['choice_simple', 'choice_complex', 'choice_infinity'],
 ];
 
 echo "Performance by Category:" . PHP_EOL;
@@ -378,12 +406,12 @@ printSeparator(60);
 
 $totalParseTime = array_sum(array_map(fn($r) => $r['stats']['total'], $results));
 $opsPerSecond = ($totalPatterns * $iterations) / ($totalParseTime / 1000000);
-echo "  • Operations per second: " . number_format($opsPerSecond, 0) . " ops/s" . PHP_EOL;
+echo "  • Operations per second: " . number_format($opsPerSecond) . " ops/s" . PHP_EOL;
 
 // Average characters per microsecond
 $totalChars = array_sum(array_map(fn($r) => $r['patternLength'] * $iterations, $results));
 $charsPerMicrosecond = $totalChars / $totalParseTime;
-echo "  • Characters processed: " . number_format($charsPerMicrosecond * 1000000, 0) . " chars/s" . PHP_EOL;
+echo "  • Characters processed: " . number_format($charsPerMicrosecond * 1000000) . " chars/s" . PHP_EOL;
 
 printSeparator(60);
 echo PHP_EOL;
@@ -440,14 +468,20 @@ $slope = ($varLength > 0) ? $covariance / $varLength : 0;
 $intercept = $avgMean - ($slope * $avgLength);
 
 echo "  • Pearson correlation coefficient: " . number_format($correlation, 4) . PHP_EOL;
-echo "  • Linear regression equation: time(µs) = " . number_format($slope, 4) . " × length + " . number_format($intercept, 4) . PHP_EOL;
-echo "  • Meaning: Each additional character adds ~" . number_format($slope, 2) . " µs, with a base overhead of ~" . number_format($intercept, 2) . " µs" . PHP_EOL;
+echo "  • Linear regression equation: time(µs) = " . number_format($slope, 4) . " × length + " . number_format(
+                $intercept,
+                4
+        ) . PHP_EOL;
+echo "  • Meaning: Each additional character adds ~" . number_format(
+                $slope,
+                2
+        ) . " µs, with a base overhead of ~" . number_format($intercept, 2) . " µs" . PHP_EOL;
 echo "  • Interpretation: " . match (true) {
-    abs($correlation) >= 0.7 => "Strong correlation",
-    abs($correlation) >= 0.4 => "Moderate correlation",
-    abs($correlation) >= 0.2 => "Weak correlation",
-    default => "Very weak or no correlation"
-} . " between pattern length and parse time." . PHP_EOL;
+            abs($correlation) >= 0.7 => "Strong correlation",
+            abs($correlation) >= 0.4 => "Moderate correlation",
+            abs($correlation) >= 0.2 => "Weak correlation",
+            default => "Very weak or no correlation"
+        } . " between pattern length and parse time." . PHP_EOL;
 
 echo PHP_EOL;
 echo "Benchmark complete!" . PHP_EOL;

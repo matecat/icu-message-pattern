@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * @author Domenico Lupinetti (hashashiyyin) domenico@translated.net / ostico@gmail.com
@@ -53,12 +55,25 @@ final class MessagePatternValidator
      *
      * @return $this
      */
-    public function setPatternString(string $patternString): static
+    public function setPatternString(string $patternString): MessagePatternValidator
     {
         $this->patternString = $patternString;
         $this->parsingException = null;
         $this->pattern?->clear();
         return $this;
+    }
+
+    /**
+     * Returns the parsed MessagePattern instance.
+     *
+     * Note: This will trigger pattern parsing if not already done.
+     *
+     * @return MessagePattern The parsed pattern.
+     */
+    public function getPattern(): MessagePattern
+    {
+        $this->checkForPatternInitialized();
+        return $this->pattern;
     }
 
     /**
@@ -70,12 +85,7 @@ final class MessagePatternValidator
         $this->checkForPatternInitialized();
 
         foreach ($this->pattern as $part) {
-            $argType = $part->getArgType();
-            if (
-                $argType->hasPluralStyle() ||
-                $argType === ArgType::SELECT ||
-                $argType === ArgType::CHOICE
-            ) {
+            if ($part->getArgType()->isComplexType()) {
                 return true; // Early exit is also more efficient
             }
         }
