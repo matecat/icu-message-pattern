@@ -460,6 +460,57 @@ class MessagePatternComparatorTest extends TestCase
         self::assertSame('fr-FR', $comparator->getTargetLocale());
     }
 
+    /**
+     * Test getSourceValidator returns the source validator.
+     */
+    #[Test]
+    public function testGetSourceValidator(): void
+    {
+        $comparator = new MessagePatternComparator(
+            'en-US',
+            'fr-FR',
+            '{count, plural, one{# item} other{# items}}',
+            '{count, plural, one{# article} other{# articles}}'
+        );
+
+        $sourceValidator = $comparator->getSourceValidator();
+
+        self::assertTrue($sourceValidator->containsComplexSyntax());
+    }
+
+    /**
+     * Test getTargetValidator returns the target validator.
+     */
+    #[Test]
+    public function testGetTargetValidator(): void
+    {
+        $comparator = new MessagePatternComparator(
+            'en-US',
+            'fr-FR',
+            '{count, plural, one{# item} other{# items}}',
+            '{count, plural, one{# article} other{# articles}}'
+        );
+
+        $targetValidator = $comparator->getTargetValidator();
+
+        self::assertTrue($targetValidator->containsComplexSyntax());
+    }
+
+    /**
+     * Test getSourceValidator and getTargetValidator return injected validators from fromValidators().
+     */
+    #[Test]
+    public function testGetValidatorsFromFactoryMethod(): void
+    {
+        $sourceValidator = new MessagePatternValidator('en', '{count, plural, one{# item} other{# items}}');
+        $targetValidator = new MessagePatternValidator('fr', '{count, plural, one{# article} other{# articles}}');
+
+        $comparator = MessagePatternComparator::fromValidators($sourceValidator, $targetValidator);
+
+        self::assertSame($sourceValidator, $comparator->getSourceValidator());
+        self::assertSame($targetValidator, $comparator->getTargetValidator());
+    }
+
     // =========================================================================
     // MissingComplexFormException Tests
     // =========================================================================

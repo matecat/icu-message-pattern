@@ -605,6 +605,8 @@ Compares source and target ICU MessageFormat patterns for translation validation
 - `targetContainsComplexSyntax(): bool` - Returns true if target contains plural, select, choice, or selectordinal
 - `getSourceLocale(): string` - Returns the source locale
 - `getTargetLocale(): string` - Returns the target locale
+- `getSourceValidator(): MessagePatternValidator` - Returns the source pattern validator
+- `getTargetValidator(): MessagePatternValidator` - Returns the target pattern validator
 
 ### Matecat\ICU\Plurals\PluralComplianceWarning (readonly)
 

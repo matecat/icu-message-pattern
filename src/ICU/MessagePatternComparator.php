@@ -264,6 +264,26 @@ final class MessagePatternComparator
     {
         return $this->targetLocale;
     }
+
+    /**
+     * Gets the source pattern validator.
+     *
+     * @return MessagePatternValidator
+     */
+    public function getSourceValidator(): MessagePatternValidator
+    {
+        return $this->sourceValidator;
+    }
+
+    /**
+     * Gets the target pattern validator.
+     *
+     * @return MessagePatternValidator
+     */
+    public function getTargetValidator(): MessagePatternValidator
+    {
+        return $this->targetValidator;
+    }
 }
 
 
