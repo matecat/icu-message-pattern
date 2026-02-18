@@ -306,6 +306,11 @@ final class MessagePatternComparator
         return $this->sourcePattern;
     }
 
+    /**
+     * Retrieves the ICU MessageFormat pattern string for the target (translation).
+     *
+     * @return string The target pattern string.
+     */
     public function getTargetPattern(): string
     {
         return $this->targetPattern;

@@ -9,6 +9,7 @@
 
 namespace Matecat\Tests\ICU;
 
+use Matecat\ICU\Exceptions\InvalidArgumentException;
 use Matecat\ICU\Exceptions\MissingComplexFormException;
 use Matecat\ICU\Exceptions\OutOfBoundsException;
 use Matecat\ICU\MessagePattern;
@@ -33,18 +34,32 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test fromValidators() static factory method.
+     * Verifies that locales and pattern strings are correctly extracted from validators.
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
      */
     #[Test]
     public function testFromValidatorsFactoryMethod(): void
     {
-        $this->expectNotToPerformAssertions();
+        $sourcePatternString = '{count, plural, one{# item} other{# items}}';
+        $targetPatternString = '{count, plural, one{# article} many{# articles} other{# articles}}';
 
-        $sourceValidator = new MessagePatternValidator('en', '{count, plural, one{# item} other{# items}}');
-        $targetValidator = new MessagePatternValidator('fr', '{count, plural, one{# article} many{# articles} other{# articles}}');
+        $sourceValidator = new MessagePatternValidator('en-US', $sourcePatternString);
+        $targetValidator = new MessagePatternValidator('fr-FR', $targetPatternString);
 
         $comparator = MessagePatternComparator::fromValidators($sourceValidator, $targetValidator);
+
+        // Verify locales are correctly set from validators
+        self::assertSame('en-US', $comparator->getSourceLocale());
+        self::assertSame('fr-FR', $comparator->getTargetLocale());
+
+        // Verify pattern strings are correctly set from validators
+        self::assertSame($sourcePatternString, $comparator->getSourcePattern());
+        self::assertSame($targetPatternString, $comparator->getTargetPattern());
+
+        // Verify validators are the same instances
+        self::assertSame($sourceValidator, $comparator->getSourceValidator());
+        self::assertSame($targetValidator, $comparator->getTargetValidator());
 
         // Should not throw - both have plural for 'count'
         $comparator->validate();
@@ -69,18 +84,33 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test fromPatterns() static factory method.
+     * Verifies that locales and pattern strings are correctly set from MessagePattern instances.
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws InvalidArgumentException
      */
     #[Test]
     public function testFromPatternsFactoryMethod(): void
     {
-        $this->expectNotToPerformAssertions();
+        $sourcePatternString = '{count, plural, one{# item} other{# items}}';
+        $targetPatternString = '{count, plural, one{# article} many{# articles} other{# articles}}';
 
-        $sourcePattern = new MessagePattern('{count, plural, one{# item} other{# items}}');
-        $targetPattern = new MessagePattern('{count, plural, one{# article} many{# articles} other{# articles}}');
+        $sourcePattern = new MessagePattern($sourcePatternString);
+        $targetPattern = new MessagePattern($targetPatternString);
 
-        $comparator = MessagePatternComparator::fromPatterns('en', 'fr', $sourcePattern, $targetPattern);
+        $comparator = MessagePatternComparator::fromPatterns('en-US', 'fr-FR', $sourcePattern, $targetPattern);
+
+        // Verify locales are correctly set
+        self::assertSame('en-US', $comparator->getSourceLocale());
+        self::assertSame('fr-FR', $comparator->getTargetLocale());
+
+        // Verify pattern strings are correctly extracted from MessagePattern instances
+        self::assertSame($sourcePatternString, $comparator->getSourcePattern());
+        self::assertSame($targetPatternString, $comparator->getTargetPattern());
+
+        // Verify validators have the correct locales
+        self::assertSame('en-US', $comparator->getSourceValidator()->getLanguage());
+        self::assertSame('fr-FR', $comparator->getTargetValidator()->getLanguage());
 
         // Should not throw - both have plural for 'count'
         $comparator->validate();
