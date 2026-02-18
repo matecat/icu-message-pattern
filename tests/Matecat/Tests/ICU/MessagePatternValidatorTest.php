@@ -185,6 +185,69 @@ class MessagePatternValidatorTest extends TestCase
         self::assertNull($warning);
     }
 
+    /**
+     * Test getLanguage() returns the configured language.
+     */
+    #[Test]
+    public function testGetLanguageReturnsConfiguredLanguage(): void
+    {
+        $validator = new MessagePatternValidator('fr-FR', '{count, plural, one{# item} other{# items}}');
+
+        self::assertSame('fr-FR', $validator->getLanguage());
+    }
+
+    /**
+     * Test getLanguage() returns default language when not specified.
+     */
+    #[Test]
+    public function testGetLanguageReturnsDefaultLanguage(): void
+    {
+        $validator = new MessagePatternValidator();
+
+        self::assertSame('en-US', $validator->getLanguage());
+    }
+
+    /**
+     * Test getPattern() returns the parsed MessagePattern instance.
+     */
+    #[Test]
+    public function testGetPatternReturnsParsedMessagePattern(): void
+    {
+        $validator = new MessagePatternValidator('en', '{count, plural, one{# item} other{# items}}');
+
+        $pattern = $validator->getPattern();
+
+        self::assertGreaterThan(0, $pattern->countParts());
+    }
+
+    /**
+     * Test getPattern() triggers parsing if not already parsed.
+     */
+    #[Test]
+    public function testGetPatternTriggersParsing(): void
+    {
+        $validator = new MessagePatternValidator('en', 'Hello {name}.');
+
+        // getPattern() should trigger parsing and return the pattern
+        $pattern = $validator->getPattern();
+
+        // Simple pattern should have parts
+        self::assertGreaterThan(0, $pattern->countParts());
+    }
+
+    /**
+     * Test getPattern() with fromPattern() factory returns the injected pattern.
+     */
+    #[Test]
+    public function testGetPatternWithFromPatternFactory(): void
+    {
+        $originalPattern = new MessagePattern('{count, plural, one{# item} other{# items}}');
+
+        $validator = MessagePatternValidator::fromPattern('en', $originalPattern);
+
+        self::assertSame($originalPattern, $validator->getPattern());
+    }
+
     // =========================================================================
     // Factory Method Tests (using pre-parsed MessagePattern)
     // =========================================================================

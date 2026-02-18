@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * @author Domenico Lupinetti (hashashiyyin) domenico@translated.net / ostico@gmail.com
@@ -72,7 +73,12 @@ final class MessagePatternComparator
         MessagePatternValidator $sourceValidator,
         MessagePatternValidator $targetValidator
     ): MessagePatternComparator {
-        $comparator = new self('', '', '', '');
+        $comparator = new self(
+            $sourceValidator->getLanguage(),
+            $targetValidator->getLanguage(),
+            $sourceValidator->getPattern()->getPatternString(),
+            $targetValidator->getPattern()->getPatternString()
+        );
         $comparator->sourceValidator = $sourceValidator;
         $comparator->targetValidator = $targetValidator;
         return $comparator;
@@ -97,7 +103,12 @@ final class MessagePatternComparator
         MessagePattern $sourcePattern,
         MessagePattern $targetPattern
     ): MessagePatternComparator {
-        $comparator = new self('', '', '', '');
+        $comparator = new self(
+            $sourceLocale,
+            $targetLocale,
+            $sourcePattern->getPatternString(),
+            $targetPattern->getPatternString()
+        );
         $comparator->sourceValidator = MessagePatternValidator::fromPattern($sourceLocale, $sourcePattern);
         $comparator->targetValidator = MessagePatternValidator::fromPattern($targetLocale, $targetPattern);
         return $comparator;
@@ -284,6 +295,22 @@ final class MessagePatternComparator
     {
         return $this->targetValidator;
     }
+
+    /**
+     * Retrieves the ICU MessageFormat pattern string for the source.
+     *
+     * @return string The source pattern string.
+     */
+    public function getSourcePattern(): string
+    {
+        return $this->sourcePattern;
+    }
+
+    public function getTargetPattern(): string
+    {
+        return $this->targetPattern;
+    }
+
 }
 
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -30,6 +31,16 @@ final class MessagePatternValidator
         protected string $language = 'en-US',
         protected ?string $patternString = null,
     ) {
+    }
+
+    /**
+     * Retrieves the language value.
+     *
+     * @return string
+     */
+    public function getLanguage(): string
+    {
+        return $this->language;
     }
 
     /**
@@ -104,7 +115,8 @@ final class MessagePatternValidator
     /**
      * @return string|null
      */
-    public function getSyntaxException(): ?string{
+    public function getSyntaxException(): ?string
+    {
         return $this->parsingException?->getMessage();
     }
 
