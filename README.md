@@ -412,6 +412,15 @@ $comparator = new MessagePatternComparator(
 
 // Validate - throws exception if target is missing complex forms from source
 $comparator->validate();
+
+// Optionally validate plural compliance against CLDR rules for source, target, or both
+$result = $comparator->validate(validateSource: true, validateTarget: true);
+
+// $result->sourceWarnings — PluralComplianceWarning|null for the source pattern
+// $result->targetWarnings — PluralComplianceWarning|null for the target pattern
+if ($result->targetWarnings !== null) {
+    echo $result->targetWarnings->getMessagesAsString();
+}
 ```
 
 ##### Factory Methods
@@ -499,14 +508,17 @@ $comparator->getTargetLocale();  // 'fr'
 
 ##### Validation Rules
 
-| Scenario                                                 | Behavior                                  |
-|----------------------------------------------------------|-------------------------------------------|
-| Source has no complex forms                              | Validation passes (nothing to check)      |
-| Target has same complex forms for same arguments         | Validation passes                         |
-| Target is missing a complex form argument                | Throws `MissingComplexFormException`      |
-| Target has different complex form type for same argument | Throws `MissingComplexFormException`      |
-| PLURAL vs SELECTORDINAL                                  | Not interchangeable (different semantics) |
-| Target has extra complex forms                           | Allowed (no exception)                    |
+| Scenario                                                 | Behavior                                                                   |
+|----------------------------------------------------------|----------------------------------------------------------------------------|
+| Source has no complex forms                              | Validation passes (nothing to check)                                       |
+| Target has same complex forms for same arguments         | Validation passes                                                          |
+| Target is missing a complex form argument                | Throws `MissingComplexFormException`                                       |
+| Target has different complex form type for same argument | Throws `MissingComplexFormException`                                       |
+| PLURAL vs SELECTORDINAL                                  | Not interchangeable (different semantics)                                  |
+| Target has extra complex forms                           | Allowed (no exception)                                                     |
+| Plural compliance (`validateSource`/`validateTarget`)    | Off by default; when enabled, validates selectors against CLDR rules       |
+| Invalid CLDR category (e.g., `foo`)                      | Throws `PluralComplianceException` (when compliance validation is enabled) |
+| Wrong locale selector (e.g., `few` in English)           | Returns `PluralComplianceWarning` (when compliance validation is enabled)  |
 
 #### Language Domains
 
@@ -600,13 +612,22 @@ Compares source and target ICU MessageFormat patterns for translation validation
 - `__construct(string $sourceLocale, string $targetLocale, string $sourcePattern, string $targetPattern)` - Creates a comparator with source/target locales and pattern strings
 - `static fromValidators(MessagePatternValidator $sourceValidator, MessagePatternValidator $targetValidator): MessagePatternComparator` - Factory method to create a comparator from pre-configured validators
 - `static fromPatterns(string $sourceLocale, string $targetLocale, MessagePattern $sourcePattern, MessagePattern $targetPattern): MessagePatternComparator` - Factory method to create a comparator from pre-parsed patterns (useful for reusing parsed patterns across multiple locale comparisons)
-- `validate(): void` - Validates that all complex forms in source exist in target. Throws `MissingComplexFormException` if target is missing complex forms or has mismatched types
+- `validate(bool $validateSource = false, bool $validateTarget = false): ComparisonResult` - Validates that all complex forms in source exist in target. Optionally validates plural/ordinal compliance against CLDR rules for the source and/or target locale. Returns a `ComparisonResult` with `sourceWarnings` and `targetWarnings` properties (each `PluralComplianceWarning|null`, null if validation was not requested or no issues found). Throws `MissingComplexFormException` if target is missing complex forms or has mismatched types. Throws `PluralComplianceException` if a selector is not a valid CLDR category name.
 - `sourceContainsComplexSyntax(): bool` - Returns true if source contains plural, select, choice, or selectordinal
 - `targetContainsComplexSyntax(): bool` - Returns true if target contains plural, select, choice, or selectordinal
 - `getSourceLocale(): string` - Returns the source locale
 - `getTargetLocale(): string` - Returns the target locale
 - `getSourceValidator(): MessagePatternValidator` - Returns the source pattern validator
 - `getTargetValidator(): MessagePatternValidator` - Returns the target pattern validator
+
+### Matecat\ICU\ComparisonResult (readonly)
+
+Result object returned by `MessagePatternComparator::validate()`. Contains optional plural compliance warnings for source and target patterns.
+
+- `__construct(?PluralComplianceWarning $sourceWarnings = null, ?PluralComplianceWarning $targetWarnings = null)`
+- `sourceWarnings: ?PluralComplianceWarning` - Plural compliance warnings for the source pattern, or null if validation was not requested or no issues were found
+- `targetWarnings: ?PluralComplianceWarning` - Plural compliance warnings for the target pattern, or null if validation was not requested or no issues were found
+- `hasWarnings(): bool` - Returns true if either side has warnings
 
 ### Matecat\ICU\Plurals\PluralComplianceWarning (readonly)
 

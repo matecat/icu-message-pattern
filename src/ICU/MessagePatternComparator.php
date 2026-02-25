@@ -11,8 +11,11 @@ declare(strict_types=1);
 
 namespace Matecat\ICU;
 
+use Matecat\ICU\Comparator\ComparisonResult;
+use Matecat\ICU\Exceptions\InvalidArgumentException;
 use Matecat\ICU\Exceptions\MissingComplexFormException;
 use Matecat\ICU\Exceptions\OutOfBoundsException;
+use Matecat\ICU\Plurals\PluralComplianceException;
 use Matecat\ICU\Tokens\TokenType;
 use stdClass;
 
@@ -34,6 +37,10 @@ use stdClass;
  * );
  *
  * $comparator->validate(); // throws exception if the target is missing complex forms from source
+ *
+ * // Optionally validate plural compliance against CLDR rules
+ * $result = $comparator->validate(validateSource: true, validateTarget: true);
+ * // $result->sourceWarnings and $result->targetWarnings contain PluralComplianceWarning or null
  * ```
  * </pre>
  */
@@ -115,21 +122,41 @@ final class MessagePatternComparator
     }
 
     /**
-     * Validates that complex forms in the source pattern exist in the target pattern.
+     * Validates that complex forms in the source pattern exist in the target pattern,
+     * and optionally validates plural/ordinal compliance against each locale's CLDR rules.
      *
-     * If the source contains complex forms (plural, select, choice, selectordinal),
-     * the target must contain the same complex forms for the same arguments.
+     * Validation steps:
+     * 1. If the source contains complex forms (plural, select, choice, selectordinal),
+     *    the target must contain the same complex forms for the same arguments.
+     * 2. If `$validateSource` is true, the source pattern is validated against its locale's
+     *    CLDR plural/ordinal categories via {@see MessagePatternValidator::validatePluralCompliance()}.
+     * 3. If `$validateTarget` is true, the target pattern is validated against its locale's
+     *    CLDR plural/ordinal categories via {@see MessagePatternValidator::validatePluralCompliance()}.
      *
-     * @return void
+     * By default, no plural compliance validation is performed (both flags are false).
+     *
+     * @param bool $validateSource Whether to validate the source pattern's plural compliance. Default: false.
+     * @param bool $validateTarget Whether to validate the target pattern's plural compliance. Default: false.
+     *
+     * @return ComparisonResult Contains `sourceWarnings` and `targetWarnings` properties
+     *         (each PluralComplianceWarning|null). A side is null if validation was not requested or if no issues were found.
      * @throws MissingComplexFormException If the target is missing a complex form from the source.
+     * @throws PluralComplianceException If a selector is not a valid CLDR category name.
+     * @throws InvalidArgumentException If pattern syntax is invalid.
      * @throws OutOfBoundsException If pattern parsing exceeds limits.
      */
-    public function validate(): void
+    public function validate(bool $validateSource = false, bool $validateTarget = false): ComparisonResult
     {
         // If the source contains complex syntax, ensure the target has matching complex forms
         if ($this->sourceValidator->containsComplexSyntax()) {
             $this->validateComplexFormCompatibility();
         }
+
+        // Validate plural/ordinal compliance only when explicitly requested
+        return new ComparisonResult(
+            sourceWarnings: $validateSource ? $this->sourceValidator->validatePluralCompliance() : null,
+            targetWarnings: $validateTarget ? $this->targetValidator->validatePluralCompliance() : null,
+        );
     }
 
     /**
@@ -138,41 +165,48 @@ final class MessagePatternComparator
      * Complex forms include: PLURAL, SELECT, CHOICE, SELECTORDINAL
      *
      * When patterns contain nested complex forms (e.g., plural inside selectordinal),
-     * the same argument name may appear multiple times. Each occurrence in the source
-     * must have a corresponding occurrence in the target with a compatible type.
+     * the same argument name may appear multiple times — once per parent branch.
+     * The number of parent branches legitimately differs across locales due to
+     * different plural/ordinal rules (e.g., English selectordinal has 4 branches
+     * while French has only 2). Therefore, we compare the **unique set** of
+     * (argName, argType) pairs rather than raw occurrence counts.
      *
      * @throws MissingComplexFormException If the target is missing a complex form that exists in the source.
      * @throws OutOfBoundsException
      */
     private function validateComplexFormCompatibility(): void
     {
+        // Collect all complex args (plural, select, etc.) from both sides
         $sourceComplexArgs = $this->extractComplexArguments($this->sourceValidator);
         $targetComplexArgs = $this->extractComplexArguments($this->targetValidator);
 
-        // Build a count map for each (argName, argType) pair in the target
-        // so we can match each source occurrence to a target occurrence
-        $targetCountMap = [];
+        // Index target args as a hash set keyed by "argName::argType" for O(1) lookup
+        $targetKeySet = [];
         foreach ($targetComplexArgs as $targetArg) {
             $key = $targetArg->argName . '::' . $targetArg->argType->name;
-            $targetCountMap[$key] = ($targetCountMap[$key] ?? 0) + 1;
+            $targetKeySet[$key] = true;
         }
 
-        // For each source complex arg, find a compatible match in the target
+        // Track already-checked pairs to deduplicate (same arg can appear in multiple branches)
+        $checkedKeys = [];
         foreach ($sourceComplexArgs as $sourceArg) {
             $argName = $sourceArg->argName;
             $sourceArgType = $sourceArg->argType;
-
-            // Try to find a compatible match in the target count map
             $matchKey = $argName . '::' . $sourceArgType->name;
 
-            if (isset($targetCountMap[$matchKey]) && $targetCountMap[$matchKey] > 0) {
-                // Exact match found, consume one occurrence
-                $targetCountMap[$matchKey]--;
+            // Deduplicate: only check each unique (argName, argType) once
+            if (isset($checkedKeys[$matchKey])) {
+                continue;
+            }
+            $checkedKeys[$matchKey] = true;
+
+            // Exact match found in target — this arg is satisfied
+            if (isset($targetKeySet[$matchKey])) {
                 continue;
             }
 
-            // No exact match found — check if the target has this arg name at all
-            // to provide a better error message (missing vs mismatched type)
+            // No match — look for the same arg name with a *different* type
+            // to distinguish "completely missing" from "wrong type" in the error
             $targetArgType = null;
             foreach ($targetComplexArgs as $targetArg) {
                 if ($targetArg->argName === $argName) {
@@ -181,6 +215,7 @@ final class MessagePatternComparator
                 }
             }
 
+            // Throw with context: missing entirely (targetArgType=null) or type mismatch
             throw new MissingComplexFormException(
                 $argName,
                 $sourceArgType,

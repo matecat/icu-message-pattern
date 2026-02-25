@@ -15,11 +15,13 @@ use Matecat\ICU\Exceptions\OutOfBoundsException;
 use Matecat\ICU\MessagePattern;
 use Matecat\ICU\MessagePatternComparator;
 use Matecat\ICU\MessagePatternValidator;
+use Matecat\ICU\Plurals\PluralComplianceException;
 use Matecat\ICU\Tokens\ArgType;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use ReflectionException;
 
 /**
  * Tests the functionality of the `MessagePatternComparator` class.
@@ -36,8 +38,10 @@ class MessagePatternComparatorTest extends TestCase
     /**
      * Test fromValidators() static factory method.
      * Verifies that locales and pattern strings are correctly extracted from validators.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testFromValidatorsFactoryMethod(): void
@@ -68,8 +72,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test fromValidators() with missing complex form throws exception.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testFromValidatorsWithMissingComplexFormThrowsException(): void
@@ -86,9 +92,10 @@ class MessagePatternComparatorTest extends TestCase
     /**
      * Test fromPatterns() static factory method.
      * Verifies that locales and pattern strings are correctly set from MessagePattern instances.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
-     * @throws InvalidArgumentException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testFromPatternsFactoryMethod(): void
@@ -119,8 +126,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test fromPatterns() with missing complex form throws exception.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testFromPatternsWithMissingComplexFormThrowsException(): void
@@ -136,8 +145,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test fromPatterns() allows reusing parsed patterns for multiple locale comparisons.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testFromPatternsReusesParsedPatterns(): void
@@ -159,8 +170,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test fromValidators() preserves validator state.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testFromValidatorsPreservesValidatorState(): void
@@ -184,8 +197,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test comparing valid simple patterns without complex forms.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testValidSimplePatterns(): void
@@ -205,8 +220,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test comparing valid plural patterns.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testValidPluralPatterns(): void
@@ -226,8 +243,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test comparing valid select patterns.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testValidSelectPatterns(): void
@@ -251,8 +270,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test that missing plural form in target throws MissingComplexFormException.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testMissingPluralFormInTargetThrowsException(): void
@@ -274,8 +295,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test that missing select form in target throws MissingComplexFormException.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testMissingSelectFormInTargetThrowsException(): void
@@ -297,8 +320,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test that mismatched complex form types throw MissingComplexFormException.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testMismatchedComplexFormTypesThrowsException(): void
@@ -320,8 +345,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test that PLURAL and SELECTORDINAL are not interchangeable.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testPluralAndSelectOrdinalNotInterchangeable(): void
@@ -343,8 +370,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test that matching SELECTORDINAL forms pass validation.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testMatchingSelectOrdinalFormsPass(): void
@@ -368,8 +397,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test nested complex forms are validated.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testNestedComplexFormsValidation(): void
@@ -394,7 +425,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test missing nested complex form throws exception.
+     * @throws InvalidArgumentException
+     * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testMissingNestedComplexFormThrowsException(): void
@@ -424,9 +458,11 @@ class MessagePatternComparatorTest extends TestCase
      * composition of complex arguments extracted from nested patterns.
      *
      * Uses a PHPUnit mock spy with expects() to verify the exact count of extracted arguments.
-     *
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
+     * @throws ReflectionException
      */
     #[Test]
     public function testNestedSelectOrdinalWithPluralValidation(): void
@@ -489,11 +525,18 @@ class MessagePatternComparatorTest extends TestCase
     }
 
     /**
-     * Test that nested selectordinal+plural fails when target is missing one nested plural.
+     * Test that nested selectordinal+plural passes when only one branch contains the nested plural.
+     *
+     * Under set-based comparison, having at least one occurrence of totalYears::PLURAL
+     * in the target is sufficient — different locales may have fewer branches.
+     *
+     * @throws InvalidArgumentException
+     * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
-    public function testNestedSelectOrdinalMissingOnePluralThrowsException(): void
+    public function testNestedSelectOrdinalWithOnePluralBranchIsValid(): void
     {
         $sourcePattern = '{currentYear, selectordinal, ' .
             'one{{totalYears, plural, ' .
@@ -503,7 +546,7 @@ class MessagePatternComparatorTest extends TestCase
             'one {This is my {currentYear}th year, # total.} ' .
             'other {This is my {currentYear}th year, # total.}}}}';
 
-        // Target has selectordinal but only one nested plural (missing in the "other" branch)
+        // Target has selectordinal but only one branch with nested plural — still valid
         $targetPattern = '{currentYear, selectordinal, ' .
             'one{{totalYears, plural, ' .
             'one {C\'est ma {currentYear}ère année, # total.} ' .
@@ -512,10 +555,100 @@ class MessagePatternComparatorTest extends TestCase
 
         $comparator = new MessagePatternComparator('en', 'fr', $sourcePattern, $targetPattern);
 
+        // Should not throw — at least one totalYears::PLURAL exists in target
+        $comparator->validate();
+    }
+
+    /**
+     * Test that nested plural entirely absent from the target throws an exception.
+     *
+     * @throws InvalidArgumentException
+     * @throws MissingComplexFormException
+     * @throws OutOfBoundsException
+     * @throws PluralComplianceException
+     */
+    #[Test]
+    public function testNestedPluralEntirelyMissingFromTargetThrowsException(): void
+    {
+        $sourcePattern = '{currentYear, selectordinal, ' .
+            'one{{totalYears, plural, ' .
+            'one {This is my {currentYear}st year, # total.} ' .
+            'other {This is my {currentYear}st year, # total.}}} ' .
+            'other {{totalYears, plural, ' .
+            'one {This is my {currentYear}th year, # total.} ' .
+            'other {This is my {currentYear}th year, # total.}}}}';
+
+        // Target has selectordinal but NO nested plural at all in any branch
+        $targetPattern = '{currentYear, selectordinal, ' .
+            'one {C\'est ma {currentYear}ère année de travail.} ' .
+            'other {C\'est ma {currentYear}e année de travail.}}';
+
+        $comparator = new MessagePatternComparator('en', 'fr', $sourcePattern, $targetPattern);
+
         self::expectException(MissingComplexFormException::class);
         self::expectExceptionMessageMatches("/Argument 'totalYears' has complex form 'PLURAL'/");
 
         $comparator->validate();
+    }
+
+    /**
+     * Test that nested complex forms with different branch counts across locales are valid.
+     *
+     * English selectordinal has 4 branches (one, two, few, other), each with a nested plural.
+     * French selectordinal has only 2 branches (one, other), each with a nested plural.
+     * This is a valid translation — the number of parent branches depends on the locale's
+     * plural/ordinal rules.
+     *
+     * @throws InvalidArgumentException
+     * @throws MissingComplexFormException
+     * @throws OutOfBoundsException
+     * @throws PluralComplianceException
+     */
+    #[Test]
+    public function testNestedComplexFormsWithDifferentBranchCountsIsValid(): void
+    {
+        // English: 4 selectordinal branches (one, two, few, other) × nested plural
+        $sourcePattern = '{currentYear, selectordinal, ' .
+            'one{{totalYears, plural, ' .
+            'one {This is my {currentYear}st year of work at this company of my total # year of work.} ' .
+            'other {This is my {currentYear}st year of work at this company of my total # years of work.}}} ' .
+            'two{{totalYears, plural, ' .
+            'one {This is my {currentYear}nd year of work at this company of my total # year of work.} ' .
+            'other {This is my {currentYear}nd year of work at this company of my total # years of work.}}} ' .
+            'few{{totalYears, plural, ' .
+            'one {This is my {currentYear}rd year of work at this company of my total # year of work.} ' .
+            'other {This is my {currentYear}rd year of work at this company of my total # years of work.}}} ' .
+            'other{{totalYears, plural, ' .
+            'one {This is my {currentYear}th year of work at this company of my total # year of work.} ' .
+            'other {This is my {currentYear}th year of work at this company of my total # years of work.}}}}';
+
+        // French: only 2 selectordinal branches (one, other) × nested plural
+        $targetPattern = <<<H
+            {currentYear, selectordinal,
+                one {
+                    {totalYears, plural,
+                        one {Il s'agit de ma {currentYear}ème année de travail dans cette entreprise sur un total de # années de travail.}
+                        other {Il s'agit de ma {currentYear}ème année de travail dans cette entreprise sur un total de # années de travail.}
+                    }
+                }
+                other {
+                    {totalYears, plural,
+                        one {Il s'agit de ma {currentYear}ème année de travail dans cette entreprise sur un total de # années de travail.}
+                        other {Il s'agit de ma {currentYear}ème année de travail dans cette entreprise sur un total de # années de travail.}
+                    }
+                }
+            }
+H;
+
+        $comparator = new MessagePatternComparator('en', 'fr', $sourcePattern, $targetPattern);
+
+        // Source: 5 complex args (1 selectordinal + 4 plural)
+        // Target: 3 complex args (1 selectordinal + 2 plural)
+        // Should not throw — the unique (argName, argType) sets are identical
+        $result = $comparator->validate(validateSource: true, validateTarget: true);
+        $this->assertTrue($result->hasWarnings());
+        $this->assertNotNull($result->targetWarnings);
+        $this->assertNull($result->sourceWarnings);
     }
 
     // =========================================================================
@@ -660,7 +793,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test MissingComplexFormException properties for missing argument.
+     * @throws InvalidArgumentException
+     * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testMissingComplexFormExceptionPropertiesMissingArg(): void
@@ -689,7 +825,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test MissingComplexFormException properties for a mismatched type.
+     * @throws InvalidArgumentException
+     * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testMissingComplexFormExceptionPropertiesMismatchedType(): void
@@ -719,8 +858,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test empty patterns are valid.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testEmptyPatternsAreValid(): void
@@ -740,8 +881,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test patterns with only literals are valid.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testLiteralOnlyPatternsAreValid(): void
@@ -761,8 +904,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test source without complex syntax skips complex form validation.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testSourceWithoutComplexSyntaxSkipsComplexValidation(): void
@@ -783,8 +928,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test multiple arguments with complex forms.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testMultipleArgumentsWithComplexForms(): void
@@ -804,8 +951,10 @@ class MessagePatternComparatorTest extends TestCase
 
     /**
      * Test partial missing complex form throws exception.
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     public function testPartialMissingComplexFormThrowsException(): void
@@ -867,8 +1016,10 @@ class MessagePatternComparatorTest extends TestCase
      * @param string $sourcePattern
      * @param string $targetPattern
      * @return void
+     * @throws InvalidArgumentException
      * @throws MissingComplexFormException
      * @throws OutOfBoundsException
+     * @throws PluralComplianceException
      */
     #[Test]
     #[DataProvider('validPatternPairsProvider')]
