@@ -1,37 +1,37 @@
 {
-    "name": "matecat/icu-intl",
-    "description": "A PHP port of ICU4J's MessagePattern parser with locale utilities. Parses ICU MessageFormat patterns into an inspectable AST and provides locale data support for internationalization in PHP.",
-    "type": "library",
-    "license": "LGPL-3.0-or-later",
-    "autoload": {
-        "psr-4": {
-            "Matecat\\ICU\\": "src/ICU",
-            "Matecat\\Locales\\": "src/Locales"
-        }
-    },
-    "authors": [
-        {
-            "name": "Domenico Lupinetti",
-            "email": "ostico@gmail.com"
-        }
-    ],
-    "require": {
-        "php": ">=8.3",
-        "ext-mbstring": "*"
-    },
-    "suggest": {
-        "ext-intl": "For enhanced locale and internationalization support."
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^12",
-        "phpunit/php-code-coverage": "^12",
-        "phpstan/phpstan": "@stable",
-        "ext-xdebug": "*"
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Matecat\\ICU\\Tests\\": "tests/Matecat/Tests/ICU",
-            "Matecat\\Locales\\Tests\\": "tests/Matecat/Tests/Locales"
-        }
+  "name": "matecat/icu-intl",
+  "description": "A PHP port of ICU4J's MessagePattern parser with locale utilities. Parses ICU MessageFormat patterns into an inspectable AST and provides locale data support for internationalization in PHP.",
+  "type": "library",
+  "license": "LGPL-3.0-or-later",
+  "autoload": {
+    "psr-4": {
+      "Matecat\\ICU\\": "src/ICU",
+      "Matecat\\Locales\\": "src/Locales"
     }
+  },
+  "authors": [
+    {
+      "name": "Domenico Lupinetti",
+      "email": "ostico@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=8.3",
+    "ext-mbstring": "*"
+  },
+  "suggest": {
+    "ext-intl": "For enhanced locale and internationalization support."
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^12",
+    "phpunit/php-code-coverage": "^12",
+    "phpstan/phpstan": "@stable",
+    "ext-xdebug": "*"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Matecat\\ICU\\Tests\\": "tests/Matecat/Tests/ICU",
+      "Matecat\\Locales\\Tests\\": "tests/Matecat/Tests/Locales"
+    }
+  }
 }

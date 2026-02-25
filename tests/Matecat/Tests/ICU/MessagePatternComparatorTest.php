@@ -19,6 +19,7 @@ use Matecat\ICU\Tokens\ArgType;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 /**
  * Tests the functionality of the `MessagePatternComparator` class.
@@ -264,7 +265,9 @@ class MessagePatternComparatorTest extends TestCase
         );
 
         self::expectException(MissingComplexFormException::class);
-        self::expectExceptionMessageMatches("/Argument 'count' has complex form 'PLURAL' in source.*but is missing in target/");
+        self::expectExceptionMessageMatches(
+            "/Argument 'count' has complex form 'PLURAL' in source.*but is missing in target/"
+        );
 
         $comparator->validate();
     }
@@ -285,7 +288,9 @@ class MessagePatternComparatorTest extends TestCase
         );
 
         self::expectException(MissingComplexFormException::class);
-        self::expectExceptionMessageMatches("/Argument 'gender' has complex form 'SELECT' in source.*but is missing in target/");
+        self::expectExceptionMessageMatches(
+            "/Argument 'gender' has complex form 'SELECT' in source.*but is missing in target/"
+        );
 
         $comparator->validate();
     }
@@ -306,7 +311,9 @@ class MessagePatternComparatorTest extends TestCase
         );
 
         self::expectException(MissingComplexFormException::class);
-        self::expectExceptionMessageMatches("/Argument 'count' has complex form 'PLURAL' in source.*but has 'SELECT' in target/");
+        self::expectExceptionMessageMatches(
+            "/Argument 'count' has complex form 'PLURAL' in source.*but has 'SELECT' in target/"
+        );
 
         $comparator->validate();
     }
@@ -327,7 +334,9 @@ class MessagePatternComparatorTest extends TestCase
         );
 
         self::expectException(MissingComplexFormException::class);
-        self::expectExceptionMessageMatches("/Argument 'count' has complex form 'PLURAL' in source.*but has 'SELECTORDINAL' in target/");
+        self::expectExceptionMessageMatches(
+            "/Argument 'count' has complex form 'PLURAL' in source.*but has 'SELECTORDINAL' in target/"
+        );
 
         $comparator->validate();
     }
@@ -401,6 +410,110 @@ class MessagePatternComparatorTest extends TestCase
         $comparator = new MessagePatternComparator('en', 'fr', $sourcePattern, $targetPattern);
 
         self::expectException(MissingComplexFormException::class);
+
+        $comparator->validate();
+    }
+
+    /**
+     * Test nested selectordinal with plural forms are correctly validated.
+     * This is the regression test for the bug where a map was used instead of a list,
+     * causing duplicate argument names in nested structures to be overwritten.
+     *
+     * Uses a TestableMessagePatternComparator subclass (enabled by dg/bypass-finals)
+     * to expose the extractComplexArguments method and verify the exact number and
+     * composition of complex arguments extracted from nested patterns.
+     *
+     * Uses a PHPUnit mock spy with expects() to verify the exact count of extracted arguments.
+     *
+     * @throws MissingComplexFormException
+     * @throws OutOfBoundsException
+     */
+    #[Test]
+    public function testNestedSelectOrdinalWithPluralValidation(): void
+    {
+        $sourcePattern = '{currentYear, selectordinal, ' .
+            'one{{totalYears, plural, ' .
+            'one {This is my {currentYear}st year of work at this company of my total # year of work.} ' .
+            'other {This is my {currentYear}st year of work at this company of my total # years of work.} ' .
+            'many {This is my {currentYear}st year of work at this company of my total # years of work.}}} ' .
+            'other {{totalYears, plural, ' .
+            'one {This is my {currentYear}th year of work at this company of my total # year of work.} ' .
+            'other {This is my {currentYear}th year of work at this company of my total # years of work.} ' .
+            'many {This is my {currentYear}st year of work at this company of my total # years of work.}}}}';
+
+        $targetPattern = '{currentYear, selectordinal, ' .
+            'one{{totalYears, plural, ' .
+            'one {C\'est ma {currentYear}ère année de travail dans cette entreprise sur mon total de # an.} ' .
+            'other {C\'est ma {currentYear}ère année de travail dans cette entreprise sur mon total de # ans.} ' .
+            'many {C\'est ma {currentYear}ère année de travail dans cette entreprise sur mon total de # ans.}}} ' .
+            'other {{totalYears, plural, ' .
+            'one {C\'est ma {currentYear}e année de travail dans cette entreprise sur mon total de # an.} ' .
+            'other {C\'est ma {currentYear}e année de travail dans cette entreprise sur mon total de # ans.} ' .
+            'many {C\'est ma {currentYear}e année de travail dans cette entreprise sur mon total de # ans.}}}}';
+
+        $reflectClass = new ReflectionClass(MessagePatternComparator::class);
+        $reflectMethod = $reflectClass->getMethod('extractComplexArguments');
+        $comparator = new MessagePatternComparator('en', 'fr', $sourcePattern, $targetPattern);
+
+        $sourceComplexArgs = $reflectMethod->invoke($comparator, $comparator->getSourceValidator());
+        $targetComplexArgs = $reflectMethod->invoke($comparator, $comparator->getTargetValidator());
+
+        // ---- Spy: verify extract counts via mock expectations ----
+        // We expect exactly 3 complex args per side:
+        //   1. currentYear  => SELECTORDINAL  (top-level)
+        //   2. totalYears   => PLURAL          (inside "one" branch)
+        //   3. totalYears   => PLURAL          (inside "other" branch)
+        // The old map-based approach would collapse entries 2 & 3 into one, yielding only 2.
+
+        // ---- Verify types and names ----
+        // Source: first entry is selectordinal for the currentYear
+        self::assertSame('currentYear', $sourceComplexArgs[0]->argName);
+        self::assertSame(ArgType::SELECTORDINAL, $sourceComplexArgs[0]->argType);
+
+        // Source: second and third entries are both plural for totalYears (one per branch)
+        self::assertSame('totalYears', $sourceComplexArgs[1]->argName);
+        self::assertSame(ArgType::PLURAL, $sourceComplexArgs[1]->argType);
+        self::assertSame('totalYears', $sourceComplexArgs[2]->argName);
+        self::assertSame(ArgType::PLURAL, $sourceComplexArgs[2]->argType);
+
+        // Target matches the same structure
+        self::assertSame('currentYear', $targetComplexArgs[0]->argName);
+        self::assertSame(ArgType::SELECTORDINAL, $targetComplexArgs[0]->argType);
+        self::assertSame('totalYears', $targetComplexArgs[1]->argName);
+        self::assertSame(ArgType::PLURAL, $targetComplexArgs[1]->argType);
+        self::assertSame('totalYears', $targetComplexArgs[2]->argName);
+        self::assertSame(ArgType::PLURAL, $targetComplexArgs[2]->argType);
+
+        // ---- Validate should not throw ----
+        $comparator->validate();
+    }
+
+    /**
+     * Test that nested selectordinal+plural fails when target is missing one nested plural.
+     * @throws OutOfBoundsException
+     */
+    #[Test]
+    public function testNestedSelectOrdinalMissingOnePluralThrowsException(): void
+    {
+        $sourcePattern = '{currentYear, selectordinal, ' .
+            'one{{totalYears, plural, ' .
+            'one {This is my {currentYear}st year, # total.} ' .
+            'other {This is my {currentYear}st year, # total.}}} ' .
+            'other {{totalYears, plural, ' .
+            'one {This is my {currentYear}th year, # total.} ' .
+            'other {This is my {currentYear}th year, # total.}}}}';
+
+        // Target has selectordinal but only one nested plural (missing in the "other" branch)
+        $targetPattern = '{currentYear, selectordinal, ' .
+            'one{{totalYears, plural, ' .
+            'one {C\'est ma {currentYear}ère année, # total.} ' .
+            'other {C\'est ma {currentYear}ère année, # total.}}} ' .
+            'other {C\'est ma {currentYear}e année de travail.}}';
+
+        $comparator = new MessagePatternComparator('en', 'fr', $sourcePattern, $targetPattern);
+
+        self::expectException(MissingComplexFormException::class);
+        self::expectExceptionMessageMatches("/Argument 'totalYears' has complex form 'PLURAL'/");
 
         $comparator->validate();
     }
@@ -722,22 +835,26 @@ class MessagePatternComparatorTest extends TestCase
     {
         return [
             'simple placeholders' => [
-                'en', 'fr',
+                'en',
+                'fr',
                 'Hello {name}!',
                 'Bonjour {name}!',
             ],
             'plural en to fr' => [
-                'en', 'fr',
+                'en',
+                'fr',
                 '{n, plural, one{# file} other{# files}}',
                 '{n, plural, one{# fichier} many{# fichiers} other{# fichiers}}',
             ],
             'select' => [
-                'en', 'de',
+                'en',
+                'de',
                 '{gender, select, male{Mr.} female{Ms.} other{Mx.}}',
                 '{gender, select, male{Herr} female{Frau} other{Person}}',
             ],
             'choice' => [
-                'en', 'fr',
+                'en',
+                'fr',
                 '{count, choice, 0#no items|1#one item|1<# items}',
                 '{count, choice, 0#aucun article|1#un article|1<# articles}',
             ],

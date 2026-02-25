@@ -13,8 +13,8 @@ namespace Matecat\ICU;
 
 use Matecat\ICU\Exceptions\MissingComplexFormException;
 use Matecat\ICU\Exceptions\OutOfBoundsException;
-use Matecat\ICU\Tokens\ArgType;
 use Matecat\ICU\Tokens\TokenType;
+use stdClass;
 
 /**
  * Compares source and target ICU MessageFormat patterns for translation validation.
@@ -137,6 +137,10 @@ final class MessagePatternComparator
      *
      * Complex forms include: PLURAL, SELECT, CHOICE, SELECTORDINAL
      *
+     * When patterns contain nested complex forms (e.g., plural inside selectordinal),
+     * the same argument name may appear multiple times. Each occurrence in the source
+     * must have a corresponding occurrence in the target with a compatible type.
+     *
      * @throws MissingComplexFormException If the target is missing a complex form that exists in the source.
      * @throws OutOfBoundsException
      */
@@ -145,60 +149,57 @@ final class MessagePatternComparator
         $sourceComplexArgs = $this->extractComplexArguments($this->sourceValidator);
         $targetComplexArgs = $this->extractComplexArguments($this->targetValidator);
 
-        foreach ($sourceComplexArgs as $argName => $sourceArgType) {
-            if (!isset($targetComplexArgs[$argName])) {
-                throw new MissingComplexFormException(
-                    $argName,
-                    $sourceArgType,
-                    null,
-                    $this->sourceLocale,
-                    $this->targetLocale
-                );
+        // Build a count map for each (argName, argType) pair in the target
+        // so we can match each source occurrence to a target occurrence
+        $targetCountMap = [];
+        foreach ($targetComplexArgs as $targetArg) {
+            $key = $targetArg->argName . '::' . $targetArg->argType->name;
+            $targetCountMap[$key] = ($targetCountMap[$key] ?? 0) + 1;
+        }
+
+        // For each source complex arg, find a compatible match in the target
+        foreach ($sourceComplexArgs as $sourceArg) {
+            $argName = $sourceArg->argName;
+            $sourceArgType = $sourceArg->argType;
+
+            // Try to find a compatible match in the target count map
+            $matchKey = $argName . '::' . $sourceArgType->name;
+
+            if (isset($targetCountMap[$matchKey]) && $targetCountMap[$matchKey] > 0) {
+                // Exact match found, consume one occurrence
+                $targetCountMap[$matchKey]--;
+                continue;
             }
 
-            $targetArgType = $targetComplexArgs[$argName];
-
-            // For PLURAL and SELECTORDINAL, they are considered compatible with each other
-            // as they both handle numeric plural forms (just cardinal vs. ordinal)
-            if (!$this->areComplexTypesCompatible($sourceArgType, $targetArgType)) {
-                throw new MissingComplexFormException(
-                    $argName,
-                    $sourceArgType,
-                    $targetArgType,
-                    $this->sourceLocale,
-                    $this->targetLocale
-                );
+            // No exact match found — check if the target has this arg name at all
+            // to provide a better error message (missing vs mismatched type)
+            $targetArgType = null;
+            foreach ($targetComplexArgs as $targetArg) {
+                if ($targetArg->argName === $argName) {
+                    $targetArgType = $targetArg->argType;
+                    break;
+                }
             }
+
+            throw new MissingComplexFormException(
+                $argName,
+                $sourceArgType,
+                $targetArgType !== $sourceArgType ? $targetArgType : null,
+                $this->sourceLocale,
+                $this->targetLocale
+            );
         }
     }
 
-    /**
-     * Checks if two complex argument types are compatible.
-     *
-     * @param ArgType $sourceType The source argument type.
-     * @param ArgType $targetType The target argument type.
-     * @return bool True if compatible, false otherwise.
-     */
-    private function areComplexTypesCompatible(ArgType $sourceType, ArgType $targetType): bool
-    {
-        // Exact match is always compatible
-        if ($sourceType === $targetType) {
-            return true;
-        }
-
-        // PLURAL and SELECTORDINAL are NOT interchangeable - they serve different purposes
-        // Cardinal (plural) = "1 item, 2 items"
-        // Ordinal (selectordinal) = "1st, 2nd, 3rd"
-        // A translation should maintain the same semantic meaning
-
-        return false;
-    }
 
     /**
      * Extracts all complex arguments from a validated pattern.
      *
+     * Returns a list (not a map) to correctly handle nested patterns where the same
+     * argument name may appear multiple times (e.g., a plural inside each branch of a selectordinal).
+     *
      * @param MessagePatternValidator $validator The validator containing the parsed pattern.
-     * @return array<string, ArgType> Map of argument names to their complex types.
+     * @return list<stdClass> List of complex argument descriptors, each with properties: string $argName, ArgType $argType.
      * @throws OutOfBoundsException
      */
     private function extractComplexArguments(MessagePatternValidator $validator): array
@@ -227,14 +228,15 @@ final class MessagePatternComparator
             $nameType = $argNamePart->getType();
 
             if ($nameType === TokenType::ARG_NAME || $nameType === TokenType::ARG_NUMBER) {
-                $argName = $pattern->getSubstring($argNamePart);
-                $complexArgs[$argName] = $argType;
+                $entry = new stdClass();
+                $entry->argName = $pattern->getSubstring($argNamePart);
+                $entry->argType = $argType;
+                $complexArgs[] = $entry;
             }
         }
 
         return $complexArgs;
     }
-
 
     /**
      * Checks if the source pattern contains complex syntax.
