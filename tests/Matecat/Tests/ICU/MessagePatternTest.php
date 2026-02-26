@@ -6,8 +6,10 @@ declare(strict_types=1);
 namespace Matecat\Tests\ICU;
 
 use Exception;
+use Matecat\ICU\Exceptions\BadPluralSelectPatternSyntaxException;
 use Matecat\ICU\Exceptions\InvalidArgumentException;
 use Matecat\ICU\Exceptions\OutOfBoundsException;
+use Matecat\ICU\Exceptions\UnmatchedBracesException;
 use Matecat\ICU\MessagePattern;
 use Matecat\ICU\Tokens\ArgType;
 use Matecat\ICU\Tokens\Part;
@@ -818,7 +820,7 @@ MSG;
     }
 
     /**
-     * Tests that missing pattern in choice style throws InvalidArgumentException.
+     * Tests that missing pattern in choice style throws UnmatchedBracesException.
      *
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
@@ -826,8 +828,8 @@ MSG;
     #[Test]
     public function testChoiceStyleMissingPattern(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Missing choice argument pattern');
+        $this->expectException(UnmatchedBracesException::class);
+        $this->expectExceptionMessage("Unmatched '{' braces in message");
 
         $pattern = new MessagePattern();
         $pattern->parseChoiceStyle('');
@@ -883,7 +885,7 @@ MSG;
     }
 
     /**
-     * Tests that missing 'other' in plural style throws InvalidArgumentException.
+     * Tests that missing 'other' in plural style throws BadPluralSelectPatternSyntaxException.
      *
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
@@ -891,8 +893,8 @@ MSG;
     #[Test]
     public function testPluralStyleMissingOther(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Missing 'other' keyword");
+        $this->expectException(BadPluralSelectPatternSyntaxException::class);
+        $this->expectExceptionMessage("Bad plural pattern syntax");
 
         $pattern = new MessagePattern();
         $pattern->parsePluralStyle('one{# item}');
@@ -997,7 +999,7 @@ MSG;
     }
 
     /**
-     * Tests that plural without 'other' in message pattern throws InvalidArgumentException.
+     * Tests that plural without 'other' in message pattern throws BadPluralSelectPatternSyntaxException.
      *
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
@@ -1006,8 +1008,8 @@ MSG;
     public function testMessagePatternPluralWithoutOther(): void
     {
         // Test using full message pattern syntax with plural style but NO other keyword
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Missing 'other' keyword");
+        $this->expectException(BadPluralSelectPatternSyntaxException::class);
+        $this->expectExceptionMessage("Bad plural pattern syntax");
 
         $pattern = new MessagePattern();
         // This pattern has a plural style with 'one' selector but NO 'other' selector
@@ -1015,7 +1017,7 @@ MSG;
     }
 
     /**
-     * Tests that plural with 'few' but without 'other' throws InvalidArgumentException.
+     * Tests that plural with 'few' but without 'other' throws BadPluralSelectPatternSyntaxException.
      *
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
@@ -1024,8 +1026,8 @@ MSG;
     public function testMessagePatternPluralFewWithoutOther(): void
     {
         // Test with multiple selectors but still missing 'other' keyword
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Missing 'other' keyword");
+        $this->expectException(BadPluralSelectPatternSyntaxException::class);
+        $this->expectExceptionMessage("Bad plural pattern syntax");
 
         $pattern = new MessagePattern();
         // Russian plural form with one/few/many but NO 'other'

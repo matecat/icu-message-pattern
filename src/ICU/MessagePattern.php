@@ -1,11 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Matecat\ICU;
 
 use Iterator;
+use Matecat\ICU\Exceptions\BadPluralSelectPatternSyntaxException;
 use Matecat\ICU\Exceptions\InvalidArgumentException;
+use Matecat\ICU\Exceptions\InvalidNumericValueException;
 use Matecat\ICU\Exceptions\OutOfBoundsException;
+use Matecat\ICU\Exceptions\UnmatchedBracesException;
 use Matecat\ICU\Tokens\ArgType;
 use Matecat\ICU\Tokens\Part;
 use Matecat\ICU\Tokens\TokenType;
@@ -152,8 +156,12 @@ final class MessagePattern implements Iterator
 
 
     /**
-     * @throws OutOfBoundsException
-     * @throws InvalidArgumentException
+     * @throws InvalidArgumentException If the pattern syntax is invalid.
+     * @throws UnmatchedBracesException If the pattern contains unmatched '{' or '}' braces.
+     * @throws BadPluralSelectPatternSyntaxException If a plural/select pattern is malformed or missing the "other" case.
+     * @throws InvalidNumericValueException If a numeric value in the pattern has bad syntax.
+     * @throws OutOfBoundsException If certain limits are exceeded
+     *         (e.g., argument number too high, argument name too long, nesting too deep, etc.)
      */
     public function __construct(?string $pattern = null, string $apostropheMode = self::APOSTROPHE_DOUBLE_OPTIONAL)
     {
@@ -167,9 +175,12 @@ final class MessagePattern implements Iterator
      * Parses a MessageFormat pattern string.
      * @param string $pattern a MessageFormat pattern string
      * @return $this
-     * @throws InvalidArgumentException for syntax errors in the pattern string or if a number could not be parsed
-     * @throws OutOfBoundsException if certain limits are exceeded
-     *         (e.g., argument number too high, argument name too long, etc.)
+     * @throws InvalidArgumentException If the pattern syntax is invalid.
+     * @throws UnmatchedBracesException If the pattern contains unmatched '{' or '}' braces.
+     * @throws BadPluralSelectPatternSyntaxException If a plural/select pattern is malformed or missing the "other" case.
+     * @throws InvalidNumericValueException If a numeric value in the pattern has bad syntax.
+     * @throws OutOfBoundsException If certain limits are exceeded
+     *         (e.g., argument number too high, argument name too long, nesting too deep, etc.)
      */
     public function parse(string $pattern): self
     {
@@ -183,8 +194,10 @@ final class MessagePattern implements Iterator
      * Parses a ChoiceFormat pattern string.
      * @param string $pattern a ChoiceFormat pattern string
      * @return $this
-     * @throws InvalidArgumentException for syntax errors in the pattern string or if a number could not be parsed
-     * @throws OutOfBoundsException if certain limits are exceeded
+     * @throws InvalidArgumentException If the pattern syntax is invalid or has missing segments.
+     * @throws UnmatchedBracesException If the pattern contains unmatched '{' or '}' braces.
+     * @throws InvalidNumericValueException If a numeric selector has bad syntax.
+     * @throws OutOfBoundsException If numeric selectors or other elements exceed allowed length limits.
      */
     public function parseChoiceStyle(string $pattern): self
     {
@@ -198,8 +211,11 @@ final class MessagePattern implements Iterator
      * Parses a PluralFormat pattern string.
      * @param string $pattern a PluralFormat pattern string
      * @return $this
-     * @throws InvalidArgumentException for syntax errors in the pattern string or if a number could not be parsed
-     * @throws OutOfBoundsException if certain limits are exceeded
+     * @throws InvalidArgumentException If the pattern syntax is invalid.
+     * @throws UnmatchedBracesException If the pattern contains unmatched '{' or '}' braces.
+     * @throws BadPluralSelectPatternSyntaxException If the plural pattern is malformed or missing the "other" case.
+     * @throws InvalidNumericValueException If a numeric value in the pattern has bad syntax.
+     * @throws OutOfBoundsException If selectors or offset values exceed allowed length limits.
      */
     public function parsePluralStyle(string $pattern): self
     {
@@ -213,8 +229,10 @@ final class MessagePattern implements Iterator
      * Parses a SelectFormat pattern string.
      * @param string $pattern a SelectFormat pattern string
      * @return $this
-     * @throws InvalidArgumentException for syntax errors in the pattern string or if a number could not be parsed
-     * @throws OutOfBoundsException if certain limits are exceeded
+     * @throws InvalidArgumentException If the pattern syntax is invalid.
+     * @throws UnmatchedBracesException If the pattern contains unmatched '{' or '}' braces.
+     * @throws BadPluralSelectPatternSyntaxException If the select pattern is malformed or missing the "other" case.
+     * @throws OutOfBoundsException If selectors exceed allowed length limits.
      */
     public function parseSelectStyle(string $pattern): self
     {
@@ -468,7 +486,7 @@ final class MessagePattern implements Iterator
         // Track the position of a potential doubled apostrophe (escaped single quote)
         $doubleApos = -1;
         while (true) {
-            // Find next apostrophe starting from current position
+            // Find the next apostrophe starting from the current position
             $i = mb_strpos($s, "'", $start);
             if ($i === false || $i >= $limit) {
                 // No more apostrophes in range: append the remaining segment and finish
@@ -522,8 +540,11 @@ final class MessagePattern implements Iterator
      * @param int $nestingLevel The current level of nesting in the message structure.
      * @param ArgType $parentType The type of the parent argument, used to determine parsing behavior.
      * @return int The index after processing the message fragment or its terminator.
-     * @throws OutOfBoundsException If the nesting level exceeds the maximum allowable value.
-     * @throws InvalidArgumentException If an unmatched brace is found in the nested structure.
+     * @throws InvalidArgumentException If the message fragment syntax is invalid.
+     * @throws UnmatchedBracesException If the message contains unmatched '{' or '}' braces.
+     * @throws BadPluralSelectPatternSyntaxException If a nested plural/select pattern is malformed.
+     * @throws InvalidNumericValueException If a numeric value in a nested argument has bad syntax.
+     * @throws OutOfBoundsException If the nesting level exceeds the maximum allowable value or other limits are hit.
      */
     private function parseMessage(int $index, int $msgStartLength, int $nestingLevel, ArgType $parentType): int
     {
@@ -605,7 +626,7 @@ final class MessagePattern implements Iterator
 
         // If nested and not a valid top-level choice sub-message, report unmatched '{'.
         if ($nestingLevel > 0 && !$this->inTopLevelChoiceMessage($nestingLevel, $parentType)) {
-            throw new InvalidArgumentException("Unmatched '{' braces in message " . $this->prefix());
+            throw new UnmatchedBracesException($this->errorContext());
         }
 
         // Close the message fragment and return the current index (end or terminator).
@@ -624,7 +645,10 @@ final class MessagePattern implements Iterator
      * @param int $index The current position in the message pattern where the argument starts.
      * @param int $nestingLevel The current nesting depth of braces in the message pattern.
      * @return int The position in the message pattern immediately after the closing '}' of the argument.
-     * @throws InvalidArgumentException If the argument syntax is invalid or unmatched braces are encountered.
+     * @throws InvalidArgumentException If the argument syntax is invalid (e.g., bad name, missing comma/brace).
+     * @throws UnmatchedBracesException If the argument contains unmatched '{' or '}' braces.
+     * @throws BadPluralSelectPatternSyntaxException If a complex argument's plural/select style is malformed.
+     * @throws InvalidNumericValueException If a numeric value in the argument style has bad syntax.
      * @throws OutOfBoundsException If the argument number, name, or type exceeds predefined limits.
      */
     private function parseArg(int $index, int $nestingLevel): int
@@ -637,7 +661,7 @@ final class MessagePattern implements Iterator
         // Skip whitespace after '{' and capture the argument name/number span.
         $nameIndex = $index = $this->skipWhiteSpace($index + 1);
         if ($index === $this->msgLength) {
-            throw new InvalidArgumentException("Unmatched '{' braces in message " . $this->prefix());
+            throw new UnmatchedBracesException($this->errorContext());
         }
 
         // Parse identifier characters, then determine if it is a numeric index or name.
@@ -651,27 +675,27 @@ final class MessagePattern implements Iterator
             $this->addPart(TokenType::ARG_NUMBER, $nameIndex, $length, $number);
         } elseif ($number === self::ARG_NAME_NOT_NUMBER) {
             if ($length > Part::MAX_LENGTH) {
-                throw new OutOfBoundsException("Argument name too long: " . $this->prefix($nameIndex));
+                throw new OutOfBoundsException("Argument name too long: " . $this->errorContext($nameIndex));
             }
             $this->hasArgNames = true;
             $this->addPart(TokenType::ARG_NAME, $nameIndex, $length, 0);
         } elseif ($number === self::ARG_VALUE_OVERFLOW) {
-            throw new OutOfBoundsException("Argument number too large: " . $this->prefix($nameIndex));
+            throw new OutOfBoundsException("Argument number too large: " . $this->errorContext($nameIndex));
         } else {
-            throw new InvalidArgumentException("Bad argument syntax: " . $this->prefix($nameIndex));
+            throw new InvalidArgumentException("Bad argument syntax: " . $this->errorContext($nameIndex));
         }
 
         // After name/number, expect either '}' or ',' for type/style.
         $index = $this->skipWhiteSpace($index);
         if ($index === $this->msgLength) {
-            throw new InvalidArgumentException("Unmatched '{' braces in message " . $this->prefix());
+            throw new UnmatchedBracesException($this->errorContext());
         }
 
         $c = $this->charAt($index);
         if ($c !== '}') {
             // Must have a comma introducing the argument type.
             if ($c !== ',') {
-                throw new InvalidArgumentException("Bad argument syntax: " . $this->prefix($nameIndex));
+                throw new InvalidArgumentException("Bad argument syntax: " . $this->errorContext($nameIndex));
             }
 
             // Read the type token (e.g., "number", "plural", "select").
@@ -684,14 +708,14 @@ final class MessagePattern implements Iterator
             // Validate that the type is followed by ',' or '}'.
             $index = $this->skipWhiteSpace($index);
             if ($index === $this->msgLength) {
-                throw new InvalidArgumentException("Unmatched '{' braces in message " . $this->prefix());
+                throw new UnmatchedBracesException($this->errorContext());
             }
             $c = $this->charAt($index);
             if ($length === 0 || ($c !== ',' && $c !== '}')) {
-                throw new InvalidArgumentException("Bad argument syntax: " . $this->prefix($nameIndex));
+                throw new InvalidArgumentException("Bad argument syntax: " . $this->errorContext($nameIndex));
             }
             if ($length > Part::MAX_LENGTH) {
-                throw new OutOfBoundsException("Argument type name too long: " . $this->prefix($nameIndex));
+                throw new OutOfBoundsException("Argument type name too long: " . $this->errorContext($nameIndex));
             }
 
             // Map the type token to a known ArgType.
@@ -720,7 +744,7 @@ final class MessagePattern implements Iterator
             if ($c === '}') {
                 if ($argType !== ArgType::SIMPLE) {
                     throw new InvalidArgumentException(
-                        "No style field for complex argument: " . $this->prefix($nameIndex)
+                        "No style field for complex argument: " . $this->errorContext($nameIndex)
                     );
                 }
             } else {
@@ -746,8 +770,8 @@ final class MessagePattern implements Iterator
      *
      * @param int $index The starting index of the style text in the message pattern.
      * @return int The index immediately following the parsed style text.
-     * @throws InvalidArgumentException If quoted literal text is unterminated, if braces are unmatched,
-     *                                  or if a syntax error occurs in the message pattern.
+     * @throws InvalidArgumentException If quoted literal text is unterminated or a syntax error occurs.
+     * @throws UnmatchedBracesException If braces are unmatched (no closing '}' found for the style).
      * @throws OutOfBoundsException If the style text length exceeds the maximum allowed limit.
      */
     private function parseSimpleStyle(int $index): int
@@ -775,7 +799,7 @@ final class MessagePattern implements Iterator
                 if (!$found) {
                     // Unterminated quote is an error.
                     throw new InvalidArgumentException(
-                        "Quoted literal argument style text reaches to the end of the message: " . $this->prefix($start)
+                        "Quoted literal argument style text reaches to the end of the message: " . $this->errorContext($start)
                     );
                 }
             } elseif ($c === '{') {
@@ -790,7 +814,7 @@ final class MessagePattern implements Iterator
                     $len = --$index - $start;
                     if ($len > Part::MAX_LENGTH) {
                         // Style segment too long.
-                        throw new OutOfBoundsException("Argument style text too long: " . $this->prefix($start));
+                        throw new OutOfBoundsException("Argument style text too long: " . $this->errorContext($start));
                     }
                     // Record the ARG_STYLE part and return the end index.
                     $this->addPart(TokenType::ARG_STYLE, $start, $len, 0);
@@ -799,7 +823,7 @@ final class MessagePattern implements Iterator
             }
         }
         // Reached end without a matching closing brace.
-        throw new InvalidArgumentException("Unmatched '{' braces in message " . $this->prefix());
+        throw new UnmatchedBracesException($this->errorContext());
     }
 
     /**
@@ -810,6 +834,8 @@ final class MessagePattern implements Iterator
      * @return int The updated index after parsing the choice style segment.
      * @throws InvalidArgumentException If the pattern has syntax errors, missing segments,
      *                                  or invalid choice separators.
+     * @throws UnmatchedBracesException If the choice pattern contains unmatched '{' or '}' braces.
+     * @throws InvalidNumericValueException If a numeric selector has bad syntax.
      * @throws OutOfBoundsException If numeric selectors exceed allowable length limits.
      */
     private function parseChoiceStyleInternal(int $index, int $nestingLevel): int
@@ -820,7 +846,7 @@ final class MessagePattern implements Iterator
 
         // Ensure there is a choice pattern to parse (not end or immediate '}').
         if ($index === $length || $this->charAt($index) === '}') {
-            throw new InvalidArgumentException("Missing choice argument pattern in " . $this->prefix());
+            throw new UnmatchedBracesException($this->errorContext());
         }
 
         while (true) {
@@ -831,10 +857,10 @@ final class MessagePattern implements Iterator
 
             // Reject empty or overlong numeric selectors.
             if ($len === 0) {
-                throw new InvalidArgumentException("Bad choice pattern syntax: " . $this->prefix($start));
+                throw new InvalidArgumentException("Bad choice pattern syntax: " . $this->errorContext($start));
             }
             if ($len > Part::MAX_LENGTH) {
-                throw new OutOfBoundsException("Choice number too long: " . $this->prefix($numberIndex));
+                throw new OutOfBoundsException("Choice number too long: " . $this->errorContext($numberIndex));
             }
 
             // Validate and record the numeric selector value.
@@ -845,7 +871,7 @@ final class MessagePattern implements Iterator
             if ($index === $length) {
                 // @codeCoverageIgnoreStart
                 throw new InvalidArgumentException(
-                    "Bad choice pattern syntax: " . $this->prefix($start)
+                    "Bad choice pattern syntax: " . $this->errorContext($start)
                 );
                 // @codeCoverageIgnoreEnd
             }
@@ -854,7 +880,7 @@ final class MessagePattern implements Iterator
             $c = $this->charAt($index);
             if (!($c === '#' || $c === '<' || $this->startsWithAt("≤", $index))) {
                 throw new InvalidArgumentException(
-                    "Expected choice separator (#<≤) instead of '$c' in choice pattern " . $this->prefix($start)
+                    "Expected choice separator (#<≤) instead of '$c' in choice pattern " . $this->errorContext($start)
                 );
             }
 
@@ -870,7 +896,7 @@ final class MessagePattern implements Iterator
             // If terminated by '}', verify nesting and finish this choice style.
             if ($this->charAt($index) === '}') {
                 if (!$this->inMessageFormatPattern($nestingLevel)) {
-                    throw new InvalidArgumentException("Bad choice pattern syntax: " . $this->prefix($start));
+                    throw new InvalidArgumentException("Bad choice pattern syntax: " . $this->errorContext($start));
                 }
                 return $index;
             }
@@ -888,9 +914,13 @@ final class MessagePattern implements Iterator
      * @param int $index The current index in the pattern string where parsing starts.
      * @param int $nestingLevel The level of nesting within the message format pattern.
      * @return int The updated index position after parsing the plural or select style.
-     * @throws InvalidArgumentException If the syntax of the provided plural/select pattern is invalid or if required
-     *                                  elements (e.g., the "other" case) are missing.
-     * @throws OutOfBoundsException If a selector or offset exceeds allowed length constraints.
+     * @throws InvalidArgumentException If the syntax is invalid or required elements
+     *                                  (e.g., a message fragment after a selector, the "offset:" position) are wrong.
+     * @throws UnmatchedBracesException If the pattern contains unmatched '{' or '}' braces.
+     * @throws BadPluralSelectPatternSyntaxException If the plural/select pattern is malformed
+     *                                               or missing the required "other" case.
+     * @throws InvalidNumericValueException If a numeric explicit-value selector (e.g., "=2") has bad syntax.
+     * @throws OutOfBoundsException If a selector or offset value exceeds allowed length constraints.
      */
     private function parsePluralOrSelectStyle(ArgType $argType, int $index, int $nestingLevel): int
     {
@@ -905,7 +935,6 @@ final class MessagePattern implements Iterator
 
             // end of style: '}' or end of string
             if ($eos || $this->charAt($index) === '}') {
-
                 if ($eos) {
                     $curlyBraces = 0; // Counter to track the balance of opening and closing curly braces.
 
@@ -920,21 +949,17 @@ final class MessagePattern implements Iterator
 
                     // If there are unmatched opening braces, throw an exception.
                     if ($curlyBraces > 0) {
-                        throw new InvalidArgumentException("Unmatched '{' braces in message " . $this->prefix());
+                        throw new UnmatchedBracesException($this->errorContext());
                     }
                 }
 
                 // validate matching end depending on nesting context
                 if ($eos === $this->inMessageFormatPattern($nestingLevel)) {
-                    throw new InvalidArgumentException(
-                        "Bad " . strtolower($argType->name) . " pattern syntax: " . $this->prefix($start)
-                    );
+                    throw new BadPluralSelectPatternSyntaxException($argType->name, $this->errorContext($start));
                 }
                 // plural/select requires an "other" case
                 if (!$hasOther) {
-                    throw new InvalidArgumentException(
-                        "Missing 'other' keyword in " . strtolower($argType->name) . " pattern in " . $this->prefix()
-                    );
+                    throw new BadPluralSelectPatternSyntaxException($argType->name, $this->errorContext($start));
                 }
                 return $index;
             }
@@ -946,12 +971,10 @@ final class MessagePattern implements Iterator
                 $index = $this->skipDouble($index + 1);
                 $len = $index - $selectorIndex;
                 if ($len === 1) {
-                    throw new InvalidArgumentException(
-                        "Bad " . strtolower($argType->name) . " pattern syntax: " . $this->prefix($start)
-                    );
+                    throw new BadPluralSelectPatternSyntaxException($argType->name, $this->errorContext($start));
                 }
                 if ($len > Part::MAX_LENGTH) {
-                    throw new OutOfBoundsException("Argument selector too long: " . $this->prefix($selectorIndex));
+                    throw new OutOfBoundsException("Argument selector too long: " . $this->errorContext($selectorIndex));
                 }
                 $this->addPart(TokenType::ARG_SELECTOR, $selectorIndex, $len, 0);
                 $this->parseDouble($selectorIndex + 1, $index, false); // store numeric selector value
@@ -961,9 +984,7 @@ final class MessagePattern implements Iterator
                 $len = $index - $selectorIndex;
 
                 if ($len === 0) {
-                    throw new InvalidArgumentException(
-                        "Bad " . strtolower($argType->name) . " pattern syntax: " . $this->prefix($start)
-                    );
+                    throw new BadPluralSelectPatternSyntaxException($argType->name, $this->errorContext($start));
                 }
 
                 // plural "offset:" must be first and only once
@@ -978,7 +999,7 @@ final class MessagePattern implements Iterator
                 ) {
                     if (!$isEmpty) {
                         throw new InvalidArgumentException(
-                            "Plural argument 'offset:' (if present) must precede key-message pairs: " . $this->prefix(
+                            "Plural argument 'offset:' (if present) must precede key-message pairs: " . $this->errorContext(
                                 $start
                             )
                         );
@@ -987,11 +1008,11 @@ final class MessagePattern implements Iterator
                     $index = $this->skipDouble($valueIndex);
                     if ($index === $valueIndex) {
                         throw new InvalidArgumentException(
-                            "Missing value for plural 'offset:' " . $this->prefix($start)
+                            "Missing value for plural 'offset:' " . $this->errorContext($start)
                         );
                     }
                     if (($index - $valueIndex) > Part::MAX_LENGTH) {
-                        throw new OutOfBoundsException("Plural offset value too long: " . $this->prefix($valueIndex));
+                        throw new OutOfBoundsException("Plural offset value too long: " . $this->errorContext($valueIndex));
                     }
                     $this->parseDouble($valueIndex, $index, false); // store offset value
                     $isEmpty = false;
@@ -999,7 +1020,7 @@ final class MessagePattern implements Iterator
                 }
 
                 if ($len > Part::MAX_LENGTH) {
-                    throw new OutOfBoundsException("Argument selector too long: " . $this->prefix($selectorIndex));
+                    throw new OutOfBoundsException("Argument selector too long: " . $this->errorContext($selectorIndex));
                 }
                 $this->addPart(TokenType::ARG_SELECTOR, $selectorIndex, $len, 0);
 
@@ -1013,7 +1034,7 @@ final class MessagePattern implements Iterator
             $index = $this->skipWhiteSpace($index);
             if ($index === $length || $this->charAt($index) !== '{') {
                 throw new InvalidArgumentException(
-                    "No message fragment after " . strtolower($argType->name) . " selector: " . $this->prefix(
+                    "No message fragment after " . strtolower($argType->name) . " selector: " . $this->errorContext(
                         $selectorIndex
                     )
                 );
@@ -1096,14 +1117,15 @@ final class MessagePattern implements Iterator
      * @param bool $allowInfinity Indicates whether the numeric value can represent infinity.
      *
      * @return void
-     * @throws InvalidArgumentException If the syntax for the numeric value is invalid.
-     * @throws OutOfBoundsException
+     * @throws InvalidNumericValueException If the numeric value syntax is invalid
+     *         (e.g., bare sign, non-numeric characters, or misplaced infinity symbol).
+     * @throws OutOfBoundsException If there are too many numeric values stored.
      */
     private function parseDouble(int $start, int $limit, bool $allowInfinity): void
     {
         // Validate bounds: there must be at least one character to parse.
         if ($start >= $limit) {
-            throw new InvalidArgumentException("Bad syntax for numeric value."); // @codeCoverageIgnore
+            throw new InvalidNumericValueException(); // @codeCoverageIgnore
         }
 
         $index = $start;
@@ -1114,12 +1136,12 @@ final class MessagePattern implements Iterator
         if ($c === '-') {
             $isNegative = 1;
             if ($index === $limit) {
-                throw new InvalidArgumentException("Bad syntax for numeric value.");
+                throw new InvalidNumericValueException();
             }
             $c = $this->charAt($index++);
         } elseif ($c === '+') {
             if ($index === $limit) {
-                throw new InvalidArgumentException("Bad syntax for numeric value.");
+                throw new InvalidNumericValueException();
             }
             $c = $this->charAt($index++);
         }
@@ -1131,7 +1153,7 @@ final class MessagePattern implements Iterator
                 $this->addArgDoublePart($value, $start, $limit - $start);
                 return;
             }
-            throw new InvalidArgumentException("Bad syntax for numeric value.");
+            throw new InvalidNumericValueException();
         }
 
         // Fast-path: parse integer digits and keep within max storable int range.
@@ -1332,11 +1354,12 @@ final class MessagePattern implements Iterator
     /**
      * Generates a preview of the message text starting from a specified index.
      * Optionally includes position information in the preview when the starting index is not zero.
+     * (Named "prefix" in the original ICU4J MessagePattern.java.)
      *
      * @param int|null $start The starting index of the message slice. Defaults to the beginning of the message if null.
      * @return string A quoted preview of the message text, truncated with an ellipsis if it exceeds the maximum length.
      */
-    private function prefix(?int $start = null): string
+    private function errorContext(?int $start = null): string
     {
         // Max length of the previewed message slice.
         $max = 24;
