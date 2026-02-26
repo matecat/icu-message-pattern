@@ -386,24 +386,27 @@ final class MessagePatternParser
      */
     private function resolveArgType(int $typeIndex, int $length): ArgType
     {
+        $msg = $this->ctx->msg;
+        $chars = $this->ctx->chars;
+        $msgLen = $this->ctx->msgLength;
+
         if ($length === 6) {
-            if (CharUtils::isChoice($this->ctx->msg, $this->ctx->chars, $this->ctx->msgLength, $typeIndex)) {
-                return ArgType::CHOICE;
-            }
-            if (CharUtils::isPlural($this->ctx->msg, $this->ctx->chars, $this->ctx->msgLength, $typeIndex)) {
-                return ArgType::PLURAL;
-            }
-            if (CharUtils::isSelect($this->ctx->msg, $this->ctx->chars, $this->ctx->msgLength, $typeIndex)) {
-                return ArgType::SELECT;
-            }
-        } elseif ($length === 13) {
-            if (
-                CharUtils::isSelect($this->ctx->msg, $this->ctx->chars, $this->ctx->msgLength, $typeIndex)
-                && CharUtils::isOrdinal($this->ctx->msg, $this->ctx->chars, $this->ctx->msgLength, $typeIndex + 6)
-            ) {
-                return ArgType::SELECTORDINAL;
-            }
+            return match (true) {
+                CharUtils::isChoice($msg, $chars, $msgLen, $typeIndex) => ArgType::CHOICE,
+                CharUtils::isPlural($msg, $chars, $msgLen, $typeIndex) => ArgType::PLURAL,
+                CharUtils::isSelect($msg, $chars, $msgLen, $typeIndex) => ArgType::SELECT,
+                default => ArgType::SIMPLE,
+            };
         }
+
+        if (
+            $length === 13
+            && CharUtils::isSelect($msg, $chars, $msgLen, $typeIndex)
+            && CharUtils::isOrdinal($msg, $chars, $msgLen, $typeIndex + 6)
+        ) {
+            return ArgType::SELECTORDINAL;
+        }
+
         return ArgType::SIMPLE;
     }
 
