@@ -84,6 +84,7 @@ final class MessagePatternValidator
     public function getPattern(): MessagePattern
     {
         $this->checkForPatternInitialized();
+        assert($this->pattern !== null);
         return $this->pattern;
     }
 
@@ -94,6 +95,7 @@ final class MessagePatternValidator
     public function containsComplexSyntax(): bool
     {
         $this->checkForPatternInitialized();
+        assert($this->pattern !== null);
 
         foreach ($this->pattern as $part) {
             if ($part->getArgType()->isComplexType()) {
@@ -130,7 +132,7 @@ final class MessagePatternValidator
             $this->pattern = new MessagePattern();
         }
 
-        if ($this->pattern->countParts() === 0 && $this->patternString !== null) {
+        if ($this->pattern->parts()->countParts() === 0 && $this->patternString !== null) {
             try {
                 $this->pattern->parse($this->patternString);
             } catch (OutOfBoundsException|InvalidArgumentException $e) {
@@ -169,6 +171,7 @@ final class MessagePatternValidator
     public function validatePluralCompliance(): ?PluralComplianceWarning
     {
         $this->checkForPatternInitialized();
+        assert($this->pattern !== null);
 
         if ($this->parsingException) {
             throw $this->parsingException;
@@ -341,11 +344,12 @@ final class MessagePatternValidator
      */
     private function getArgumentName(int $argNameIndex): string
     {
+        assert($this->pattern !== null);
         // According to ICU pattern structure: ARG_START is followed immediately by ARG_NAME or ARG_NUMBER
-        $part = $this->pattern->getPart($argNameIndex);
+        $part = $this->pattern->parts()->getPart($argNameIndex);
         $type = $part->getType();
         if ($type === TokenType::ARG_NAME || $type === TokenType::ARG_NUMBER) {
-            $name = $this->pattern->getSubstring($part);
+            $name = $this->pattern->parts()->getSubstring($part);
         }
 
         return $name ?? 'unknown';
@@ -380,14 +384,15 @@ final class MessagePatternValidator
      */
     private function extractSelectorsForArgument(int $startIndex): array
     {
+        assert($this->pattern !== null);
         $selectors = [];
-        $limitIndex = $this->pattern->getLimitPartIndex($startIndex);
+        $limitIndex = $this->pattern->parts()->getLimitPartIndex($startIndex);
 
         // Iterate only between ARG_START and ARG_LIMIT, skipping full pattern iteration
         for ($i = $startIndex + 1; $i < $limitIndex; $i++) {
-            $part = $this->pattern->getPart($i);
+            $part = $this->pattern->parts()->getPart($i);
             if ($part->getType() === TokenType::ARG_SELECTOR) {
-                $selectors[] = $this->pattern->getSubstring($part);
+                $selectors[] = $this->pattern->parts()->getSubstring($part);
             }
         }
 

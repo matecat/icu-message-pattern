@@ -90,11 +90,11 @@ foreach ($pattern as $i => $part) {
     }
 
     if ($part->getLength() > 0) {
-        $explanation .= '="' . $pattern->getSubstring($part) . '"';
+        $explanation .= '="' . $pattern->parts()->getSubstring($part) . '"';
     }
 
     if ($type->hasNumericValue()) {
-        $explanation .= '=' . $pattern->getNumericValue($part);
+        $explanation .= '=' . $pattern->parts()->getNumericValue($part);
     }
 
     printf("%2d: %s%s%s\n", $i, $indent, $partString, $explanation);
@@ -555,15 +555,24 @@ This library focuses on parsing and structure. If you want to format values usin
 - `clearPatternAndSetApostropheMode(int $mode): void`
 - `getApostropheMode(): int`
 - `getPatternString(): string`
+- `parts(): PartAccessor` — returns the part accessor for querying parsed tokens
+- `validateArgumentName(string $name): int` (static helper)
+- `appendReducedApostrophes(string $s, int $start, int $limit, string &$out): void` (static helper)
+- Implements `Iterator` to iterate parts.
+
+### Matecat\ICU\Parsing\PartAccessor
+
+Accessed via `$pattern->parts()`:
+
 - `countParts(): int`
 - `getPart(int $index): Part`
 - `getPartType(int $index): Parts\TokenType`
 - `getSubstring(Part $part): string`
+- `partSubstringMatches(Part $part, string $s): bool`
 - `getNumericValue(Part $part): float|int` (returns `MessagePattern::NO_NUMERIC_VALUE` when not numeric)
 - `getPluralOffset(int $argStartIndex): float`
-- `validateArgumentName(string $name): int` (static helper)
-- `appendReducedApostrophes(string $s, int $start, int $limit, string &$out): void` (static helper)
-- Implements `Iterator` to iterate parts.
+- `getPatternIndex(int $partIndex): int`
+- `getLimitPartIndex(int $start): int`
 
 ### Matecat\ICU\Part
 

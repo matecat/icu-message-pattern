@@ -259,12 +259,12 @@ final class MessagePatternComparator
             }
 
             // Get the argument name (next part after ARG_START)
-            $argNamePart = $pattern->getPart($index + 1);
+            $argNamePart = $pattern->parts()->getPart($index + 1);
             $nameType = $argNamePart->getType();
 
             if ($nameType === TokenType::ARG_NAME || $nameType === TokenType::ARG_NUMBER) {
                 $entry = new stdClass();
-                $entry->argName = $pattern->getSubstring($argNamePart);
+                $entry->argName = $pattern->parts()->getSubstring($argNamePart);
                 $entry->argType = $argType;
                 $complexArgs[] = $entry;
             }

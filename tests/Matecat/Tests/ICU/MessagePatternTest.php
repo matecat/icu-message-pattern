@@ -52,7 +52,7 @@ final class MessagePatternTest extends TestCase
     public function testParseEmpty(): void
     {
         $pattern = new MessagePattern();
-        self::assertEquals(2, $pattern->parse('Hi')->countParts());
+        self::assertEquals(2, $pattern->parse('Hi')->parts()->countParts());
     }
 
     /**
@@ -65,7 +65,7 @@ final class MessagePatternTest extends TestCase
     public function testParse(): void
     {
         $pattern = new MessagePattern();
-        self::assertTrue($pattern->parse('Hi {0}')->countParts() > 2);
+        self::assertTrue($pattern->parse('Hi {0}')->parts()->countParts() > 2);
     }
 
     /**
@@ -99,18 +99,18 @@ final class MessagePatternTest extends TestCase
         self::assertTrue($pattern->hasNumberedArguments());
         self::assertTrue($pattern->hasNamedArguments());
 
-        self::assertSame(TokenType::MSG_START, $pattern->getPartType(0));
-        self::assertSame(TokenType::MSG_LIMIT, $pattern->getPartType($pattern->countParts() - 1));
+        self::assertSame(TokenType::MSG_START, $pattern->parts()->getPartType(0));
+        self::assertSame(TokenType::MSG_LIMIT, $pattern->parts()->getPartType($pattern->parts()->countParts() - 1));
 
-        $limit = $pattern->getLimitPartIndex(0);
-        self::assertSame($pattern->countParts() - 1, $limit);
+        $limit = $pattern->parts()->getLimitPartIndex(0);
+        self::assertSame($pattern->parts()->countParts() - 1, $limit);
 
         $argNameFound = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
             if ($part->getType() === TokenType::ARG_NAME) {
                 $argNameFound = true;
-                self::assertSame('name', $pattern->getSubstring($part));
+                self::assertSame('name', $pattern->parts()->getSubstring($part));
                 break;
             }
         }
@@ -132,10 +132,10 @@ final class MessagePatternTest extends TestCase
 
         $countNumeric = 0;
         $countSelectors = 0;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
             if ($part->getType()->hasNumericValue()) {
-                self::assertSame(floatval($countNumeric), $pattern->getNumericValue($part));
+                self::assertSame(floatval($countNumeric), $pattern->parts()->getNumericValue($part));
                 $countNumeric++;
             }
             if ($part->getType() === TokenType::ARG_SELECTOR) {
@@ -158,11 +158,11 @@ final class MessagePatternTest extends TestCase
         $pattern = new MessagePattern();
         $pattern->parsePluralStyle('offset:1 one{# item} other{# items}');
 
-        self::assertSame(1.0, $pattern->getPluralOffset(0));
+        self::assertSame(1.0, $pattern->parts()->getPluralOffset(0));
 
         $hasReplaceNumber = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            if ($pattern->getPartType($i) === TokenType::REPLACE_NUMBER) {
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            if ($pattern->parts()->getPartType($i) === TokenType::REPLACE_NUMBER) {
                 $hasReplaceNumber = true;
                 break;
             }
@@ -184,9 +184,9 @@ final class MessagePatternTest extends TestCase
         $pattern->parseSelectStyle('male{He} female{She} other{They}');
 
         $hasOtherSelector = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
-            if ($part->getType() === TokenType::ARG_SELECTOR && $pattern->getSubstring($part) === 'other') {
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
+            if ($part->getType() === TokenType::ARG_SELECTOR && $pattern->parts()->getSubstring($part) === 'other') {
                 $hasOtherSelector = true;
                 break;
             }
@@ -224,8 +224,8 @@ final class MessagePatternTest extends TestCase
 
         $argStartFound = false;
         $argType = null;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
             if ($part->getType() === TokenType::ARG_START) {
                 $argStartFound = true;
                 $argType = $part->getArgType();
@@ -253,8 +253,8 @@ final class MessagePatternTest extends TestCase
         $hasPlural = false;
         $hasReplaceNumber = false;
 
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
             if ($part->getType() === TokenType::ARG_START) {
                 if ($part->getArgType() === ArgType::SELECT) {
                     $hasSelect = true;
@@ -286,8 +286,8 @@ final class MessagePatternTest extends TestCase
         $pattern->parse('{pos, selectordinal, one{#st} two{#nd} few{#rd} other{#th}}');
 
         $hasSelectOrdinal = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
             if ($part->getType() === TokenType::ARG_START && $part->getArgType() === ArgType::SELECTORDINAL) {
                 $hasSelectOrdinal = true;
                 break;
@@ -310,12 +310,12 @@ final class MessagePatternTest extends TestCase
         $pattern->parseChoiceStyle('0#none|1<single|∞≤many');
 
         $selectorCount = 0;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            if ($pattern->getPartType($i) === TokenType::ARG_SELECTOR) {
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            if ($pattern->parts()->getPartType($i) === TokenType::ARG_SELECTOR) {
                 $selectorCount++;
             }
         }
-        self::assertEquals(12, $pattern->countParts());
+        self::assertEquals(12, $pattern->parts()->countParts());
         self::assertSame(3, $selectorCount);
 
         /*
@@ -352,7 +352,7 @@ final class MessagePatternTest extends TestCase
             [TokenType::MSG_LIMIT, 22, 0, 1, '', null],
         ];
 
-        self::assertSame(count($expected), $pattern->countParts());
+        self::assertSame(count($expected), $pattern->parts()->countParts());
 
         foreach ($pattern as $i => $part) {
             [$type, $index, $length, $value, $substring, $numeric] = $expected[$i];
@@ -362,10 +362,10 @@ final class MessagePatternTest extends TestCase
             self::assertSame($length, $part->getLength(), "Part #$i length");
             self::assertSame($value, $part->getValue(), "Part #$i value");
 
-            self::assertSame($substring, $pattern->getSubstring($part), "Part #$i substring");
+            self::assertSame($substring, $pattern->parts()->getSubstring($part), "Part #$i substring");
 
             if ($numeric !== null) {
-                self::assertSame($numeric, $pattern->getNumericValue($part), "Part #$i numeric");
+                self::assertSame($numeric, $pattern->parts()->getNumericValue($part), "Part #$i numeric");
             }
         }
     }
@@ -483,7 +483,7 @@ MSG;
             [TokenType::MSG_LIMIT, 137, 0, 0, '', null, null],
         ];
 
-        self::assertSame(count($expected), $pattern->countParts());
+        self::assertSame(count($expected), $pattern->parts()->countParts());
 
         foreach ($pattern as $i => $part) {
             [$type, $index, $length, $value, $substring, $numeric, $argType] = $expected[$i];
@@ -491,7 +491,7 @@ MSG;
             self::assertSame($type, $part->getType(), "Part #$i type");
             self::assertSame($index, $part->getIndex(), "Part #$i index");
             self::assertSame($length, $part->getLength(), "Part #$i length");
-            self::assertSame($substring, $pattern->getSubstring($part), "Part #$i substring");
+            self::assertSame($substring, $pattern->parts()->getSubstring($part), "Part #$i substring");
 
             if ($argType !== null) {
                 self::assertSame($argType, $part->getArgType(), "Part #$i argType");
@@ -500,7 +500,7 @@ MSG;
             }
 
             if ($numeric !== null) {
-                self::assertSame($numeric, $pattern->getNumericValue($part), "Part #$i numeric");
+                self::assertSame($numeric, $pattern->parts()->getNumericValue($part), "Part #$i numeric");
             }
         }
     }
@@ -518,10 +518,10 @@ MSG;
         $pattern->parsePluralStyle('=0{none} one{# item} other{# items}');
 
         $numericValues = [];
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
             if ($part->getType()->hasNumericValue()) {
-                $numericValues[] = $pattern->getNumericValue($part);
+                $numericValues[] = $pattern->parts()->getNumericValue($part);
             }
         }
 
@@ -554,10 +554,10 @@ MSG;
     {
         $pattern = new MessagePattern();
         $pattern->parse('Hi {0}');
-        self::assertGreaterThan(0, $pattern->countParts());
+        self::assertGreaterThan(0, $pattern->parts()->countParts());
 
         $pattern->clear();
-        self::assertSame(0, $pattern->countParts());
+        self::assertSame(0, $pattern->parts()->countParts());
         self::assertSame('', $pattern->getPatternString());
         self::assertFalse($pattern->hasNamedArguments());
         self::assertFalse($pattern->hasNumberedArguments());
@@ -576,7 +576,7 @@ MSG;
         $pattern->parse('Hi {0}');
 
         $pattern->clearPatternAndSetApostropheMode(MessagePattern::APOSTROPHE_DOUBLE_REQUIRED);
-        self::assertSame(0, $pattern->countParts());
+        self::assertSame(0, $pattern->parts()->countParts());
         self::assertSame(MessagePattern::APOSTROPHE_DOUBLE_REQUIRED, $pattern->getApostropheMode());
     }
 
@@ -604,10 +604,10 @@ MSG;
         $pattern = new MessagePattern();
         $pattern->parse('{name}');
 
-        $part = $pattern->getPart(2);
-        self::assertTrue($pattern->partSubstringMatches($part, 'name'));
-        self::assertFalse($pattern->partSubstringMatches($part, 'other'));
-        self::assertFalse($pattern->partSubstringMatches($part, 'names'));
+        $part = $pattern->parts()->getPart(2);
+        self::assertTrue($pattern->parts()->partSubstringMatches($part, 'name'));
+        self::assertFalse($pattern->parts()->partSubstringMatches($part, 'other'));
+        self::assertFalse($pattern->parts()->partSubstringMatches($part, 'names'));
     }
 
     /**
@@ -622,8 +622,8 @@ MSG;
         $pattern = new MessagePattern();
         $pattern->parse('{name}');
 
-        $part = $pattern->getPart(1);
-        self::assertSame(MessagePattern::NO_NUMERIC_VALUE, $pattern->getNumericValue($part));
+        $part = $pattern->parts()->getPart(1);
+        self::assertSame(MessagePattern::NO_NUMERIC_VALUE, $pattern->parts()->getNumericValue($part));
     }
 
     /**
@@ -638,7 +638,7 @@ MSG;
         $pattern = new MessagePattern();
         $pattern->parsePluralStyle('one{# item} other{# items}');
 
-        self::assertSame(0.0, $pattern->getPluralOffset(0));
+        self::assertSame(0.0, $pattern->parts()->getPluralOffset(0));
     }
 
     /**
@@ -653,7 +653,7 @@ MSG;
         $pattern = new MessagePattern();
         $pattern->parse('Hi {0}');
 
-        self::assertSame(0, $pattern->getPatternIndex(0));
+        self::assertSame(0, $pattern->parts()->getPatternIndex(0));
     }
 
     /**
@@ -669,7 +669,7 @@ MSG;
 
         $pattern = new MessagePattern();
         $pattern->parse('Hi');
-        $pattern->getPart(999);
+        $pattern->parts()->getPart(999);
     }
 
     /**
@@ -784,6 +784,41 @@ MSG;
 
         $pattern = new MessagePattern();
         $pattern->parse('{name, plural}');
+    }
+
+    /**
+     * Tests parsing a simple typed argument without a style value (e.g., {count, number}).
+     * This covers the code path where parseArgStyleBody receives '}' with ArgType::SIMPLE.
+     *
+     * @throws OutOfBoundsException
+     */
+    #[Test]
+    public function testSimpleArgTypeWithoutStyle(): void
+    {
+        $pattern = new MessagePattern('{count, number}');
+
+        // MSG_START, ARG_START(SIMPLE), ARG_NAME, ARG_TYPE, ARG_LIMIT(SIMPLE), MSG_LIMIT
+        self::assertSame(6, $pattern->parts()->countParts());
+
+        // ARG_START should be SIMPLE
+        $argStart = $pattern->parts()->getPart(1);
+        self::assertSame(TokenType::ARG_START, $argStart->getType());
+        self::assertSame(ArgType::SIMPLE, $argStart->getArgType());
+
+        // ARG_NAME should be "count"
+        $argName = $pattern->parts()->getPart(2);
+        self::assertSame(TokenType::ARG_NAME, $argName->getType());
+        self::assertSame('count', $pattern->parts()->getSubstring($argName));
+
+        // ARG_TYPE should be "number"
+        $argType = $pattern->parts()->getPart(3);
+        self::assertSame(TokenType::ARG_TYPE, $argType->getType());
+        self::assertSame('number', $pattern->parts()->getSubstring($argType));
+
+        // No ARG_STYLE part should exist
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            self::assertNotSame(TokenType::ARG_STYLE, $pattern->parts()->getPartType($i));
+        }
     }
 
     /**
@@ -1061,7 +1096,7 @@ MSG;
         $pattern = new MessagePattern(null, MessagePattern::APOSTROPHE_DOUBLE_REQUIRED);
         $pattern->parse("It's 'quoted'");
 
-        self::assertGreaterThan(2, $pattern->countParts());
+        self::assertGreaterThan(2, $pattern->parts()->countParts());
     }
 
     /**
@@ -1078,8 +1113,8 @@ MSG;
 
         $hasArgType = false;
         $hasArgStyle = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $type = $pattern->getPartType($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $type = $pattern->parts()->getPartType($i);
             if ($type === TokenType::ARG_TYPE) {
                 $hasArgType = true;
             }
@@ -1105,8 +1140,8 @@ MSG;
         $pattern->parse('{name, number, {nested}}');
 
         $styleFound = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            if ($pattern->getPartType($i) === TokenType::ARG_STYLE) {
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            if ($pattern->parts()->getPartType($i) === TokenType::ARG_STYLE) {
                 $styleFound = true;
                 break;
             }
@@ -1128,10 +1163,10 @@ MSG;
         $pattern->parseChoiceStyle('-5.5#negative|0#zero|5.5#positive');
 
         $numericValues = [];
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
             if ($part->getType()->hasNumericValue()) {
-                $numericValues[] = $pattern->getNumericValue($part);
+                $numericValues[] = $pattern->parts()->getNumericValue($part);
             }
         }
 
@@ -1153,8 +1188,8 @@ MSG;
         $pattern->parseChoiceStyle('999999999999999#huge');
 
         $hasDouble = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            if ($pattern->getPartType($i) === TokenType::ARG_DOUBLE) {
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            if ($pattern->parts()->getPartType($i) === TokenType::ARG_DOUBLE) {
                 $hasDouble = true;
                 break;
             }
@@ -1176,10 +1211,10 @@ MSG;
         $pattern->parseChoiceStyle('-∞#negative infinity|0#zero');
 
         $hasNegInf = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
             if ($part->getType() === TokenType::ARG_DOUBLE) {
-                $value = $pattern->getNumericValue($part);
+                $value = $pattern->parts()->getNumericValue($part);
                 if ($value === -INF) {
                     $hasNegInf = true;
                     break;
@@ -1254,9 +1289,9 @@ MSG;
         $pattern->parsePluralStyle('=5{exactly five} other{not five}');
 
         $found = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
-            if ($part->getType()->hasNumericValue() && $pattern->getNumericValue($part) === 5.0) {
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
+            if ($part->getType()->hasNumericValue() && $pattern->parts()->getNumericValue($part) === 5.0) {
                 $found = true;
                 break;
             }
@@ -1363,8 +1398,8 @@ MSG;
         $pattern->parse('{num, choice, 0#none|1#one|2#many}');
 
         $hasChoice = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
             if ($part->getType() === TokenType::ARG_START && $part->getArgType(
                 ) === ArgType::CHOICE) {
                 $hasChoice = true;
@@ -1388,9 +1423,9 @@ MSG;
         $pattern->parsePluralStyle('=1.5{one and half} other{not one and half}');
 
         $found = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
-            if ($part->getType()->hasNumericValue() && $pattern->getNumericValue($part) === 1.5) {
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
+            if ($part->getType()->hasNumericValue() && $pattern->parts()->getNumericValue($part) === 1.5) {
                 $found = true;
                 break;
             }
@@ -1443,7 +1478,7 @@ MSG;
         $pattern = new MessagePattern();
         $pattern->parsePluralStyle('offset:2.5 one{# item} other{# items}');
 
-        self::assertSame(2.5, $pattern->getPluralOffset(0));
+        self::assertSame(2.5, $pattern->parts()->getPluralOffset(0));
     }
 
 
@@ -1488,11 +1523,11 @@ MSG;
             self::assertFalse($part->getType()->hasNumericValue());
             if ($part->getType() == TokenType::ARG_NAME) {
                 if ($position < 4) {
-                    $this->assertEquals("9abc", $pattern->getSubstring($part));
-                    $this->assertTrue($pattern->partSubstringMatches($part, "9abc"));
+                    $this->assertEquals("9abc", $pattern->parts()->getSubstring($part));
+                    $this->assertTrue($pattern->parts()->partSubstringMatches($part, "9abc"));
                 } else {
-                    $this->assertEquals("items", $pattern->getSubstring($part));
-                    $this->assertTrue($pattern->partSubstringMatches($part, "items"));
+                    $this->assertEquals("items", $pattern->parts()->getSubstring($part));
+                    $this->assertTrue($pattern->parts()->partSubstringMatches($part, "items"));
                 }
             }
         }
@@ -1543,10 +1578,10 @@ MSG;
         $numericValues = [];
         $hasReplaceNumber = false;
 
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
             if ($part->getType()->hasNumericValue()) {
-                $numericValues[] = $pattern->getNumericValue($part);
+                $numericValues[] = $pattern->parts()->getNumericValue($part);
             }
             if ($part->getType() === TokenType::REPLACE_NUMBER) {
                 $hasReplaceNumber = true;
@@ -1587,8 +1622,8 @@ MSG;
         $pattern->parse('{name, date, short}');
 
         $hasSimple = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
             if ($part->getType() === TokenType::ARG_START && $part->getArgType() === ArgType::SIMPLE) {
                 $hasSimple = true;
                 break;
@@ -1611,8 +1646,8 @@ MSG;
         $pattern->parse("test 'quoted");
 
         $hasInsertChar = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            if ($pattern->getPartType($i) === TokenType::INSERT_CHAR) {
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            if ($pattern->parts()->getPartType($i) === TokenType::INSERT_CHAR) {
                 $hasInsertChar = true;
                 break;
             }
@@ -1682,10 +1717,10 @@ MSG;
         $pattern->parseChoiceStyle('1e10#large|0#small');
 
         $hasLargeNumber = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
             if ($part->getType()->hasNumericValue()) {
-                $value = $pattern->getNumericValue($part);
+                $value = $pattern->parts()->getNumericValue($part);
                 if ($value === 1e10) {
                     $hasLargeNumber = true;
                     break;
@@ -1709,8 +1744,8 @@ MSG;
         $pattern->parse('{a,choice,0#zero|1#{b,choice,0#sub-zero|1#sub-one}}');
 
         $choiceCount = 0;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
             if ($part->getType() === TokenType::ARG_START && $part->getArgType() === ArgType::CHOICE) {
                 $choiceCount++;
             }
@@ -1742,63 +1777,63 @@ MSG;
 
         // Assert structural markers:
         // 0: MSG_START(0)@0
-        self::assertSame(TokenType::MSG_START, $pattern->getPartType(0));
-        self::assertSame(0, $pattern->getPart(0)->getValue());
+        self::assertSame(TokenType::MSG_START, $pattern->parts()->getPartType(0));
+        self::assertSame(0, $pattern->parts()->getPart(0)->getValue());
 
         // 1: INSERT_CHAR(39)@6 (apostrophe in don't)
-        self::assertSame(TokenType::INSERT_CHAR, $pattern->getPartType(1));
-        self::assertSame(0x27, $pattern->getPart(1)->getValue());
-        self::assertSame(6, $pattern->getPart(1)->getIndex());
+        self::assertSame(TokenType::INSERT_CHAR, $pattern->parts()->getPartType(1));
+        self::assertSame(0x27, $pattern->parts()->getPart(1)->getValue());
+        self::assertSame(6, $pattern->parts()->getPart(1)->getIndex());
 
         // 2: SKIP_SYNTAX(0)@8 (opening quote for '{know}')
-        self::assertSame(TokenType::SKIP_SYNTAX, $pattern->getPartType(2));
-        self::assertSame(8, $pattern->getPart(2)->getIndex());
+        self::assertSame(TokenType::SKIP_SYNTAX, $pattern->parts()->getPartType(2));
+        self::assertSame(8, $pattern->parts()->getPart(2)->getIndex());
 
         // 3: SKIP_SYNTAX(0)@15 (closing quote for '{know}')
-        self::assertSame(TokenType::SKIP_SYNTAX, $pattern->getPartType(3));
-        self::assertSame(15, $pattern->getPart(3)->getIndex());
+        self::assertSame(TokenType::SKIP_SYNTAX, $pattern->parts()->getPartType(3));
+        self::assertSame(15, $pattern->parts()->getPart(3)->getIndex());
 
         // 4: ARG_START(SELECT)@17
-        self::assertSame(TokenType::ARG_START, $pattern->getPartType(4));
-        self::assertSame(ArgType::SELECT, $pattern->getPart(4)->getArgType());
+        self::assertSame(TokenType::ARG_START, $pattern->parts()->getPartType(4));
+        self::assertSame(ArgType::SELECT, $pattern->parts()->getPart(4)->getArgType());
 
         // 5: ARG_NAME(0)@18 ("gender")
-        self::assertSame(TokenType::ARG_NAME, $pattern->getPartType(5));
-        self::assertSame('gender', $pattern->getSubstring($pattern->getPart(5)));
+        self::assertSame(TokenType::ARG_NAME, $pattern->parts()->getPartType(5));
+        self::assertSame('gender', $pattern->parts()->getSubstring($pattern->parts()->getPart(5)));
 
         // 6: ARG_SELECTOR(0)@25 ("female")
-        self::assertSame(TokenType::ARG_SELECTOR, $pattern->getPartType(6));
-        self::assertSame('female', $pattern->getSubstring($pattern->getPart(6)));
+        self::assertSame(TokenType::ARG_SELECTOR, $pattern->parts()->getPartType(6));
+        self::assertSame('female', $pattern->parts()->getSubstring($pattern->parts()->getPart(6)));
 
         // 7: MSG_START(1)@31 ("{")
-        self::assertSame(TokenType::MSG_START, $pattern->getPartType(7));
-        self::assertSame(1, $pattern->getPart(7)->getValue());
+        self::assertSame(TokenType::MSG_START, $pattern->parts()->getPartType(7));
+        self::assertSame(1, $pattern->parts()->getPart(7)->getValue());
 
         // 8: SKIP_SYNTAX(0)@33 (first ' in h''er)
-        self::assertSame(TokenType::SKIP_SYNTAX, $pattern->getPartType(8));
+        self::assertSame(TokenType::SKIP_SYNTAX, $pattern->parts()->getPartType(8));
 
         // 9: MSG_LIMIT(1)@37 ("}")
-        self::assertSame(TokenType::MSG_LIMIT, $pattern->getPartType(9));
+        self::assertSame(TokenType::MSG_LIMIT, $pattern->parts()->getPartType(9));
 
         // 10: ARG_SELECTOR(0)@38 ("other")
-        self::assertSame(TokenType::ARG_SELECTOR, $pattern->getPartType(10));
-        self::assertSame('other', $pattern->getSubstring($pattern->getPart(10)));
+        self::assertSame(TokenType::ARG_SELECTOR, $pattern->parts()->getPartType(10));
+        self::assertSame('other', $pattern->parts()->getSubstring($pattern->parts()->getPart(10)));
 
         // 11: MSG_START(1)@43 ("{")
-        self::assertSame(TokenType::MSG_START, $pattern->getPartType(11));
+        self::assertSame(TokenType::MSG_START, $pattern->parts()->getPartType(11));
 
         // 12: INSERT_CHAR(39)@46 (apostrophe in h'im)
-        self::assertSame(TokenType::INSERT_CHAR, $pattern->getPartType(12));
-        self::assertSame(0x27, $pattern->getPart(12)->getValue());
+        self::assertSame(TokenType::INSERT_CHAR, $pattern->parts()->getPartType(12));
+        self::assertSame(0x27, $pattern->parts()->getPart(12)->getValue());
 
         // 13: MSG_LIMIT(1)@49 ("}")
-        self::assertSame(TokenType::MSG_LIMIT, $pattern->getPartType(13));
+        self::assertSame(TokenType::MSG_LIMIT, $pattern->parts()->getPartType(13));
 
         // 14: ARG_LIMIT(SELECT)@49 ("}")
-        self::assertSame(TokenType::ARG_LIMIT, $pattern->getPartType(14));
+        self::assertSame(TokenType::ARG_LIMIT, $pattern->parts()->getPartType(14));
 
         // 15: MSG_LIMIT(0)@51
-        self::assertSame(TokenType::MSG_LIMIT, $pattern->getPartType(15));
+        self::assertSame(TokenType::MSG_LIMIT, $pattern->parts()->getPartType(15));
 
         // Test auto-quoting logic for this specific pattern
         // "don't" -> "don''t"
@@ -2036,8 +2071,8 @@ MSG;
         }
 
         $hasAutoInsertedQuote = false;
-        for ($i = 0; $i < $pattern->countParts(); $i++) {
-            $part = $pattern->getPart($i);
+        for ($i = 0; $i < $pattern->parts()->countParts(); $i++) {
+            $part = $pattern->parts()->getPart($i);
             // Look for the INSERT_CHAR part specifically for the apostrophe (0x27)
             if ($part->getType() === TokenType::INSERT_CHAR && $part->getValue() === 0x27) {
                 $hasAutoInsertedQuote = true;
@@ -2090,7 +2125,7 @@ MSG;
             $count++;
         }
 
-        self::assertSame($pattern->countParts(), $count);
+        self::assertSame($pattern->parts()->countParts(), $count);
     }
 
     /**
@@ -2106,16 +2141,16 @@ MSG;
         $pattern->parse('{99, plural, one{# item} other{# items}}');
 
         // Part 0: MSG_START(0)@0
-        self::assertSame('MSG_START(0)@0', (string)$pattern->getPart(0));
+        self::assertSame('MSG_START(0)@0', (string)$pattern->parts()->getPart(0));
 
         // Part 1: ARG_START(PLURAL)@0
-        self::assertSame('ARG_START(PLURAL)@0', (string)$pattern->getPart(1));
+        self::assertSame('ARG_START(PLURAL)@0', (string)$pattern->parts()->getPart(1));
 
         // Part 2: ARG_NUMBER(99)@1
-        self::assertSame('ARG_NUMBER(99)@1', (string)$pattern->getPart(2));
+        self::assertSame('ARG_NUMBER(99)@1', (string)$pattern->parts()->getPart(2));
 
         // Part 4: ARG_SELECTOR(0)@12
-        $selectorPart = $pattern->getPart(3);
+        $selectorPart = $pattern->parts()->getPart(3);
         self::assertSame('ARG_SELECTOR(0)@13', (string)$selectorPart);
     }
 
@@ -2132,19 +2167,19 @@ MSG;
         $pattern->parse('{name}');
 
         // Part 1: ARG_START is '{' at index 0, length 1
-        $argStart = $pattern->getPart(1);
+        $argStart = $pattern->parts()->getPart(1);
         self::assertSame(0, $argStart->getIndex());
         self::assertSame(1, $argStart->getLength());
         self::assertSame(1, $argStart->getLimit());
 
         // Part 2: ARG_NAME is 'name' at index 1, length 4
-        $argName = $pattern->getPart(2);
+        $argName = $pattern->parts()->getPart(2);
         self::assertSame(1, $argName->getIndex());
         self::assertSame(4, $argName->getLength());
         self::assertSame(5, $argName->getLimit());
 
         // Part 3: ARG_LIMIT is '}' at index 5, length 1
-        $argLimit = $pattern->getPart(3);
+        $argLimit = $pattern->parts()->getPart(3);
         self::assertSame(5, $argLimit->getIndex());
         self::assertSame(1, $argLimit->getLength());
         self::assertSame(6, $argLimit->getLimit());

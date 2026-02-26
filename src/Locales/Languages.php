@@ -12,7 +12,7 @@ class Languages
     private static array $mapString2rfc = [];
 
     /** @var array<string, array<string, mixed>> internal support map rfc -> language data */
-    private static array $mapSfc2obj = [];
+    private static array $mapRfc2obj = [];
 
     /*
      * Associative map iso → rfc codes.
@@ -143,7 +143,7 @@ class Languages
             // identity mapping: RFC code resolves to itself
             self::$mapString2rfc[$lang['rfc3066code']] = $lang['rfc3066code'];
             // primary lookup: RFC code -> full language data object
-            self::$mapSfc2obj[$lang['rfc3066code']] = $lang;
+            self::$mapRfc2obj[$lang['rfc3066code']] = $lang;
             // ISO -> RFC (last write wins; overridden below for ambiguous codes)
             self::$mapIso2rfc[$lang['isocode']] = $lang['rfc3066code'];
         }
@@ -167,7 +167,7 @@ class Languages
      */
     private function buildEnabledLanguageList(): void
     {
-        foreach (self::$mapSfc2obj as $rfc => $lang) {
+        foreach (self::$mapRfc2obj as $rfc => $lang) {
             if ($lang['enabled']) {
                 self::$enabledLanguageList[$rfc] = [
                     'code' => $rfc,
@@ -206,7 +206,7 @@ class Languages
         //convert ISO code in RFC
         $code = self::getInstance()->normalizeLanguageCode($code);
 
-        return self::$mapSfc2obj[$code]['rtl'];
+        return self::$mapRfc2obj[$code]['rtl'];
     }
 
     /**
@@ -220,8 +220,7 @@ class Languages
     {
         //convert ISO code in RFC
         $code = $this->normalizeLanguageCode($code);
-
-        return self::$mapSfc2obj[$code]['enabled'];
+        return self::$mapRfc2obj[$code]['enabled'] ?? false;
     }
 
     /**
@@ -231,7 +230,7 @@ class Languages
      */
     public function getLangRegionCode(string $localizedName): string
     {
-        $value = self::$mapSfc2obj[self::$mapString2rfc[$localizedName]]['languageRegionCode'] ?? null;
+        $value = self::$mapRfc2obj[self::$mapString2rfc[$localizedName]]['languageRegionCode'] ?? null;
         if (empty($value)) {
             $value = $this->get3066Code($localizedName);
         }
@@ -260,7 +259,7 @@ class Languages
      */
     public function getIsoCode(string $localizedName): string
     {
-        return self::$mapSfc2obj[self::$mapString2rfc[$localizedName]]['isocode'];
+        return self::$mapRfc2obj[self::$mapString2rfc[$localizedName]]['isocode'];
     }
 
     /**
@@ -286,7 +285,7 @@ class Languages
     {
         $code = $this->normalizeLanguageCode($code);
 
-        return self::$mapSfc2obj[$code]['localized'][$lang];
+        return self::$mapRfc2obj[$code]['localized'][$lang];
     }
 
     /**
@@ -301,11 +300,11 @@ class Languages
      */
     public function getLocalizedNameRFC(?string $code = null, ?string $lang = 'en'): ?string
     {
-        if ($code === null || !array_key_exists($code, self::$mapSfc2obj)) {
+        if ($code === null || !array_key_exists($code, self::$mapRfc2obj)) {
             throw new InvalidLanguageException('Invalid language code: ' . $code);
         }
 
-        return self::$mapSfc2obj[$code]['localized'][$lang] ?? null;
+        return self::$mapRfc2obj[$code]['localized'][$lang] ?? null;
     }
 
     /**
@@ -316,7 +315,7 @@ class Languages
     public function getRTLLangs(): array
     {
         $acc = [];
-        foreach (self::$mapSfc2obj as $code => $value) {
+        foreach (self::$mapRfc2obj as $code => $value) {
             if ($value['rtl'] && $value['enabled']) {
                 $acc[] = $code;
             }
@@ -336,12 +335,13 @@ class Languages
 
         $code = $this->normalizeLanguageCode($code);
 
-        $this->getLocalizedNameRFC($code);
-        // @codeCoverageIgnoreStart
+        if ($code === null || !array_key_exists($code, self::$mapRfc2obj)) {
+            throw new InvalidLanguageException('Invalid language code: ' . $code);
+        }
+
         if (!$this->isEnabled($code)) {
             throw new InvalidLanguageException('Language not enabled: ' . $code);
         }
-        // @codeCoverageIgnoreEnd
 
         return $code;
     }
@@ -415,7 +415,11 @@ class Languages
     {
         $language = self::getInstance()->normalizeLanguageCode($language);
 
-        return array_key_exists($language, self::$mapSfc2obj);
+        if ($language === null) {
+            return false;
+        }
+
+        return array_key_exists($language, self::$mapRfc2obj);
     }
 
     /**
@@ -449,7 +453,7 @@ class Languages
     {
         $code = self::getInstance()->normalizeLanguageCode($code);
 
-        return self::$mapSfc2obj[$code]['isocode'] ?? null;
+        return self::$mapRfc2obj[$code]['isocode'] ?? null;
     }
 
     /**

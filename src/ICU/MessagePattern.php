@@ -11,6 +11,10 @@ use Matecat\ICU\Exceptions\InvalidArgumentException;
 use Matecat\ICU\Exceptions\InvalidNumericValueException;
 use Matecat\ICU\Exceptions\OutOfBoundsException;
 use Matecat\ICU\Exceptions\UnmatchedBracesException;
+use Matecat\ICU\Parsing\Utils\CharUtils;
+use Matecat\ICU\Parsing\MessagePatternParser;
+use Matecat\ICU\Parsing\ParseContext;
+use Matecat\ICU\Parsing\PartAccessor;
 use Matecat\ICU\Tokens\ArgType;
 use Matecat\ICU\Tokens\Part;
 use Matecat\ICU\Tokens\TokenType;
@@ -120,41 +124,14 @@ final class MessagePattern implements Iterator
      */
     public const string APOSTROPHE_DOUBLE_REQUIRED = 'DOUBLE_REQUIRED';
 
-    private string $msg = '';
-    private bool $hasArgNames = false;
-    private bool $hasArgNumbers = false;
-    private bool $needsAutoQuoting = false;
+    private ParseContext $ctx;
+    private MessagePatternParser $parser;
+    private PartAccessor $partAccessor;
 
     /**
-     * @var Part[]
+     * Tracks the current position for iteration.
      */
-    private array $parts = [];
-
-    /**
-     * @var float[]
-     */
-    private array $numericValues = [];
-
-    /**
-     * @var int[]
-     */
-    private array $limitPartIndexes = [];
-
-    private string $aposMode;
-
-    private const string PATTERN_WHITE_SPACE = '\x{0009}-\x{000D}\x{0020}\x{0085}\x{200E}\x{200F}\x{2028}\x{2029}';
-    private const string PATTERN_IDENTIFIER =
-        '\x{0021}-\x{002F}\x{003A}-\x{0040}\x{005B}-\x{005E}\x{0060}\x{007B}-\x{007E}\x{00A1}-\x{00A7}\x{00A9}' .
-        '\x{00AB}\x{00AC}\x{00AE}\x{00B0}\x{00B1}\x{00B6}\x{00BB}\x{00BF}\x{00D7}\x{00F7}\x{2010}-\x{2027}' .
-        '\x{2030}-\x{203E}\x{2041}-\x{2053}\x{2055}-\x{205E}\x{2190}-\x{245F}\x{2500}-\x{2775}\x{2794}-\x{2BFF}' .
-        '\x{2E00}-\x{2E7F}\x{3001}-\x{3003}\x{3008}-\x{3020}\x{3030}\x{FD3E}\x{FD3F}\x{FE45}\x{FE46}';
-    /**
-     * @var string[]
-     */
-    private array $chars = [];
-
-    private int $msgLength = 0;
-
+    private int $position = 0;
 
     /**
      * @throws InvalidArgumentException If the pattern syntax is invalid.
@@ -167,11 +144,17 @@ final class MessagePattern implements Iterator
      */
     public function __construct(?string $pattern = null, string $apostropheMode = self::APOSTROPHE_DOUBLE_OPTIONAL)
     {
-        $this->aposMode = $apostropheMode;
+        $this->ctx = new ParseContext($apostropheMode);
+        $this->parser = new MessagePatternParser($this->ctx);
+        $this->partAccessor = new PartAccessor($this->ctx);
         if (!empty($pattern)) {
             $this->parse($pattern);
         }
     }
+
+    // ──────────────────────────────────────────────
+    // Parsing entry points
+    // ──────────────────────────────────────────────
 
     /**
      * Parses a MessageFormat pattern string.
@@ -187,9 +170,7 @@ final class MessagePattern implements Iterator
      */
     public function parse(string $pattern): self
     {
-        $this->preParse($pattern);
-        $this->parseMessage(0, 0, 0, ArgType::NONE);
-        $this->postParse();
+        $this->parser->parse($pattern);
         return $this;
     }
 
@@ -205,9 +186,7 @@ final class MessagePattern implements Iterator
      */
     public function parseChoiceStyle(string $pattern): self
     {
-        $this->preParse($pattern);
-        $this->parseChoiceStyleInternal(0, 0);
-        $this->postParse();
+        $this->parser->parseChoiceStyle($pattern);
         return $this;
     }
 
@@ -223,9 +202,7 @@ final class MessagePattern implements Iterator
      */
     public function parsePluralStyle(string $pattern): self
     {
-        $this->preParse($pattern);
-        $this->parsePluralOrSelectStyle(ArgType::PLURAL, 0, 0);
-        $this->postParse();
+        $this->parser->parsePluralOrSelect(ArgType::PLURAL, $pattern);
         return $this;
     }
 
@@ -240,11 +217,13 @@ final class MessagePattern implements Iterator
      */
     public function parseSelectStyle(string $pattern): self
     {
-        $this->preParse($pattern);
-        $this->parsePluralOrSelectStyle(ArgType::SELECT, 0, 0);
-        $this->postParse();
+        $this->parser->parsePluralOrSelect(ArgType::SELECT, $pattern);
         return $this;
     }
+
+    // ──────────────────────────────────────────────
+    // State management
+    // ──────────────────────────────────────────────
 
     /**
      * Clears this MessagePattern.
@@ -252,15 +231,7 @@ final class MessagePattern implements Iterator
      */
     public function clear(): void
     {
-        $this->msg = '';
-        $this->chars = [];
-        $this->msgLength = 0;
-        $this->hasArgNames = false;
-        $this->hasArgNumbers = false;
-        $this->needsAutoQuoting = false;
-        $this->parts = [];
-        $this->numericValues = [];
-        $this->limitPartIndexes = [];
+        $this->ctx->clear();
     }
 
     /**
@@ -270,8 +241,25 @@ final class MessagePattern implements Iterator
      */
     public function clearPatternAndSetApostropheMode(string $mode): void
     {
-        $this->clear();
-        $this->aposMode = $mode;
+        $this->ctx->clear();
+        $this->ctx->aposMode = $mode;
+    }
+
+    // ──────────────────────────────────────────────
+    // Accessors
+    // ──────────────────────────────────────────────
+
+    /**
+     * Returns the PartAccessor for querying parsed parts.
+     *
+     * Use this to access countParts(), getPart(), getSubstring(),
+     * getNumericValue(), getLimitPartIndex() and other part-level queries.
+     *
+     * @return PartAccessor
+     */
+    public function parts(): PartAccessor
+    {
+        return $this->partAccessor;
     }
 
     /**
@@ -279,7 +267,7 @@ final class MessagePattern implements Iterator
      */
     public function getApostropheMode(): string
     {
-        return $this->aposMode;
+        return $this->ctx->aposMode;
     }
 
     /**
@@ -287,7 +275,7 @@ final class MessagePattern implements Iterator
      */
     public function getPatternString(): string
     {
-        return $this->msg;
+        return $this->ctx->msg;
     }
 
     /**
@@ -296,7 +284,7 @@ final class MessagePattern implements Iterator
      */
     public function hasNamedArguments(): bool
     {
-        return $this->hasArgNames;
+        return $this->ctx->hasArgNames;
     }
 
     /**
@@ -305,122 +293,7 @@ final class MessagePattern implements Iterator
      */
     public function hasNumberedArguments(): bool
     {
-        return $this->hasArgNumbers;
-    }
-
-    /**
-     * Returns the number of "parts" created by parsing the pattern string.
-     * Returns 0 if no pattern has been parsed or clear() was called.
-     * @return int the number of pattern parts.
-     */
-    public function countParts(): int
-    {
-        return count($this->parts);
-    }
-
-    /**
-     * Gets the i-th pattern "part".
-     * @param int $i The index of the Part data. (0…countParts()-1)
-     * @return Part the i-th pattern "part".
-     * @throws OutOfBoundsException if the index i is outside the (0…countParts()-1) range
-     */
-    public function getPart(int $i): Part
-    {
-        if (!isset($this->parts[$i])) {
-            throw new OutOfBoundsException('Part index out of range.');
-        }
-        return $this->parts[$i];
-    }
-
-    /**
-     * Returns the Part.TokenType of the i-th pattern "part".
-     * Convenience method for getPart(i)->getType().
-     * @param int $i The index of the Part data. (0…countParts()-1)
-     * @return TokenType The Part.TokenType of the i-th Part.
-     * @throws OutOfBoundsException if the index i is outside the (0...countParts()-1) range
-     */
-    public function getPartType(int $i): TokenType
-    {
-        return $this->getPart($i)->getType();
-    }
-
-    /**
-     * Returns the pattern index of the specified pattern "part".
-     * Convenience method for getPart(partIndex)->getIndex().
-     * @param int $partIndex The index of the Part data. (0...countParts()-1)
-     * @return int The pattern index of this Part.
-     * @throws OutOfBoundsException if partIndex is outside the (0...countParts()-1) range
-     */
-    public function getPatternIndex(int $partIndex): int
-    {
-        return $this->getPart($partIndex)->getIndex();
-    }
-
-    /**
-     * Returns the substring of the pattern string indicated by the Part.
-     * Convenience method for getPatternString()->substring(part->getIndex(), part->getLimit()).
-     * @param Part $part a part of this MessagePattern.
-     * @return string the substring associated with part.
-     */
-    public function getSubstring(Part $part): string
-    {
-        return mb_substr($this->msg, $part->getIndex(), $part->getLength());
-    }
-
-    /**
-     * Compares the part's substring with the input string s.
-     * @param Part $part a part of this MessagePattern.
-     * @param string $s a string.
-     * @return bool true if getSubstring(part) == s.
-     */
-    public function partSubstringMatches(Part $part, string $s): bool
-    {
-        return $part->getLength() === mb_strlen($s)
-            && mb_substr($this->msg, $part->getIndex(), $part->getLength()) === $s;
-    }
-
-    /**
-     * Returns the numeric value associated with an ARG_INT or ARG_DOUBLE.
-     * @param Part $part a part of this MessagePattern.
-     * @return float the part's numeric value, or NO_NUMERIC_VALUE if this is not a numeric part.
-     */
-    public function getNumericValue(Part $part): float
-    {
-        $type = $part->getType();
-        if ($type === TokenType::ARG_INT) {
-            return (float)$part->getValue();
-        }
-        if ($type === TokenType::ARG_DOUBLE) {
-            return $this->numericValues[$part->getValue()] ?? self::NO_NUMERIC_VALUE;
-        }
-        return self::NO_NUMERIC_VALUE;
-    }
-
-    /**
-     * Returns the "offset:" value of a PluralFormat argument, or 0 if none is specified.
-     * @param int $pluralStart the index of the first PluralFormat argument style part. (0...countParts()-1)
-     * @return float the "offset:" value.
-     * @throws OutOfBoundsException if pluralStart is outside the (0...countParts()-1) range
-     */
-    public function getPluralOffset(int $pluralStart): float
-    {
-        $part = $this->getPart($pluralStart);
-        if ($part->getType()->hasNumericValue()) {
-            return $this->getNumericValue($part);
-        }
-        return 0.0;
-    }
-
-    /**
-     * Returns the index of the ARG|MSG_LIMIT part corresponding to the ARG|MSG_START at start.
-     * @param int $start The index of some Part data (0...countParts()-1);
-     *        this Part should be of TokenType ARG_START or MSG_START.
-     * @return int The first i>start where getPart(i)->getType()==ARG|MSG_LIMIT at the same nesting level,
-     *         or start itself if getPartType(msgStart)!=ARG|MSG_START.
-     */
-    public function getLimitPartIndex(int $start): int
-    {
-        return $this->limitPartIndexes[$start] ?? $start;
+        return $this->ctx->hasArgNumbers;
     }
 
     /**
@@ -434,28 +307,26 @@ final class MessagePattern implements Iterator
      */
     public function autoQuoteApostropheDeep(): string
     {
-        // Fast path: nothing to auto-quote, return the original message.
-        if (!$this->needsAutoQuoting) {
-            return $this->msg;
+        if (!$this->ctx->needsAutoQuoting) {
+            return $this->ctx->msg;
         }
 
-        // Start from the original message and apply insertions.
-        $modified = $this->msg;
+        $modified = $this->ctx->msg;
 
-        // Walk parts in reverse so earlier insertions don't shift later indices.
         foreach (array_reverse(iterator_to_array($this, false)) as $part) {
             if ($part->getType() === TokenType::INSERT_CHAR) {
                 $index = $part->getIndex();
                 $char = mb_chr($part->getValue());
-
-                // Insert the character at the recorded index (multibyte-safe).
                 $modified = mb_substr($modified, 0, $index) . $char . mb_substr($modified, $index);
             }
         }
 
-        // Return the fully auto-quoted message.
         return $modified;
     }
+
+    // ──────────────────────────────────────────────
+    // Static utilities
+    // ──────────────────────────────────────────────
 
     /**
      * Validates and parses an argument name or argument number string.
@@ -469,10 +340,10 @@ final class MessagePattern implements Iterator
      */
     public static function validateArgumentName(string $name): int
     {
-        if (!self::isIdentifier($name)) {
+        if (!CharUtils::isIdentifier($name)) {
             return self::ARG_NAME_NOT_VALID;
         }
-        return self::parseArgNumberFromString($name, 0, mb_strlen($name));
+        return CharUtils::parseArgNumberFromString($name, 0, mb_strlen($name));
     }
 
     /**
@@ -487,1011 +358,27 @@ final class MessagePattern implements Iterator
      */
     public static function appendReducedApostrophes(string $s, int $start, int $limit, string &$out): void
     {
-        // Track the position of a potential doubled apostrophe (escaped single quote)
-        $doubleApos = -1;
-        while (true) {
-            // Find the next apostrophe starting from the current position
-            $i = mb_strpos($s, "'", $start);
-            if ($i === false || $i >= $limit) {
-                // No more apostrophes in range: append the remaining segment and finish
-                $out .= mb_substr($s, $start, $limit - $start);
-                break;
-            }
-            if ($i === $doubleApos) {
-                // Second apostrophe of a doubled pair: emit one apostrophe
-                $out .= "'";
-                $start++;
-                $doubleApos = -1;
-            } else {
-                // Append text up to apostrophe and mark next char as a possible pair
-                $out .= mb_substr($s, $start, $i - $start);
-                $doubleApos = $start = $i + 1;
-            }
-        }
+        CharUtils::appendReducedApostrophes($s, $start, $limit, $out);
     }
 
-    /**
-     * Prepares the instance for parsing a pattern.
-     * @param string $pattern Pattern to parse.
-     */
-    private function preParse(string $pattern): void
-    {
-        $this->msg = $pattern;
-        $this->hasArgNames = false;
-        $this->hasArgNumbers = false;
-        $this->needsAutoQuoting = false;
-        $this->parts = [];
-        $this->numericValues = [];
-        $this->limitPartIndexes = [];
-        $this->chars = preg_split('//u', $pattern, -1, PREG_SPLIT_NO_EMPTY) ?: [];
-        $this->msgLength = mb_strlen($pattern);
-    }
+    // ──────────────────────────────────────────────
+    // Iterator interface implementation
+    // ──────────────────────────────────────────────
 
     /**
-     * Post-parse hook. Currently, no-op.
-     */
-    private function postParse(): void
-    {
-        // No post-processing required.
-    }
-
-    /**
-     * Parses a message fragment within a specified range of a message string.
-     * Handles nested structures, quoting rules, and special characters.
+     * Returns the current Part in the iteration.
      *
-     * @param int $index The starting index in the message string.
-     * @param int $msgStartLength The length of the prefix to skip (e.g., '{').
-     * @param int $nestingLevel The current level of nesting in the message structure.
-     * @param ArgType $parentType The type of the parent argument, used to determine parsing behavior.
-     * @return int The index after processing the message fragment or its terminator.
-     * @throws InvalidArgumentException If the message fragment syntax is invalid.
-     * @throws UnmatchedBracesException If the message contains unmatched '{' or '}' braces.
-     * @throws BadPluralSelectPatternSyntaxException If a nested plural/select pattern is malformed.
-     * @throws BadChoicePatternSyntaxException If a nested choice pattern has invalid syntax.
-     * @throws InvalidNumericValueException If a numeric value in a nested argument has bad syntax.
-     * @throws OutOfBoundsException If the nesting level exceeds the maximum allowable value or other limits are hit.
-     */
-    private function parseMessage(int $index, int $msgStartLength, int $nestingLevel, ArgType $parentType): int
-    {
-        // Guard against excessive nesting that would overflow stored part values.
-        if ($nestingLevel > 100) {
-            throw new OutOfBoundsException("Nesting level exceeds maximum value");
-        }
-
-        // Record the start of this message fragment and advance past any prefix (e.g., '{').
-        $msgStart = count($this->parts);
-        $this->addPart(TokenType::MSG_START, $index, $msgStartLength, $nestingLevel);
-        $index += $msgStartLength;
-
-        $length = $this->msgLength;
-        while ($index < $length) {
-            $c = $this->charAt($index++);
-            if ($c === "'") {
-                // Handle apostrophe quoting rules and auto-quoting insertions.
-                if ($index === $length) {
-                    $this->addPart(TokenType::INSERT_CHAR, $index, 0, 0x27 /* ord("'") */);
-                    $this->needsAutoQuoting = true;
-                } else {
-                    $c = $this->charAt($index);
-                    if ($c === "'") {
-                        // Double apostrophe: treat as escaped apostrophe.
-                        $this->addPart(TokenType::SKIP_SYNTAX, $index++, 1, 0);
-                    } elseif (
-                        $this->aposMode === self::APOSTROPHE_DOUBLE_REQUIRED ||
-                        $c === '{' || $c === '}' ||
-                        ($parentType === ArgType::CHOICE && $c === '|') ||
-                        ($parentType->hasPluralStyle() && $c === '#')
-                    ) {
-                        // Start quoted literal section; skip the opening quote and scan to closing quote.
-                        $this->addPart(TokenType::SKIP_SYNTAX, $index - 1, 1, 0);
-                        while (true) {
-                            $index = $this->indexOf("'", $index + 1);
-                            if ($index !== false) {
-                                if (($index + 1) < $this->msgLength && $this->charAt($index + 1) === "'") {
-                                    // double apostrophe inside quoted literal text
-                                    // still encodes a single apostrophe, skip the second one
-                                    $this->addPart(TokenType::SKIP_SYNTAX, ++$index, 1, 0);
-                                } else {
-                                    // skip the quote-ending apostrophe
-                                    $this->addPart(TokenType::SKIP_SYNTAX, $index++, 1, 0);
-                                    break;
-                                }
-                            } else {
-                                // The quoted text reaches to the end of the message.
-                                $index = $this->msgLength;
-                                // Add a Part for auto-quoting.
-                                // 0x27 is the numeric value for the single quote character (')
-                                $this->addPart(TokenType::INSERT_CHAR, $index, 0, 0x27);
-                                $this->needsAutoQuoting = true;
-                                break;
-                            }
-                        }
-                    } else {
-                        // Apostrophe is literal text; mark for auto-quoting.
-                        $this->addPart(TokenType::INSERT_CHAR, $index, 0, 0x27 /* ord("'") */);
-                        $this->needsAutoQuoting = true;
-                    }
-                }
-            } elseif ($parentType->hasPluralStyle() && $c === '#') {
-                // Unquoted # in plural/selectordinal: mark for number replacement.
-                $this->addPart(TokenType::REPLACE_NUMBER, $index - 1, 1, 0);
-            } elseif ($c === '{') {
-                // Parse nested argument and continue from its end.
-                $index = $this->parseArg($index - 1, $nestingLevel);
-            } elseif (($nestingLevel > 0 && $c === '}') || ($parentType === ArgType::CHOICE && $c === '|')) {
-                // End of this message fragment at '}' or choice separator '|'.
-                $limitLength = ($parentType === ArgType::CHOICE && $c === '}') ? 0 : 1;
-                $this->addLimitPart($msgStart, TokenType::MSG_LIMIT, $index - 1, $limitLength, $nestingLevel);
-                if ($parentType === ArgType::CHOICE) {
-                    return $index - 1; // Let caller handle terminator.
-                }
-                return $index; // Resume after closing brace.
-            }
-        }
-
-        // If nested and not a valid top-level choice sub-message, report unmatched '{'.
-        if ($nestingLevel > 0 && !$this->inTopLevelChoiceMessage($nestingLevel, $parentType)) {
-            throw new UnmatchedBracesException($this->errorContext());
-        }
-
-        // Close the message fragment and return the current index (end or terminator).
-        $this->addLimitPart($msgStart, TokenType::MSG_LIMIT, $index, 0, $nestingLevel);
-        return $index;
-    }
-
-    /**
-     * Parses an argument placeholder within a message pattern.
-     *
-     * This method starts at a given position in the input string, validating
-     * and interpreting the argument's syntax, type, and optional styles. It handles
-     * both numeric and named arguments, validates their structure, and records the necessary
-     * information for later processing or rendering.
-     *
-     * @param int $index The current position in the message pattern where the argument starts.
-     * @param int $nestingLevel The current nesting depth of braces in the message pattern.
-     * @return int The position in the message pattern immediately after the closing '}' of the argument.
-     * @throws InvalidArgumentException If the argument syntax is invalid (e.g., bad name, missing comma/brace).
-     * @throws UnmatchedBracesException If the argument contains unmatched '{' or '}' braces.
-     * @throws BadPluralSelectPatternSyntaxException If a complex argument's plural/select style is malformed.
-     * @throws BadChoicePatternSyntaxException If a complex argument's choice style has invalid syntax.
-     * @throws InvalidNumericValueException If a numeric value in the argument style has bad syntax.
-     * @throws OutOfBoundsException If the argument number, name, or type exceeds predefined limits.
-     */
-    private function parseArg(int $index, int $nestingLevel): int
-    {
-        // Mark the start of this argument and record a placeholder ArgType.
-        $argStart = count($this->parts);
-        $argType = ArgType::NONE;
-        $this->addPart(TokenType::ARG_START, $index, 1, $this->argTypeOrdinal($argType));
-
-        // Skip whitespace after '{' and capture the argument name/number span.
-        $nameIndex = $index = $this->skipWhiteSpace($index + 1);
-        if ($index === $this->msgLength) {
-            throw new UnmatchedBracesException($this->errorContext());
-        }
-
-        // Parse identifier characters, then determine if it is a numeric index or name.
-        $index = $this->skipIdentifier($index);
-        $number = $this->parseArgNumber($nameIndex, $index);
-        $length = $index - $nameIndex;
-
-        // Validate and record an ARG_NUMBER or ARG_NAME part.
-        if ($number >= 0) {
-            $this->hasArgNumbers = true;
-            $this->addPart(TokenType::ARG_NUMBER, $nameIndex, $length, $number);
-        } elseif ($number === self::ARG_NAME_NOT_NUMBER) {
-            if ($length > Part::MAX_LENGTH) {
-                throw new OutOfBoundsException("Argument name too long: " . $this->errorContext($nameIndex));
-            }
-            $this->hasArgNames = true;
-            $this->addPart(TokenType::ARG_NAME, $nameIndex, $length, 0);
-        } elseif ($number === self::ARG_VALUE_OVERFLOW) {
-            throw new OutOfBoundsException("Argument number too large: " . $this->errorContext($nameIndex));
-        } else {
-            throw new InvalidArgumentException("Bad argument syntax: " . $this->errorContext($nameIndex));
-        }
-
-        // After name/number, expect either '}' or ',' for type/style.
-        $index = $this->skipWhiteSpace($index);
-        if ($index === $this->msgLength) {
-            throw new UnmatchedBracesException($this->errorContext());
-        }
-
-        $c = $this->charAt($index);
-        if ($c !== '}') {
-            // Must have a comma introducing the argument type.
-            if ($c !== ',') {
-                throw new InvalidArgumentException("Bad argument syntax: " . $this->errorContext($nameIndex));
-            }
-
-            // Read the type token (e.g., "number", "plural", "select").
-            $typeIndex = $index = $this->skipWhiteSpace($index + 1);
-            while ($index < $this->msgLength && $this->isArgTypeChar($this->charAt($index))) {
-                $index++;
-            }
-            $length = $index - $typeIndex;
-
-            // Validate that the type is followed by ',' or '}'.
-            $index = $this->skipWhiteSpace($index);
-            if ($index === $this->msgLength) {
-                throw new UnmatchedBracesException($this->errorContext());
-            }
-            $c = $this->charAt($index);
-            if ($length === 0 || ($c !== ',' && $c !== '}')) {
-                throw new InvalidArgumentException("Bad argument syntax: " . $this->errorContext($nameIndex));
-            }
-            if ($length > Part::MAX_LENGTH) {
-                throw new OutOfBoundsException("Argument type name too long: " . $this->errorContext($nameIndex));
-            }
-
-            // Map the type token to a known ArgType.
-            $argType = ArgType::SIMPLE;
-            if ($length === 6) {
-                if ($this->isChoice($typeIndex)) {
-                    $argType = ArgType::CHOICE;
-                } elseif ($this->isPlural($typeIndex)) {
-                    $argType = ArgType::PLURAL;
-                } elseif ($this->isSelect($typeIndex)) {
-                    $argType = ArgType::SELECT;
-                }
-            } elseif ($length === 13) {
-                if ($this->isSelect($typeIndex) && $this->isOrdinal($typeIndex + 6)) {
-                    $argType = ArgType::SELECTORDINAL;
-                }
-            }
-
-            // Update the ARG_START part to carry the resolved ArgType.
-            $this->replaceLastArgStartValue($argStart, $this->argTypeOrdinal($argType));
-            if ($argType === ArgType::SIMPLE) {
-                $this->addPart(TokenType::ARG_TYPE, $typeIndex, $length, 0);
-            }
-
-            // If there's no style part, only SIMPLE args are allowed.
-            if ($c === '}') {
-                if ($argType !== ArgType::SIMPLE) {
-                    throw new InvalidArgumentException(
-                        "No style field for complex argument: " . $this->errorContext($nameIndex)
-                    );
-                }
-            } else {
-                // Parse the style body depending on the argument type.
-                $index++;
-                if ($argType === ArgType::SIMPLE) {
-                    $index = $this->parseSimpleStyle($index);
-                } elseif ($argType === ArgType::CHOICE) {
-                    $index = $this->parseChoiceStyleInternal($index, $nestingLevel);
-                } else {
-                    $index = $this->parsePluralOrSelectStyle($argType, $index, $nestingLevel);
-                }
-            }
-        }
-
-        // Close the argument and return the index right after the closing '}'.
-        $this->addLimitPart($argStart, TokenType::ARG_LIMIT, $index, 1, $this->argTypeOrdinal($argType));
-        return $index + 1;
-    }
-
-    /**
-     * Parses a simple style format within a message pattern and records it as an argument style part.
-     *
-     * @param int $index The starting index of the style text in the message pattern.
-     * @return int The index immediately following the parsed style text.
-     * @throws InvalidArgumentException If quoted literal text is unterminated or a syntax error occurs.
-     * @throws UnmatchedBracesException If braces are unmatched (no closing '}' found for the style).
-     * @throws OutOfBoundsException If the style text length exceeds the maximum allowed limit.
-     */
-    private function parseSimpleStyle(int $index): int
-    {
-        // Remember where the style text starts.
-        $start = $index;
-        // Track nested braces inside the style.
-        $nestedBraces = 0;
-        // Cache total message length for loop bounds.
-        $length = $this->msgLength;
-        while ($index < $length) {
-            // Read the next character and advance the cursor.
-            $c = $this->charAt($index++);
-            if ($c === "'") {
-                // Skip over quoted literal text using the pre-split chars array.
-                $found = false;
-                for ($i = $index; $i < $length; $i++) {
-                    if ($this->chars[$i] === "'") {
-                        $index = $i + 1;
-                        $found = true;
-                        break;
-                    }
-                }
-
-                if (!$found) {
-                    // Unterminated quote is an error.
-                    throw new InvalidArgumentException(
-                        "Quoted literal argument style text reaches to the end of the message: " . $this->errorContext($start)
-                    );
-                }
-            } elseif ($c === '{') {
-                // Enter a nested brace.
-                $nestedBraces++;
-            } elseif ($c === '}') {
-                if ($nestedBraces > 0) {
-                    // Close a nested brace.
-                    $nestedBraces--;
-                } else {
-                    // Found the end of the simple style.
-                    $len = --$index - $start;
-                    if ($len > Part::MAX_LENGTH) {
-                        // Style segment too long.
-                        throw new OutOfBoundsException("Argument style text too long: " . $this->errorContext($start));
-                    }
-                    // Record the ARG_STYLE part and return the end index.
-                    $this->addPart(TokenType::ARG_STYLE, $start, $len, 0);
-                    return $index;
-                }
-            }
-        }
-        // Reached end without a matching closing brace.
-        throw new UnmatchedBracesException($this->errorContext());
-    }
-
-    /**
-     * Parses an internal representation of a ChoiceFormat pattern.
-     *
-     * @param int $index The starting index within the pattern to begin parsing.
-     * @param int $nestingLevel Current level of nesting in the pattern.
-     * @return int The updated index after parsing the choice style segment.
-     * @throws InvalidArgumentException If the choice separator is invalid.
-     * @throws UnmatchedBracesException If the choice pattern contains unmatched '{' or '}' braces.
-     * @throws BadChoicePatternSyntaxException If the choice pattern has invalid syntax
-     *                                         (e.g., empty numeric selector, bad nesting, unexpected end of pattern).
-     * @throws InvalidNumericValueException If a numeric selector has bad syntax.
-     * @throws OutOfBoundsException If numeric selectors exceed allowable length limits.
-     */
-    private function parseChoiceStyleInternal(int $index, int $nestingLevel): int
-    {
-        $start = $index;
-        $index = $this->skipWhiteSpace($index);
-        $length = $this->msgLength;
-
-        // Ensure there is a choice pattern to parse (not end or immediate '}').
-        if ($index === $length || $this->charAt($index) === '}') {
-            throw new UnmatchedBracesException($this->errorContext());
-        }
-
-        while (true) {
-            // Parse the numeric selector token.
-            $numberIndex = $index;
-            $index = $this->skipDouble($index);
-            $len = $index - $numberIndex;
-
-            // Reject empty or overlong numeric selectors.
-            if ($len === 0) {
-                throw new BadChoicePatternSyntaxException($this->errorContext($start));
-            }
-            if ($len > Part::MAX_LENGTH) {
-                throw new OutOfBoundsException("Choice number too long: " . $this->errorContext($numberIndex));
-            }
-
-            // Validate and record the numeric selector value.
-            $this->parseDouble($numberIndex, $index, true);
-
-            // Expect a choice separator after optional whitespace.
-            $index = $this->skipWhiteSpace($index);
-            if ($index === $length) {
-                // @codeCoverageIgnoreStart
-                throw new BadChoicePatternSyntaxException($this->errorContext($start));
-                // @codeCoverageIgnoreEnd
-            }
-
-            // Separator must be one of #, <, or ≤.
-            $c = $this->charAt($index);
-            if (!($c === '#' || $c === '<' || $this->startsWithAt("≤", $index))) {
-                throw new InvalidArgumentException(
-                    "Expected choice separator (#<≤) instead of '$c' in choice pattern " . $this->errorContext($start)
-                );
-            }
-
-            // Record the selector token, then parse the following message fragment.
-            $this->addPart(TokenType::ARG_SELECTOR, $index, 1, 0);
-            $index = $this->parseMessage($index + 1, 0, $nestingLevel + 1, ArgType::CHOICE);
-
-            // If we hit the end, parsing is complete.
-            if ($index === $length) {
-                return $index;
-            }
-
-            // If terminated by '}', verify nesting and finish this choice style.
-            if ($this->charAt($index) === '}') {
-                if (!$this->inMessageFormatPattern($nestingLevel)) {
-                    throw new BadChoicePatternSyntaxException($this->errorContext($start));
-                }
-                return $index;
-            }
-
-            // Otherwise skip over '|' (implicit) and continue with the next choice segment.
-            $index = $this->skipWhiteSpace($index + 1);
-        }
-    }
-
-    /**
-     * Parses a pattern for "plural" or "select" argument styles, ensuring proper syntax, selector validation,
-     * and message fragment parsing. Responsible for handling nesting, required keywords, and selectors syntax.
-     *
-     * @param ArgType $argType The type of argument style being parsed, such as plural or select.
-     * @param int $index The current index in the pattern string where parsing starts.
-     * @param int $nestingLevel The level of nesting within the message format pattern.
-     * @return int The updated index position after parsing the plural or select style.
-     * @throws InvalidArgumentException If the syntax is invalid or required elements
-     *                                  (e.g., a message fragment after a selector, the "offset:" position) are wrong.
-     * @throws UnmatchedBracesException If the pattern contains unmatched '{' or '}' braces.
-     * @throws BadPluralSelectPatternSyntaxException If the plural/select pattern is malformed
-     *                                               or missing the required "other" case.
-     * @throws InvalidNumericValueException If a numeric explicit-value selector (e.g., "=2") has bad syntax.
-     * @throws OutOfBoundsException If a selector or offset value exceeds allowed length constraints.
-     */
-    private function parsePluralOrSelectStyle(ArgType $argType, int $index, int $nestingLevel): int
-    {
-        $start = $index;                 // remember the start position for the error context
-        $isEmpty = true;                 // true until a selector/message pair is parsed
-        $hasOther = false;               // track the required "other" selector
-        $length = $this->msgLength;
-
-        while (true) {
-            $index = $this->skipWhiteSpace($index); // skip leading whitespace
-            $eos = $index === $length;
-
-            // end of style: '}' or end of string
-            if ($eos || $this->charAt($index) === '}') {
-                if ($eos) {
-                    $curlyBraces = 0; // Counter to track the balance of opening and closing curly braces.
-
-                    // Iterate through all parts of the message to count opening and closing braces.
-                    foreach ($this->parts as $part) {
-                        match ($part->getType()) {
-                            TokenType::MSG_START => $curlyBraces++, // Increment for each opening brace.
-                            TokenType::MSG_LIMIT => $curlyBraces--, // Decrement for each closing brace.
-                            default => null, // Ignore other token types.
-                        };
-                    }
-
-                    // If there are unmatched opening braces, throw an exception.
-                    if ($curlyBraces > 0) {
-                        throw new UnmatchedBracesException($this->errorContext());
-                    }
-                }
-
-                // validate matching end depending on nesting context
-                if ($eos === $this->inMessageFormatPattern($nestingLevel)) {
-                    throw new BadPluralSelectPatternSyntaxException($argType->name, $this->errorContext($start));
-                }
-                // plural/select requires an "other" case
-                if (!$hasOther) {
-                    throw new BadPluralSelectPatternSyntaxException($argType->name, $this->errorContext($start));
-                }
-                return $index;
-            }
-
-            $selectorIndex = $index;
-
-            // plural explicit-value selector: "=n"
-            if ($argType->hasPluralStyle() && $this->charAt($selectorIndex) === '=') {
-                $index = $this->skipDouble($index + 1);
-                $len = $index - $selectorIndex;
-                if ($len === 1) {
-                    throw new BadPluralSelectPatternSyntaxException($argType->name, $this->errorContext($start));
-                }
-                if ($len > Part::MAX_LENGTH) {
-                    throw new OutOfBoundsException("Argument selector too long: " . $this->errorContext($selectorIndex));
-                }
-                $this->addPart(TokenType::ARG_SELECTOR, $selectorIndex, $len, 0);
-                $this->parseDouble($selectorIndex + 1, $index, false); // store numeric selector value
-            } else {
-                // keyword selector (e.g., one, few, other, male)
-                $index = $this->skipIdentifier($index);
-                $len = $index - $selectorIndex;
-
-                if ($len === 0) {
-                    throw new BadPluralSelectPatternSyntaxException($argType->name, $this->errorContext($start));
-                }
-
-                // plural "offset:" must be first and only once
-                if (
-                    $argType->hasPluralStyle() &&
-                    $len === 6 &&
-                    $index < $length &&
-                    $this->startsWithAt(
-                        'offset:',
-                        $selectorIndex
-                    )
-                ) {
-                    if (!$isEmpty) {
-                        throw new InvalidArgumentException(
-                            "Plural argument 'offset:' (if present) must precede key-message pairs: " . $this->errorContext(
-                                $start
-                            )
-                        );
-                    }
-                    $valueIndex = $this->skipWhiteSpace($index + 1);
-                    $index = $this->skipDouble($valueIndex);
-                    if ($index === $valueIndex) {
-                        throw new InvalidArgumentException(
-                            "Missing value for plural 'offset:' " . $this->errorContext($start)
-                        );
-                    }
-                    if (($index - $valueIndex) > Part::MAX_LENGTH) {
-                        throw new OutOfBoundsException("Plural offset value too long: " . $this->errorContext($valueIndex));
-                    }
-                    $this->parseDouble($valueIndex, $index, false); // store offset value
-                    $isEmpty = false;
-                    continue; // offset doesn't consume a message fragment
-                }
-
-                if ($len > Part::MAX_LENGTH) {
-                    throw new OutOfBoundsException("Argument selector too long: " . $this->errorContext($selectorIndex));
-                }
-                $this->addPart(TokenType::ARG_SELECTOR, $selectorIndex, $len, 0);
-
-                // mark if the selector is "other"
-                if (mb_substr($this->msg, $selectorIndex, $len) === 'other') {
-                    $hasOther = true;
-                }
-            }
-
-            // "{message}" must follow each selector
-            $index = $this->skipWhiteSpace($index);
-            if ($index === $length || $this->charAt($index) !== '{') {
-                throw new InvalidArgumentException(
-                    "No message fragment after " . strtolower($argType->name) . " selector: " . $this->errorContext(
-                        $selectorIndex
-                    )
-                );
-            }
-
-            // parse nested message fragment
-            $index = $this->parseMessage($index, 1, $nestingLevel + 1, $argType);
-            $isEmpty = false;
-        }
-    }
-
-    /**
-     * Validates and parses an argument number from this pattern.
-     * @param int $start Start index.
-     * @param int $limit Limit index.
-     * @return int >=0 if number, ARG_NAME_NOT_NUMBER, or ARG_NAME_NOT_VALID otherwise.
-     */
-    private function parseArgNumber(int $start, int $limit): int
-    {
-        return self::parseArgNumberFromString($this->msg, $start, $limit);
-    }
-
-    /**
-     * Parses a numeric argument from a substring and returns its integer value.
-     *
-     * @param string $s The string containing the numeric argument to be parsed.
-     * @param int $start The starting index of the substring to be parsed.
-     * @param int $limit The ending index (exclusive) of the substring to be parsed.
-     * @return int The parsed integer value if valid, or a predefined constant indicating an error:
-     *             - `ARG_NAME_NOT_VALID` if the parsed value is invalid.
-     *             - `ARG_NAME_NOT_NUMBER` if the substring does not represent a numeric value.
-     */
-    private static function parseArgNumberFromString(string $s, int $start, int $limit): int
-    {
-        // Reject empty range.
-        if ($start >= $limit) {
-            return self::ARG_NAME_NOT_VALID; // @codeCoverageIgnore
-        }
-
-        // Read the first character and decide how to start parsing.
-        $c = $s[$start++];
-        if ($c === '0') {
-            // "0" alone is valid; a leading zero with more digits is invalid.
-            if ($start === $limit) {
-                return 0;
-            }
-            return self::ARG_NAME_NOT_VALID;
-        } elseif (($ord = mb_ord($c)) >= 0x31 /* ord('1') */ && $ord <= 0x39 /* ord('9') */) {
-            /* 0x30 === ord('0') */
-            $number = $ord - 0x30;
-        } else {
-            // Non-digit start means “not a number”.
-            return self::ARG_NAME_NOT_NUMBER;
-        }
-
-        // Parse remaining digits, rejecting any non-digit.
-        while ($start < $limit) {
-            $c = $s[$start++];
-            if (($ord = mb_ord($c)) >= 0x30 /* ord('0') */ && $ord <= 0x39 /* ord('9') */) {
-                // Mark as invalid if it would overflow when extended.
-                if ($number >= intdiv(Part::MAX_VALUE, 10)) {
-                    return self::ARG_VALUE_OVERFLOW;
-                }
-                $number = $number * 10 + ($ord - 0x30 /* ord('0') */);
-            } else {
-                return self::ARG_NAME_NOT_NUMBER;
-            }
-        }
-
-        // Return number if valid, otherwise the invalid marker.
-        return $number;
-    }
-
-    /**
-     * Parses a numeric value within a given range of indices in a message string.
-     * Determines whether the value is integral, floating-point, or infinity, and handles it accordingly.
-     *
-     * @param int $start The starting index of the numeric value in the message string.
-     * @param int $limit The end index (exclusive) of the numeric value in the message string.
-     * @param bool $allowInfinity Indicates whether the numeric value can represent infinity.
-     *
-     * @return void
-     * @throws InvalidNumericValueException If the numeric value syntax is invalid
-     *         (e.g., bare sign, non-numeric characters, or misplaced infinity symbol).
-     * @throws OutOfBoundsException If there are too many numeric values stored.
-     */
-    private function parseDouble(int $start, int $limit, bool $allowInfinity): void
-    {
-        // Validate bounds: there must be at least one character to parse.
-        if ($start >= $limit) {
-            throw new InvalidNumericValueException(); // @codeCoverageIgnore
-        }
-
-        $index = $start;
-        $isNegative = 0;
-        $c = $this->charAt($index++);
-
-        // Handle optional leading sign.
-        if ($c === '-') {
-            $isNegative = 1;
-            if ($index === $limit) {
-                throw new InvalidNumericValueException();
-            }
-            $c = $this->charAt($index++);
-        } elseif ($c === '+') {
-            if ($index === $limit) {
-                throw new InvalidNumericValueException();
-            }
-            $c = $this->charAt($index++);
-        }
-
-        // Special-case infinity symbol; only valid if allowed and consumes the whole token.
-        if ($this->startsWithAt("∞", $index - 1 /* mb_strlen("∞") */)) {
-            if ($allowInfinity && $index === $limit) {
-                $value = $isNegative ? -INF : INF;
-                $this->addArgDoublePart($value, $start, $limit - $start);
-                return;
-            }
-            throw new InvalidNumericValueException();
-        }
-
-        // Fast-path: parse integer digits and keep within max storable int range.
-        $value = 0;
-        $ord = ord($c);
-        while ($ord >= 0x30 /* ord('0') */ && $ord <= 0x39 /* ord('9') */) {
-            $value = $value * 10 + ($ord - 0x30 /* ord('0') */);
-            if ($value > (Part::MAX_VALUE + $isNegative)) {
-                break;
-            }
-            // If we consumed all chars, store as integer part and finish.
-            if ($index === $limit) {
-                $this->addPart(TokenType::ARG_INT, $start, $limit - $start, $isNegative ? -$value : $value);
-                return;
-            }
-            $ord = ord($this->charAt($index++));
-        }
-
-        // Fallback: parse as float (handles decimals, exponent, overflow).
-        // Optimized to use the pre-split chars array.
-        $length = $limit - $start;
-        $numericValue = (float)implode(array_slice($this->chars, $start, $length));
-        $this->addArgDoublePart($numericValue, $start, $limit - $start);
-    }
-
-    /**
-     * Skips over consecutive whitespace characters in a string starting from the given index.
-     * @param int $index The starting position in the string to begin skipping whitespace.
-     * @return int The updated index positioned immediately after the last skipped whitespace character.
-     */
-    private function skipWhiteSpace(int $index): int
-    {
-        // Convert character offset to byte offset for preg_match
-        $byteOffset = strlen(mb_substr($this->msg, 0, $index));
-        if (preg_match('#\G[' . self::PATTERN_WHITE_SPACE . ']+#xu', $this->msg, $m, 0, $byteOffset)) {
-            return $index + mb_strlen($m[0]);
-        }
-        return $index;
-    }
-
-    /**
-     * Skips over an identifier in the message starting at the given index.
-     * An identifier is defined as a sequence of characters excluding punctuation and whitespace.
-     *
-     * @param int $index The starting position in the message from which to skip the identifier.
-     * @return int The new position in the message after skipping the identifier.
-     */
-    private function skipIdentifier(int $index): int
-    {
-        // ICU Pattern_Syntax + Pattern_White_Space (exact, hard-coded)
-        // Convert character offset to byte offset for preg_match
-        $byteOffset = strlen(mb_substr($this->msg, 0, $index));
-
-        if (
-            preg_match(
-                '#\G[^' . self::PATTERN_WHITE_SPACE . self::PATTERN_IDENTIFIER . ']+#xu',
-                $this->msg,
-                $m,
-                0,
-                $byteOffset
-            )
-        ) {
-            return $index + mb_strlen($m[0]);
-        }
-        return $index;
-    }
-
-    /**
-     * Skips over a sequence of characters representing a numeric value, starting at the given index,
-     * and returns the index of the first character that does not match numeric patterns.
-     *
-     * @param int $index The starting index from which to begin analyzing the character sequence.
-     * @return int The index of the first character that does not match numeric patterns.
-     */
-    private function skipDouble(int $index): int
-    {
-        $length = $this->msgLength; // Cache message length for bounds.
-        while ($index < $length) { // Scan forward from the given index.
-            $c = $this->charAt($index); // Current character.
-            if (
-                // Stop if not a number-sign/decimal char OR, not digit/exponent/infinity.
-                (mb_ord($c) < 0x30 /* ord('0') */ && !str_contains("+-.", $c)) ||
-                (mb_ord($c) > 0x39 /* ord('9') */ && $c !== 'e' && $c !== 'E' && !$this->startsWithAt("∞", $index))
-            ) {
-                break; // End of numeric token.
-            }
-            $index++; // Advance while the numeric token continues.
-        }
-        return $index; // Return index just after the numeric token.
-    }
-
-    /**
-     * @return bool true if we are inside a MessageFormat (sub-)pattern,
-     *         as opposed to inside a top-level choice/plural/select pattern.
-     */
-    private function inMessageFormatPattern(int $nestingLevel): bool
-    {
-        return $nestingLevel > 0 || (isset($this->parts[0]) && $this->parts[0]->getType() === TokenType::MSG_START);
-    }
-
-    /**
-     * @return bool true if we are in a MessageFormat sub-pattern
-     *         of a top-level ChoiceFormat pattern.
-     */
-    private function inTopLevelChoiceMessage(int $nestingLevel, ArgType $parentType): bool
-    {
-        return
-            $nestingLevel === 1 &&
-            $parentType === ArgType::CHOICE &&
-            (isset($this->parts[0]) ? $this->parts[0]->getType() : null) !== TokenType::MSG_START;
-    }
-
-    /**
-     * Adds a Part to the list.
-     */
-    private function addPart(TokenType $type, int $index, int $length, int $value): void
-    {
-        $this->parts[] = new Part($type, $index, $length, $value);
-    }
-
-    /**
-     * Adds a limit Part and ties it to its start part.
-     */
-    private function addLimitPart(int $start, TokenType $type, int $index, int $length, int $value): void
-    {
-        $this->limitPartIndexes[$start] = count($this->parts);
-        $this->addPart($type, $index, $length, $value);
-    }
-
-    /**
-     * Adds a numeric double Part.
-     * @throws OutOfBoundsException if too many numeric values are present.
-     */
-    private function addArgDoublePart(float $numericValue, int $start, int $length): void
-    {
-        $numericIndex = count($this->numericValues);
-        if ($numericIndex > Part::MAX_VALUE) {
-            throw new OutOfBoundsException("Too many numeric values"); // @codeCoverageIgnore
-        }
-        $this->numericValues[] = $numericValue;
-        $this->addPart(TokenType::ARG_DOUBLE, $start, $length, $numericIndex);
-    }
-
-    /**
-     * Tests whether a string is a "pattern identifier".
-     */
-    private static function isIdentifier(string $s): bool
-    {
-        return (bool)preg_match('/^[^' . self::PATTERN_WHITE_SPACE . self::PATTERN_IDENTIFIER . ']+$/u', $s);
-    }
-
-    /**
-     * Tests whether a character is valid for an argument type identifier.
-     */
-    private function isArgTypeChar(?string $c): bool
-    {
-        if (empty($c)) {
-            return false; // @codeCoverageIgnore
-        }
-
-        // Returns true if the provided character is an alphabetic letter (A–Z / a–z).
-        // mb_ord()/mb_chr() normalizes the input to a single ASCII character before the check.
-        return ctype_alpha($c);
-    }
-
-    /**
-     * Tests whether the argument type string is "choice" (case-insensitive).
-     */
-    private function isChoice(int $index): bool
-    {
-        return $this->startsWithAt('choice', $index) || $this->startsWithAt('CHOICE', $index);
-    }
-
-    /**
-     * Tests whether the argument type string is "plural" (case-insensitive).
-     */
-    private function isPlural(int $index): bool
-    {
-        return $this->startsWithAt('plural', $index) || $this->startsWithAt('PLURAL', $index);
-    }
-
-    /**
-     * Tests whether the argument type string is "select" (case-insensitive).
-     */
-    private function isSelect(int $index): bool
-    {
-        return $this->startsWithAt('select', $index) || $this->startsWithAt('SELECT', $index);
-    }
-
-    /**
-     * Tests whether the argument type suffix is "ordinal" (case-insensitive).
-     */
-    private function isOrdinal(int $index): bool
-    {
-        return $this->startsWithAt('ordinal', $index) || $this->startsWithAt('ORDINAL', $index);
-    }
-
-    /**
-     * Generates a preview of the message text starting from a specified index.
-     * Optionally includes position information in the preview when the starting index is not zero.
-     * (Named "prefix" in the original ICU4J MessagePattern.java.)
-     *
-     * @param int|null $start The starting index of the message slice. Defaults to the beginning of the message if null.
-     * @return string A quoted preview of the message text, truncated with an ellipsis if it exceeds the maximum length.
-     */
-    private function errorContext(?int $start = null): string
-    {
-        // Max length of the previewed message slice.
-        $max = 24;
-        // Work on the current message text.
-        $s = $this->msg;
-        // Default to the start of the message if no index provided.
-        $start = $start ?? 0;
-
-        // Build a prefix that includes position info when not at index 0.
-        $prefix = $start === 0 ? '"' : '[at pattern index ' . $start . '] "';
-        // Extract the message substring from the starting index.
-        $substring = mb_substr($s, $start);
-
-        // If the remaining text fits, return it quoted as-is.
-        if (mb_strlen($substring) <= $max) {
-            return $prefix . $substring . '"';
-        }
-
-        // Otherwise, return a truncated preview with an ellipsis.
-        return $prefix . mb_substr($s, $start, $max - 4) . ' ..."';
-    }
-
-    /**
-     * Returns the character at the given index.
-     */
-    private function charAt(int $index): string
-    {
-        return $this->chars[$index] ?? '';
-    }
-
-    /**
-     * Finds the position of the first occurrence of a substring in the message string.
-     * @param string $needle The substring to search for.
-     * @param int $offset The position in the string to start searching from. Defaults to 0.
-     * @return int|false The position of the first occurrence of the substring, or false if the substring is not found.
-     */
-    private function indexOf(string $needle, int $offset = 0): int|false
-    {
-        return mb_strpos($this->msg, $needle, $offset);
-    }
-
-    /**
-     * Returns true if the pattern starts with the given string at index.
-     * Optimized for speed by leveraging the pre-split chars array and
-     * avoiding expensive string construction or regex calls.
-     *
-     * @param string $needle The string to look for at the start of the pattern.
-     * @param int $index The index at which to begin searching for the string.
-     * @return bool true if the pattern starts with the given string at the given index.
-     */
-    private function startsWithAt(string $needle, int $index): bool
-    {
-        // Calculate length once. For the short constants used in this
-        // parser, mb_strlen is very fast.
-        $needleLen = mb_strlen($needle);
-
-        if ($index + $needleLen > $this->msgLength) {
-            return false; // @codeCoverageIgnore
-        }
-
-        // If the needle is a single character (very common in this parser),
-        // perform a direct comparison.
-        if ($needleLen === 1) {
-            return $this->chars[$index] === $needle;
-        }
-
-        return mb_substr($this->msg, $index, $needleLen) === $needle;
-    }
-
-    /**
-     * Determines the ordinal position of the given argument type within the cases of the ArgType enumeration.
-     * @param ArgType $argType The argument type to look for within the enumeration cases.
-     * @return int The ordinal position of the specified argument type, or 0 if it is not found.
-     */
-    private function argTypeOrdinal(ArgType $argType): int
-    {
-        $cases = ArgType::cases();
-        foreach ($cases as $i => $case) {
-            if ($case === $argType) {
-                return $i;
-            }
-        }
-        return 0; // @codeCoverageIgnore
-    }
-
-    /**
-     * Replaces the start value of the last argument part at the given index with a new value.
-     *
-     * @param int $startIndex The index of the part to be updated.
-     * @param int $newValue The new start value to set for the specified part.
-     * @return void
-     */
-    private function replaceLastArgStartValue(int $startIndex, int $newValue): void
-    {
-        $part = $this->parts[$startIndex] ?? null;
-        if ($part === null) {
-            return; // @codeCoverageIgnore
-        }
-        $this->parts[$startIndex] = new Part($part->getType(), $part->getIndex(), $part->getLength(), $newValue);
-    }
-
-
-    /**
-     * Iterator Interface implementation.
-     */
-
-    /**
-     * Tracks the current position for iteration.
-     *
-     * @var int
-     */
-    private int $position;
-
-    /**
-     * Returns the current header field in the iteration.
-     *
-     * @return Part The current header field.
+     * @return Part The current Part.
      */
     public function current(): Part
     {
-        return $this->parts[$this->position];
+        return $this->ctx->parts[$this->position];
     }
 
     /**
-     * Returns the key of the current header field in the iteration.
+     * Returns the key of the current Part in the iteration.
      *
-     * @return int The key of the current header field.
+     * @return int The key of the current Part.
      */
     public function key(): int
     {
@@ -1499,7 +386,7 @@ final class MessagePattern implements Iterator
     }
 
     /**
-     * Moves the iterator to the next header field.
+     * Moves the iterator to the next Part.
      *
      * @return void
      */
@@ -1509,7 +396,7 @@ final class MessagePattern implements Iterator
     }
 
     /**
-     * Rewinds the iterator to the first header field.
+     * Rewinds the iterator to the first Part.
      *
      * @return void
      */
@@ -1525,6 +412,6 @@ final class MessagePattern implements Iterator
      */
     public function valid(): bool
     {
-        return isset($this->parts[$this->position]);
+        return isset($this->ctx->parts[$this->position]);
     }
 }

@@ -90,7 +90,7 @@ final class PartTest extends TestCase
         $pattern->parse('Hello {name} world');
 
         // Find the MSG_START part (should be at index 0)
-        $msgStartPart = $pattern->getPart(0);
+        $msgStartPart = $pattern->parts()->getPart(0);
 
         self::assertSame(TokenType::MSG_START, $msgStartPart->getType());
         $stringRepresentation = (string)$msgStartPart;

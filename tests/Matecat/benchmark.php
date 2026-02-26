@@ -174,7 +174,7 @@ function benchmarkPattern(string $pattern, int $iterations, bool $isChoiceStyle 
         $end = hrtime(true);
 
         $measurements[] = ($end - $start) / 1000; // Convert to microseconds
-        $partsCount = $mp->countParts();
+        $partsCount = $mp->parts()->countParts();
     }
 
     $memoryAfter = memory_get_usage(true);

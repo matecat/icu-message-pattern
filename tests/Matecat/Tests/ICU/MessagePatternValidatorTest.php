@@ -217,7 +217,7 @@ class MessagePatternValidatorTest extends TestCase
 
         $pattern = $validator->getPattern();
 
-        self::assertGreaterThan(0, $pattern->countParts());
+        self::assertGreaterThan(0, $pattern->parts()->countParts());
     }
 
     /**
@@ -232,7 +232,7 @@ class MessagePatternValidatorTest extends TestCase
         $pattern = $validator->getPattern();
 
         // Simple pattern should have parts
-        self::assertGreaterThan(0, $pattern->countParts());
+        self::assertGreaterThan(0, $pattern->parts()->countParts());
     }
 
     /**
