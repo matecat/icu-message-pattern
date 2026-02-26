@@ -12,6 +12,7 @@ namespace Matecat\ICU\Parsing\Style;
 
 use Matecat\ICU\Exceptions\InvalidNumericValueException;
 use Matecat\ICU\Exceptions\OutOfBoundsException;
+use Matecat\ICU\MessagePattern;
 use Matecat\ICU\Parsing\ParseContext;
 use Matecat\ICU\Parsing\Utils\CharUtils;
 use Matecat\ICU\Tokens\Part;
@@ -39,7 +40,7 @@ final class NumericParser
      */
     public function parseArgNumber(int $start, int $limit): int
     {
-        return CharUtils::parseArgNumberFromString($this->ctx->msg, $start, $limit);
+        return self::parseArgNumberFromString($this->ctx->msg, $start, $limit);
     }
 
     /**
@@ -66,6 +67,52 @@ final class NumericParser
         }
 
         $this->parseIntegerOrDouble($c, $index, $start, $limit, $isNegative);
+    }
+
+    /**
+     * Parses a numeric argument from a substring and returns its integer value.
+     *
+     * @param string $s The string containing the numeric argument.
+     * @param int $start The starting index.
+     * @param int $limit The ending index (exclusive).
+     * @return int >=0 if a valid number, ARG_NAME_NOT_NUMBER, ARG_NAME_NOT_VALID, or ARG_VALUE_OVERFLOW.
+     */
+    public static function parseArgNumberFromString(string $s, int $start, int $limit): int
+    {
+        if ($start >= $limit) {
+            return MessagePattern::ARG_NAME_NOT_VALID; // @codeCoverageIgnore
+        }
+
+        $number = self::parseDigits($s, $start, $limit);
+
+        // A leading '0' is only valid when it is the sole character
+        if ($s[$start] === '0' && $limit - $start > 1) {
+            $number = MessagePattern::ARG_NAME_NOT_VALID;
+        }
+
+        return $number;
+    }
+
+    /**
+     * Parses a sequence of ASCII digits into an integer.
+     *
+     * @return int The parsed number (>=0), ARG_NAME_NOT_NUMBER, or ARG_VALUE_OVERFLOW.
+     */
+    private static function parseDigits(string $s, int $start, int $limit): int
+    {
+        $number = 0;
+        for ($i = $start; $i < $limit; $i++) {
+            $ord = mb_ord($s[$i]);
+            if ($ord < 0x30 || $ord > 0x39) {
+                return MessagePattern::ARG_NAME_NOT_NUMBER;
+            }
+            if ($number >= intdiv(Part::MAX_VALUE, 10) && $i > $start) {
+                return MessagePattern::ARG_VALUE_OVERFLOW;
+            }
+            $number = $number * 10 + ($ord - 0x30);
+        }
+
+        return $number;
     }
 
     /**

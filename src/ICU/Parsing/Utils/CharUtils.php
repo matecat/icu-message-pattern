@@ -215,48 +215,6 @@ final class CharUtils
     }
 
     /**
-     * Parses a numeric argument from a substring and returns its integer value.
-     *
-     * @param string $s The string containing the numeric argument.
-     * @param int $start The starting index.
-     * @param int $limit The ending index (exclusive).
-     * @return int >=0 if valid number, ARG_NAME_NOT_NUMBER, ARG_NAME_NOT_VALID, or ARG_VALUE_OVERFLOW.
-     */
-    public static function parseArgNumberFromString(string $s, int $start, int $limit): int
-    {
-        if ($start >= $limit) {
-            return MessagePattern::ARG_NAME_NOT_VALID; // @codeCoverageIgnore
-        }
-
-        $c = $s[$start++];
-        if ($c === '0') {
-            return ($start === $limit) ? 0 : MessagePattern::ARG_NAME_NOT_VALID;
-        }
-
-        $ord = mb_ord($c);
-        if ($ord >= 0x31 && $ord <= 0x39) {
-            $number = $ord - 0x30;
-        } else {
-            return MessagePattern::ARG_NAME_NOT_NUMBER;
-        }
-
-        while ($start < $limit) {
-            $c = $s[$start++];
-            $ord = mb_ord($c);
-            if ($ord >= 0x30 && $ord <= 0x39) {
-                if ($number >= intdiv(Part::MAX_VALUE, 10)) {
-                    return MessagePattern::ARG_VALUE_OVERFLOW;
-                }
-                $number = $number * 10 + ($ord - 0x30);
-            } else {
-                return MessagePattern::ARG_NAME_NOT_NUMBER;
-            }
-        }
-
-        return $number;
-    }
-
-    /**
      * Appends a string segment to the output, reducing consecutive apostrophes.
      * Doubled apostrophes (escaped single quotes) are treated as a single apostrophe.
      */

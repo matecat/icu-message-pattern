@@ -40,6 +40,10 @@ final class MessagePatternParser
     private ChoiceStyleParser $choiceStyleParser;
     private PluralSelectParser $pluralSelectParser;
 
+    /**
+     * Initialises the parser with the given context and creates sub-parsers
+     * for choice, plural, and select argument styles.
+     */
     public function __construct(ParseContext $ctx)
     {
         $this->ctx = $ctx;
@@ -320,9 +324,7 @@ final class MessagePatternParser
             );
         }
 
-        throw new InvalidArgumentException(
-            "Bad argument syntax: " . CharUtils::errorContext($this->ctx->msg, $nameIndex)
-        );
+        throw $this->badArgumentSyntax($nameIndex);
     }
 
     /**
@@ -340,9 +342,7 @@ final class MessagePatternParser
     {
         $c = CharUtils::charAt($this->ctx->chars, $index);
         if ($c !== ',') {
-            throw new InvalidArgumentException(
-                "Bad argument syntax: " . CharUtils::errorContext($this->ctx->msg, $nameIndex)
-            );
+            throw $this->badArgumentSyntax($nameIndex);
         }
 
         $typeIndex = $index = CharUtils::skipWhiteSpace($this->ctx->msg, $index + 1);
@@ -359,9 +359,7 @@ final class MessagePatternParser
         }
         $c = CharUtils::charAt($this->ctx->chars, $index);
         if ($length === 0 || ($c !== ',' && $c !== '}')) {
-            throw new InvalidArgumentException(
-                "Bad argument syntax: " . CharUtils::errorContext($this->ctx->msg, $nameIndex)
-            );
+            throw $this->badArgumentSyntax($nameIndex);
         }
         if ($length > Part::MAX_LENGTH) {
             throw new OutOfBoundsException(
@@ -534,16 +532,34 @@ final class MessagePatternParser
         return 0; // @codeCoverageIgnore
     }
 
+    /**
+     * Checks whether the parser is currently inside a MessageFormat pattern
+     * (either nested or started with a MSG_START part).
+     */
     private function inMessageFormatPattern(int $nestingLevel): bool
     {
         return $nestingLevel > 0
             || (isset($this->ctx->parts[0]) && $this->ctx->parts[0]->getType() === TokenType::MSG_START);
     }
 
+    /**
+     * Checks whether the parser is at the top-level message of a ChoiceFormat
+     * pattern (nesting level 1, choice parent, no MSG_START).
+     */
     private function inTopLevelChoiceMessage(int $nestingLevel, ArgType $parentType): bool
     {
         return $nestingLevel === 1
             && $parentType === ArgType::CHOICE
             && (isset($this->ctx->parts[0]) ? $this->ctx->parts[0]->getType() : null) !== TokenType::MSG_START;
+    }
+
+    /**
+     * Creates an InvalidArgumentException for bad argument syntax at the given index.
+     */
+    private function badArgumentSyntax(int $nameIndex): InvalidArgumentException
+    {
+        return new InvalidArgumentException(
+            "Bad argument syntax: " . CharUtils::errorContext($this->ctx->msg, $nameIndex)
+        );
     }
 }

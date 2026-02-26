@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Matecat\ICU\Plurals;
 
-use RuntimeException;
 
 /**
  * Utility class to calculate which plural form index to use for a given number in a specific locale.
@@ -744,8 +743,6 @@ class PluralRules
         return match ($ruleGroup) {
             // nplurals=1; plural=0; (Asian, no plural forms)
             0 => 0,
-            // nplurals=2; plural=(n != 1); (Germanic, most European)
-            1 => $n === 1 ? 0 : 1,
             // nplurals=2; plural=(n > 1); (Filipino, Turkish, etc.)
             2 => $n > 1 ? 1 : 0,
             // nplurals=3; Slavic (Russian, Ukrainian, Belarusian, Serbian, Croatian)
@@ -860,9 +857,10 @@ class PluralRules
                 $n !== 0 && $n % 1000000 === 0 => 1,
                 default => 2,
             },
-            // @codeCoverageIgnoreStart
-            default => throw new RuntimeException('Unable to find plural rule number.'),
-            // @codeCoverageIgnoreEnd
+            // nplurals=2; plural=(n != 1); (Germanic, most European)
+            // Fallback: Rule 1 (n != 1) is the most common CLDR cardinal rule,
+            // covering ~170+ locales (Germanic, most European languages).
+            default => $n === 1 ? 0 : 1,
         };
     }
 

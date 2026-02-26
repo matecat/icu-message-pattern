@@ -11,10 +11,11 @@ use Matecat\ICU\Exceptions\InvalidArgumentException;
 use Matecat\ICU\Exceptions\InvalidNumericValueException;
 use Matecat\ICU\Exceptions\OutOfBoundsException;
 use Matecat\ICU\Exceptions\UnmatchedBracesException;
-use Matecat\ICU\Parsing\Utils\CharUtils;
 use Matecat\ICU\Parsing\MessagePatternParser;
 use Matecat\ICU\Parsing\ParseContext;
 use Matecat\ICU\Parsing\PartAccessor;
+use Matecat\ICU\Parsing\Style\NumericParser;
+use Matecat\ICU\Parsing\Utils\CharUtils;
 use Matecat\ICU\Tokens\ArgType;
 use Matecat\ICU\Tokens\Part;
 use Matecat\ICU\Tokens\TokenType;
@@ -343,7 +344,7 @@ final class MessagePattern implements Iterator
         if (!CharUtils::isIdentifier($name)) {
             return self::ARG_NAME_NOT_VALID;
         }
-        return CharUtils::parseArgNumberFromString($name, 0, mb_strlen($name));
+        return NumericParser::parseArgNumberFromString($name, 0, mb_strlen($name));
     }
 
     /**

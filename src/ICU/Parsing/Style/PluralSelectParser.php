@@ -74,38 +74,15 @@ final class PluralSelectParser
             if ($argType->hasPluralStyle() && CharUtils::charAt($this->ctx->chars, $selectorIndex) === '=') {
                 $index = $this->parseExplicitValueSelector($selectorIndex, $index, $start, $argType);
             } else {
-                $index = CharUtils::skipIdentifier($this->ctx->msg, $index);
-                $len = $index - $selectorIndex;
-
-                if ($len === 0) {
-                    throw new BadPluralSelectPatternSyntaxException($argType->name, CharUtils::errorContext($this->ctx->msg, $start));
-                }
-
-                // Handle plural "offset:" — must be first, consumes no message fragment
-                if ($this->isPluralOffset($argType, $len, $index, $selectorIndex)) {
-                    $index = $this->parsePluralOffset($start, $index, $isEmpty);
+                [$index, $skipMessage] = $this->parseKeywordSelector($argType, $index, $selectorIndex, $start, $isEmpty);
+                if ($skipMessage) {
                     $isEmpty = false;
                     continue;
                 }
-
-                if ($len > Part::MAX_LENGTH) {
-                    throw new OutOfBoundsException("Argument selector too long: " . CharUtils::errorContext($this->ctx->msg, $selectorIndex));
-                }
-                $this->ctx->addPart(TokenType::ARG_SELECTOR, $selectorIndex, $len, 0);
-
-                if (mb_substr($this->ctx->msg, $selectorIndex, $len) === 'other') {
-                    $hasOther = true;
-                }
+                $hasOther = $hasOther || $this->isOtherSelector($selectorIndex, $index - $selectorIndex);
             }
 
-            // "{message}" must follow each selector
-            $index = CharUtils::skipWhiteSpace($this->ctx->msg, $index);
-            if ($index === $this->ctx->msgLength || CharUtils::charAt($this->ctx->chars, $index) !== '{') {
-                throw new InvalidArgumentException(
-                    "No message fragment after " . strtolower($argType->name) . " selector: " . CharUtils::errorContext($this->ctx->msg, $selectorIndex)
-                );
-            }
-
+            $this->requireMessageFragment($argType, $index, $selectorIndex);
             $index = ($this->parseMessage)($index, 1, $nestingLevel + 1, $argType);
             $isEmpty = false;
         }
@@ -210,6 +187,64 @@ final class PluralSelectParser
         }
         $this->numericParser->parseDoubleValue($valueIndex, $index, false);
         return $index;
+    }
+
+    /**
+     * Parses a keyword-based selector (non-explicit-value).
+     * Returns the updated index and whether the loop should skip the message fragment
+     * (true when the selector was "offset:").
+     *
+     * @return array{0: int, 1: bool}
+     * @throws BadPluralSelectPatternSyntaxException
+     * @throws OutOfBoundsException
+     * @throws InvalidArgumentException
+     * @throws InvalidNumericValueException
+     */
+    private function parseKeywordSelector(ArgType $argType, int $index, int $selectorIndex, int $start, bool $isEmpty): array
+    {
+        $index = CharUtils::skipIdentifier($this->ctx->msg, $index);
+        $len = $index - $selectorIndex;
+
+        if ($len === 0) {
+            throw new BadPluralSelectPatternSyntaxException($argType->name, CharUtils::errorContext($this->ctx->msg, $start));
+        }
+
+        // Handle plural "offset:" — must be first, consumes no message fragment
+        if ($this->isPluralOffset($argType, $len, $index, $selectorIndex)) {
+            $index = $this->parsePluralOffset($start, $index, $isEmpty);
+            return [$index, true];
+        }
+
+        if ($len > Part::MAX_LENGTH) {
+            throw new OutOfBoundsException("Argument selector too long: " . CharUtils::errorContext($this->ctx->msg, $selectorIndex));
+        }
+        $this->ctx->addPart(TokenType::ARG_SELECTOR, $selectorIndex, $len, 0);
+
+        return [$index, false];
+    }
+
+    /**
+     * Checks whether the selector at the given position is "other".
+     */
+    private function isOtherSelector(int $selectorIndex, int $len): bool
+    {
+        return mb_substr($this->ctx->msg, $selectorIndex, $len) === 'other';
+    }
+
+    /**
+     * Ensures that a "{message}" fragment follows the current selector.
+     * Advances past whitespace and throws if '{' is not found.
+     *
+     * @throws InvalidArgumentException
+     */
+    private function requireMessageFragment(ArgType $argType, int &$index, int $selectorIndex): void
+    {
+        $index = CharUtils::skipWhiteSpace($this->ctx->msg, $index);
+        if ($index === $this->ctx->msgLength || CharUtils::charAt($this->ctx->chars, $index) !== '{') {
+            throw new InvalidArgumentException(
+                "No message fragment after " . strtolower($argType->name) . " selector: " . CharUtils::errorContext($this->ctx->msg, $selectorIndex)
+            );
+        }
     }
 }
 

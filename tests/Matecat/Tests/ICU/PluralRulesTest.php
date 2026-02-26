@@ -3140,6 +3140,38 @@ final class PluralRulesTest extends TestCase
         self::assertSame(2, PluralRules::getPluralCount('en-us'));
     }
 
+    // =========================================================================
+    // Default cardinal fallback: Rule 1 (n != 1) for unknown rule groups
+    // =========================================================================
+
+    /**
+     * Tests that an unknown cardinal rule group falls back to Rule 1 (n != 1),
+     * the most common CLDR cardinal rule (~170+ locales).
+     */
+    public function testCardinalFallbackUsesRuleOneForUnknownRuleGroup(): void
+    {
+        // n = 1 → form 0 (singular)
+        self::assertSame(0, PluralRulesWithUnknownRule::getCardinalFormIndex('xx_unknown', 1));
+        // n != 1 → form 1 (plural)
+        self::assertSame(1, PluralRulesWithUnknownRule::getCardinalFormIndex('xx_unknown', 0));
+        self::assertSame(1, PluralRulesWithUnknownRule::getCardinalFormIndex('xx_unknown', 2));
+        self::assertSame(1, PluralRulesWithUnknownRule::getCardinalFormIndex('xx_unknown', 5));
+        self::assertSame(1, PluralRulesWithUnknownRule::getCardinalFormIndex('xx_unknown', 100));
+    }
+
+}
+
+/**
+ * Test helper: maps a locale to an undefined cardinal rule group (99)
+ * to exercise the default fallback path in getCardinalFormIndex().
+ *
+ * @internal Only used in tests.
+ */
+class PluralRulesWithUnknownRule extends PluralRules
+{
+    protected static array $rulesMap = [
+        'xx_unknown' => ['cardinal' => 99, 'ordinal' => 0],
+    ];
 }
 
 
