@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Matecat\ICU;
 
 use Iterator;
+use Matecat\ICU\Exceptions\BadChoicePatternSyntaxException;
 use Matecat\ICU\Exceptions\BadPluralSelectPatternSyntaxException;
 use Matecat\ICU\Exceptions\InvalidArgumentException;
 use Matecat\ICU\Exceptions\InvalidNumericValueException;
@@ -159,6 +160,7 @@ final class MessagePattern implements Iterator
      * @throws InvalidArgumentException If the pattern syntax is invalid.
      * @throws UnmatchedBracesException If the pattern contains unmatched '{' or '}' braces.
      * @throws BadPluralSelectPatternSyntaxException If a plural/select pattern is malformed or missing the "other" case.
+     * @throws BadChoicePatternSyntaxException If a choice pattern has invalid syntax (e.g., empty selector, bad nesting).
      * @throws InvalidNumericValueException If a numeric value in the pattern has bad syntax.
      * @throws OutOfBoundsException If certain limits are exceeded
      *         (e.g., argument number too high, argument name too long, nesting too deep, etc.)
@@ -178,6 +180,7 @@ final class MessagePattern implements Iterator
      * @throws InvalidArgumentException If the pattern syntax is invalid.
      * @throws UnmatchedBracesException If the pattern contains unmatched '{' or '}' braces.
      * @throws BadPluralSelectPatternSyntaxException If a plural/select pattern is malformed or missing the "other" case.
+     * @throws BadChoicePatternSyntaxException If a choice pattern has invalid syntax (e.g., empty selector, bad nesting).
      * @throws InvalidNumericValueException If a numeric value in the pattern has bad syntax.
      * @throws OutOfBoundsException If certain limits are exceeded
      *         (e.g., argument number too high, argument name too long, nesting too deep, etc.)
@@ -196,6 +199,7 @@ final class MessagePattern implements Iterator
      * @return $this
      * @throws InvalidArgumentException If the pattern syntax is invalid or has missing segments.
      * @throws UnmatchedBracesException If the pattern contains unmatched '{' or '}' braces.
+     * @throws BadChoicePatternSyntaxException If the choice pattern has invalid syntax (e.g., empty selector, bad nesting).
      * @throws InvalidNumericValueException If a numeric selector has bad syntax.
      * @throws OutOfBoundsException If numeric selectors or other elements exceed allowed length limits.
      */
@@ -543,6 +547,7 @@ final class MessagePattern implements Iterator
      * @throws InvalidArgumentException If the message fragment syntax is invalid.
      * @throws UnmatchedBracesException If the message contains unmatched '{' or '}' braces.
      * @throws BadPluralSelectPatternSyntaxException If a nested plural/select pattern is malformed.
+     * @throws BadChoicePatternSyntaxException If a nested choice pattern has invalid syntax.
      * @throws InvalidNumericValueException If a numeric value in a nested argument has bad syntax.
      * @throws OutOfBoundsException If the nesting level exceeds the maximum allowable value or other limits are hit.
      */
@@ -648,6 +653,7 @@ final class MessagePattern implements Iterator
      * @throws InvalidArgumentException If the argument syntax is invalid (e.g., bad name, missing comma/brace).
      * @throws UnmatchedBracesException If the argument contains unmatched '{' or '}' braces.
      * @throws BadPluralSelectPatternSyntaxException If a complex argument's plural/select style is malformed.
+     * @throws BadChoicePatternSyntaxException If a complex argument's choice style has invalid syntax.
      * @throws InvalidNumericValueException If a numeric value in the argument style has bad syntax.
      * @throws OutOfBoundsException If the argument number, name, or type exceeds predefined limits.
      */
@@ -832,9 +838,10 @@ final class MessagePattern implements Iterator
      * @param int $index The starting index within the pattern to begin parsing.
      * @param int $nestingLevel Current level of nesting in the pattern.
      * @return int The updated index after parsing the choice style segment.
-     * @throws InvalidArgumentException If the pattern has syntax errors, missing segments,
-     *                                  or invalid choice separators.
+     * @throws InvalidArgumentException If the choice separator is invalid.
      * @throws UnmatchedBracesException If the choice pattern contains unmatched '{' or '}' braces.
+     * @throws BadChoicePatternSyntaxException If the choice pattern has invalid syntax
+     *                                         (e.g., empty numeric selector, bad nesting, unexpected end of pattern).
      * @throws InvalidNumericValueException If a numeric selector has bad syntax.
      * @throws OutOfBoundsException If numeric selectors exceed allowable length limits.
      */
@@ -857,7 +864,7 @@ final class MessagePattern implements Iterator
 
             // Reject empty or overlong numeric selectors.
             if ($len === 0) {
-                throw new InvalidArgumentException("Bad choice pattern syntax: " . $this->errorContext($start));
+                throw new BadChoicePatternSyntaxException($this->errorContext($start));
             }
             if ($len > Part::MAX_LENGTH) {
                 throw new OutOfBoundsException("Choice number too long: " . $this->errorContext($numberIndex));
@@ -870,9 +877,7 @@ final class MessagePattern implements Iterator
             $index = $this->skipWhiteSpace($index);
             if ($index === $length) {
                 // @codeCoverageIgnoreStart
-                throw new InvalidArgumentException(
-                    "Bad choice pattern syntax: " . $this->errorContext($start)
-                );
+                throw new BadChoicePatternSyntaxException($this->errorContext($start));
                 // @codeCoverageIgnoreEnd
             }
 
@@ -896,7 +901,7 @@ final class MessagePattern implements Iterator
             // If terminated by '}', verify nesting and finish this choice style.
             if ($this->charAt($index) === '}') {
                 if (!$this->inMessageFormatPattern($nestingLevel)) {
-                    throw new InvalidArgumentException("Bad choice pattern syntax: " . $this->errorContext($start));
+                    throw new BadChoicePatternSyntaxException($this->errorContext($start));
                 }
                 return $index;
             }

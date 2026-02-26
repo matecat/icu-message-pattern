@@ -260,10 +260,7 @@ class Languages
      */
     public function getIsoCode(string $localizedName): string
     {
-        /** @var string $isocode */
-        $isocode = self::$mapSfc2obj[self::$mapString2rfc[$localizedName]]['isocode'];
-
-        return $isocode;
+        return self::$mapSfc2obj[self::$mapString2rfc[$localizedName]]['isocode'];
     }
 
     /**
@@ -308,10 +305,7 @@ class Languages
             throw new InvalidLanguageException('Invalid language code: ' . $code);
         }
 
-        /** @var string|null $result */
-        $result = self::$mapSfc2obj[$code]['localized'][$lang] ?? null;
-
-        return $result;
+        return self::$mapSfc2obj[$code]['localized'][$lang] ?? null;
     }
 
     /**
