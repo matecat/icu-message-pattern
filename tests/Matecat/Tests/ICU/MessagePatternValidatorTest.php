@@ -1559,6 +1559,45 @@ class MessagePatternValidatorTest extends TestCase
     }
 
     /**
+     * Test nested selectordinal with plural for French language produces no warnings.
+     *
+     * French ordinal categories: one, other
+     * French cardinal categories: one, many, other
+     *
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     * @throws PluralComplianceException
+     */
+    #[Test]
+    public function testNestedSelectOrdinalWithPluralFrenchNoWarnings(): void
+    {
+        $pattern = <<<'ICU'
+{currentYear, selectordinal,
+	one{
+		{totalYears, plural,
+			one {This is my #st year of work at this company of my total # year of work.}
+			other {This is my {currentYear}st year of work at this company of my total # years of work.}
+			many {This is my {currentYear}st year of work at this company of my total # years of work.}
+		}
+	}
+	other {
+		{totalYears, plural,
+			one {This is my {currentYear}th year of work at this company of my total # year of work.}
+			other {This is my {currentYear}th year of work at this company of my total # years of work.}
+			many {This is my {currentYear}st year of work at this company of my total # years of work.}
+		}
+	}
+}
+ICU;
+
+        $validator = new MessagePatternValidator('fr', $pattern);
+
+        $warning = $validator->validatePluralCompliance();
+
+        self::assertNull($warning);
+    }
+
+    /**
      * Test setPatternString resets the syntax exception.
      *
      * @return void

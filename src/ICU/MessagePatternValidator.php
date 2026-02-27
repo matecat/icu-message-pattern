@@ -376,7 +376,10 @@ final class MessagePatternValidator
     private const string NUMERIC_SELECTOR_PATTERN = '/^=(\\d+)$/';
 
     /**
-     * Extracts all ARG_SELECTOR values for a given plural/selectordinal argument.
+     * Extracts all direct ARG_SELECTOR values for a given plural/selectordinal argument.
+     *
+     * Nested arguments (e.g., a plural inside a selectordinal) are skipped so that
+     * only selectors belonging to the current argument level are collected.
      *
      * @param int $startIndex The index of the ARG_START part in the pattern.
      * @return array<string> List of selector strings found.
@@ -388,10 +391,18 @@ final class MessagePatternValidator
         $selectors = [];
         $limitIndex = $this->pattern->parts()->getLimitPartIndex($startIndex);
 
-        // Iterate only between ARG_START and ARG_LIMIT, skipping full pattern iteration
+        // Iterate only between ARG_START and ARG_LIMIT, skipping nested arguments
         for ($i = $startIndex + 1; $i < $limitIndex; $i++) {
             $part = $this->pattern->parts()->getPart($i);
-            if ($part->getType() === TokenType::ARG_SELECTOR) {
+            $type = $part->getType();
+
+            // Skip over nested arguments entirely
+            if ($type === TokenType::ARG_START) {
+                $i = $this->pattern->parts()->getLimitPartIndex($i);
+                continue;
+            }
+
+            if ($type === TokenType::ARG_SELECTOR) {
                 $selectors[] = $this->pattern->parts()->getSubstring($part);
             }
         }
