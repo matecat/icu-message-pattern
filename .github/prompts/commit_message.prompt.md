@@ -5,6 +5,6 @@ description: 'Write a commit message for the actual changes. Summarize it, I wan
 Write a commit message for the actual changes.
 Summarize it, I want a coincise version.
 
-Do NOT use `-A` flag for git commit, use ALWAYS `-a`
+Do NOT use `-A` flag for git commit, ALWAYS use lowercase `-a` flag.
 
 Wait for my approval before commit.
