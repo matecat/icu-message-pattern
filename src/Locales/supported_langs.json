@@ -1386,6 +1386,21 @@
         {
             "localized": [
                 {
+                    "en": "English (Jamaica)"
+                }
+            ],
+            "isocode": "en",
+            "enabled": true,
+            "rtl": false,
+            "rfc3066code": "en-JM",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
                     "en": "English (Laos)"
                 }
             ],
@@ -2301,21 +2316,6 @@
         {
             "localized": [
                 {
-                    "en": "Inuktitut (Greenland)"
-                }
-            ],
-            "isocode": "kal",
-            "enabled": true,
-            "rtl": false,
-            "rfc3066code": "kl-GL",
-            "ocr": {
-                "supported": true,
-                "not_supported_or_rtl": false
-            }
-        },
-        {
-            "localized": [
-                {
                     "en": "Irish Gaelic"
                 }
             ],
@@ -2473,6 +2473,21 @@
             "enabled": true,
             "rtl": false,
             "rfc3066code": "kab-DZ",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Kalaallisut (Greenland)"
+                }
+            ],
+            "isocode": "kal",
+            "enabled": true,
+            "rtl": false,
+            "rfc3066code": "kl-GL",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4684,21 +4699,6 @@
             "enabled": true,
             "rtl": false,
             "rfc3066code": "es-HN",
-            "ocr": {
-                "supported": true,
-                "not_supported_or_rtl": false
-            }
-        },
-        {
-            "localized": [
-                {
-                    "en": "Spanish (Jamaica)"
-                }
-            ],
-            "isocode": "es",
-            "enabled": true,
-            "rtl": false,
-            "rfc3066code": "es-JM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
