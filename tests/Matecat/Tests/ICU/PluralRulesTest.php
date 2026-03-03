@@ -169,6 +169,14 @@ final class PluralRulesTest extends TestCase
             ['bg', 0, 1],
             ['bg', 1, 0],
             ['bg', 2, 1],
+            // Turkish (CLDR 49: n = 1)
+            ['tr', 0, 1],
+            ['tr', 1, 0],
+            ['tr', 2, 1],
+            // Uzbek (CLDR 49: n = 1)
+            ['uz', 0, 1],
+            ['uz', 1, 0],
+            ['uz', 2, 1],
         ];
     }
 
@@ -198,14 +206,6 @@ final class PluralRulesTest extends TestCase
     public static function rule2Provider(): array
     {
         return [
-            // Filipino
-            ['fil', 0, 0],
-            ['fil', 1, 0],
-            ['fil', 2, 1],
-            // Turkish
-            ['tr', 0, 0],
-            ['tr', 1, 0],
-            ['tr', 2, 1],
             // Occitan
             ['oc', 0, 0],
             ['oc', 1, 0],
@@ -1201,10 +1201,16 @@ final class PluralRulesTest extends TestCase
         self::assertSame(0, PluralRules::getCardinalFormIndex('ast', 1));
         self::assertSame(1, PluralRules::getCardinalFormIndex('ast', 2));
 
-        // Filipino (fil) - rule 2
+        // Filipino (fil) - rule 25 (CLDR 49: does not end in 4,6,9 → one)
         self::assertSame(0, PluralRules::getCardinalFormIndex('fil', 0));
         self::assertSame(0, PluralRules::getCardinalFormIndex('fil', 1));
-        self::assertSame(1, PluralRules::getCardinalFormIndex('fil', 2));
+        self::assertSame(0, PluralRules::getCardinalFormIndex('fil', 2));  // "one" — doesn't end in 4,6,9
+        self::assertSame(1, PluralRules::getCardinalFormIndex('fil', 4));  // "other" — ends in 4
+
+        // Northern Uzbek (uzn) - rule 1 (CLDR 49: n = 1)
+        self::assertSame(1, PluralRules::getCardinalFormIndex('uzn', 0));
+        self::assertSame(0, PluralRules::getCardinalFormIndex('uzn', 1));
+        self::assertSame(1, PluralRules::getCardinalFormIndex('uzn', 2));
     }
 
     // =========================================================================
@@ -2100,14 +2106,13 @@ final class PluralRulesTest extends TestCase
     }
 
     /**
-     * Test getOrdinalCategories for Albanian ordinals (Rule 30: one/two/few/other)
+     * Test getOrdinalCategories for Albanian ordinals (Rule 30: one/many/other - CLDR 49)
      */
     public function testOrdinalCategoriesRuleThirtyAlbanian(): void
     {
         $expected = [
             PluralRules::CATEGORY_ONE,
-            PluralRules::CATEGORY_TWO,
-            PluralRules::CATEGORY_FEW,
+            PluralRules::CATEGORY_MANY,
             PluralRules::CATEGORY_OTHER
         ];
 
@@ -2195,8 +2200,10 @@ final class PluralRulesTest extends TestCase
         self::assertCount(4, PluralRules::getOrdinalCategories('en'));
         self::assertCount(4, PluralRules::getOrdinalCategories('mk'));
         self::assertCount(4, PluralRules::getOrdinalCategories('gd'));
-        self::assertCount(4, PluralRules::getOrdinalCategories('sq'));
         self::assertCount(4, PluralRules::getOrdinalCategories('te'));
+
+        // 3 categories (one/many/other)
+        self::assertCount(3, PluralRules::getOrdinalCategories('sq'));
 
         // 5 categories (one/two/few/many/other)
         self::assertCount(5, PluralRules::getOrdinalCategories('gu'));
@@ -2360,13 +2367,12 @@ final class PluralRulesTest extends TestCase
             // Rule 29: Nepali (one/few/other)
             'Nepali' => ['ne', [PluralRules::CATEGORY_ONE, PluralRules::CATEGORY_FEW, PluralRules::CATEGORY_OTHER]],
 
-            // Rule 30: Albanian (one/two/few/other)
+            // Rule 30: Albanian (one/many/other) - CLDR 49
             'Albanian' => [
                 'sq',
                 [
                     PluralRules::CATEGORY_ONE,
-                    PluralRules::CATEGORY_TWO,
-                    PluralRules::CATEGORY_FEW,
+                    PluralRules::CATEGORY_MANY,
                     PluralRules::CATEGORY_OTHER
                 ]
             ],
@@ -2763,16 +2769,22 @@ final class PluralRulesTest extends TestCase
 
     /**
      * Test getOrdinalFormIndex for Rule 30 (Albanian ordinals)
+     *
+     * CLDR 49 defines 3 ordinal categories for Albanian:
+     *   - one (index 0): n = 1
+     *   - many (index 1): n = 4
+     *   - other (index 2): everything else
      */
     public function testGetOrdinalFormIndexRuleThirtyAlbanian(): void
     {
         // one: n = 1
         self::assertSame(0, PluralRules::getOrdinalFormIndex('sq', 1));
 
-        // two: n = 4
+        // many: n = 4
         self::assertSame(1, PluralRules::getOrdinalFormIndex('sq', 4));
 
-        // few: n = 2..9 except 4
+        // other: everything else (including 2..9 except 4, and 0, 10, 11, 100…)
+        self::assertSame(2, PluralRules::getOrdinalFormIndex('sq', 0));
         self::assertSame(2, PluralRules::getOrdinalFormIndex('sq', 2));
         self::assertSame(2, PluralRules::getOrdinalFormIndex('sq', 3));
         self::assertSame(2, PluralRules::getOrdinalFormIndex('sq', 5));
@@ -2780,12 +2792,9 @@ final class PluralRulesTest extends TestCase
         self::assertSame(2, PluralRules::getOrdinalFormIndex('sq', 7));
         self::assertSame(2, PluralRules::getOrdinalFormIndex('sq', 8));
         self::assertSame(2, PluralRules::getOrdinalFormIndex('sq', 9));
-
-        // other: everything else
-        self::assertSame(3, PluralRules::getOrdinalFormIndex('sq', 0));
-        self::assertSame(3, PluralRules::getOrdinalFormIndex('sq', 10));
-        self::assertSame(3, PluralRules::getOrdinalFormIndex('sq', 11));
-        self::assertSame(3, PluralRules::getOrdinalFormIndex('sq', 100));
+        self::assertSame(2, PluralRules::getOrdinalFormIndex('sq', 10));
+        self::assertSame(2, PluralRules::getOrdinalFormIndex('sq', 11));
+        self::assertSame(2, PluralRules::getOrdinalFormIndex('sq', 100));
     }
 
     /**
@@ -3157,6 +3166,449 @@ final class PluralRulesTest extends TestCase
         self::assertSame(1, PluralRulesWithUnknownRule::getCardinalFormIndex('xx_unknown', 2));
         self::assertSame(1, PluralRulesWithUnknownRule::getCardinalFormIndex('xx_unknown', 5));
         self::assertSame(1, PluralRulesWithUnknownRule::getCardinalFormIndex('xx_unknown', 100));
+    }
+
+    // =========================================================================
+    // Rule 21: Three forms, one/two/other (Inuktitut, Sami, Nama, Swampy Cree)
+    // n=1 → 0 (one), n=2 → 1 (two), other → 2
+    // =========================================================================
+
+    #[DataProvider('rule21Provider')]
+    public function testRule21OneTwoOther(string $locale, int $n, int $expected): void
+    {
+        self::assertSame($expected, PluralRules::getCardinalFormIndex($locale, $n));
+    }
+
+    /**
+     * @return array<array<string|int>>
+     */
+    public static function rule21Provider(): array
+    {
+        return [
+            // Inuktitut
+            ['iu', 0, 2],
+            ['iu', 1, 0],
+            ['iu', 2, 1],
+            ['iu', 3, 2],
+            ['iu', 10, 2],
+            ['iu', 100, 2],
+            // Northern Sami
+            ['se', 1, 0],
+            ['se', 2, 1],
+            ['se', 5, 2],
+            // Inari Sami
+            ['smn', 1, 0],
+            ['smn', 2, 1],
+            ['smn', 3, 2],
+            // Nama
+            ['naq', 1, 0],
+            ['naq', 2, 1],
+            ['naq', 11, 2],
+            // Swampy Cree
+            ['csw', 1, 0],
+            ['csw', 2, 1],
+            ['csw', 0, 2],
+        ];
+    }
+
+    // =========================================================================
+    // Rule 22: Three forms, zero/one/other (Colognian, Anii, Langi)
+    // n=0 → 0 (zero), n=1 → 1 (one), other → 2
+    // =========================================================================
+
+    #[DataProvider('rule22Provider')]
+    public function testRule22ZeroOneOther(string $locale, int $n, int $expected): void
+    {
+        self::assertSame($expected, PluralRules::getCardinalFormIndex($locale, $n));
+    }
+
+    /**
+     * @return array<array<string|int>>
+     */
+    public static function rule22Provider(): array
+    {
+        return [
+            // Colognian
+            ['ksh', 0, 0],
+            ['ksh', 1, 1],
+            ['ksh', 2, 2],
+            ['ksh', 10, 2],
+            ['ksh', 100, 2],
+            // Anii
+            ['blo', 0, 0],
+            ['blo', 1, 1],
+            ['blo', 5, 2],
+            // Langi
+            ['lag', 0, 0],
+            ['lag', 1, 1],
+            ['lag', 3, 2],
+        ];
+    }
+
+    // =========================================================================
+    // Rule 23: Three forms, one/few/other (Tachelhit)
+    // n in 0..1 → 0 (one), n in 2..10 → 1 (few), other → 2
+    // =========================================================================
+
+    #[DataProvider('rule23Provider')]
+    public function testRule23OneFewOther(string $locale, int $n, int $expected): void
+    {
+        self::assertSame($expected, PluralRules::getCardinalFormIndex($locale, $n));
+    }
+
+    /**
+     * @return array<array<string|int>>
+     */
+    public static function rule23Provider(): array
+    {
+        return [
+            ['shi', 0, 0],
+            ['shi', 1, 0],
+            ['shi', 2, 1],
+            ['shi', 3, 1],
+            ['shi', 10, 1],
+            ['shi', 11, 2],
+            ['shi', 20, 2],
+            ['shi', 100, 2],
+        ];
+    }
+
+    // =========================================================================
+    // Rule 24: Six forms (Cornish)
+    // zero=0, one=1, two=%100{2,22,42,62,82}+, few=%100{3,23,43,63,83},
+    // many: n!=1 and %100{1,21,41,61,81}, other: rest
+    // =========================================================================
+
+    #[DataProvider('rule24Provider')]
+    public function testRule24Cornish(string $locale, int $n, int $expected): void
+    {
+        self::assertSame($expected, PluralRules::getCardinalFormIndex($locale, $n));
+    }
+
+    /**
+     * @return array<array<string|int>>
+     */
+    public static function rule24Provider(): array
+    {
+        return [
+            // zero
+            ['kw', 0, 0],
+            // one
+            ['kw', 1, 1],
+            // two: 2, 22, 42, 62, 82, 102, 122...
+            ['kw', 2, 2],
+            ['kw', 22, 2],
+            ['kw', 42, 2],
+            ['kw', 62, 2],
+            ['kw', 82, 2],
+            ['kw', 102, 2],
+            // few: 3, 23, 43, 63, 83, 103...
+            ['kw', 3, 3],
+            ['kw', 23, 3],
+            ['kw', 43, 3],
+            ['kw', 63, 3],
+            ['kw', 83, 3],
+            // many: n!=1 and %100 in {1,21,41,61,81}
+            ['kw', 21, 4],
+            ['kw', 41, 4],
+            ['kw', 61, 4],
+            ['kw', 81, 4],
+            ['kw', 101, 4],
+            // other: everything else
+            ['kw', 4, 5],
+            ['kw', 5, 5],
+            ['kw', 10, 5],
+            ['kw', 11, 5],
+            ['kw', 20, 5],
+            ['kw', 100, 5],
+        ];
+    }
+
+    // =========================================================================
+    // Rule 25: Filipino/Tagalog (CLDR 49)
+    // one: does not end in 4, 6, 9; other: ends in 4, 6, 9
+    // =========================================================================
+
+    #[DataProvider('rule25Provider')]
+    public function testRule25Filipino(string $locale, int $n, int $expected): void
+    {
+        self::assertSame($expected, PluralRules::getCardinalFormIndex($locale, $n));
+    }
+
+    /**
+     * @return array<array<string|int>>
+     */
+    public static function rule25Provider(): array
+    {
+        return [
+            // "one" category: numbers NOT ending in 4, 6, 9
+            ['fil', 0, 0],
+            ['fil', 1, 0],
+            ['fil', 2, 0],
+            ['fil', 3, 0],
+            ['fil', 5, 0],
+            ['fil', 7, 0],
+            ['fil', 8, 0],
+            ['fil', 10, 0],
+            ['fil', 11, 0],
+            ['fil', 12, 0],
+            ['fil', 15, 0],
+            ['fil', 20, 0],
+            ['fil', 21, 0],
+            ['fil', 100, 0],
+            ['fil', 1000, 0],
+            // "other" category: numbers ending in 4, 6, 9
+            ['fil', 4, 1],
+            ['fil', 6, 1],
+            ['fil', 9, 1],
+            ['fil', 14, 1],
+            ['fil', 16, 1],
+            ['fil', 19, 1],
+            ['fil', 24, 1],
+            ['fil', 26, 1],
+            ['fil', 29, 1],
+            ['fil', 34, 1],
+            ['fil', 104, 1],
+            ['fil', 1006, 1],
+            // Tagalog — same rule
+            ['tl', 0, 0],
+            ['tl', 1, 0],
+            ['tl', 4, 1],
+            ['tl', 6, 1],
+            ['tl', 9, 1],
+            ['tl', 10, 0],
+        ];
+    }
+
+    // =========================================================================
+    // Rule 26: Central Atlas Tamazight (CLDR 49)
+    // one: n = 0–1 or n = 11–99; other: everything else
+    // =========================================================================
+
+    #[DataProvider('rule26Provider')]
+    public function testRule26Tamazight(string $locale, int $n, int $expected): void
+    {
+        self::assertSame($expected, PluralRules::getCardinalFormIndex($locale, $n));
+    }
+
+    /**
+     * @return array<array<string|int>>
+     */
+    public static function rule26Provider(): array
+    {
+        return [
+            // "one" category: 0, 1, 11–99
+            ['tzm', 0, 0],
+            ['tzm', 1, 0],
+            ['tzm', 11, 0],
+            ['tzm', 12, 0],
+            ['tzm', 50, 0],
+            ['tzm', 99, 0],
+            // "other" category: 2–10, 100+
+            ['tzm', 2, 1],
+            ['tzm', 3, 1],
+            ['tzm', 10, 1],
+            ['tzm', 100, 1],
+            ['tzm', 101, 1],
+            ['tzm', 110, 1],
+            ['tzm', 1000, 1],
+        ];
+    }
+
+    // =========================================================================
+    // Ordinal Rule 31: Anii ordinals (zero/one/few/other)
+    // =========================================================================
+
+    #[DataProvider('ordinalRule31Provider')]
+    public function testOrdinalRule31Anii(string $locale, int $n, int $expected): void
+    {
+        self::assertSame($expected, PluralRules::getOrdinalFormIndex($locale, $n));
+    }
+
+    /**
+     * @return array<array<string|int>>
+     */
+    public static function ordinalRule31Provider(): array
+    {
+        return [
+            ['blo', 0, 0],  // zero
+            ['blo', 1, 1],  // one
+            ['blo', 2, 2],  // few
+            ['blo', 3, 2],  // few
+            ['blo', 6, 2],  // few
+            ['blo', 7, 3],  // other
+            ['blo', 10, 3], // other
+            ['blo', 100, 3], // other
+        ];
+    }
+
+    // =========================================================================
+    // Ordinal Rule 32: Cornish ordinals (one/many/other)
+    // =========================================================================
+
+    #[DataProvider('ordinalRule32Provider')]
+    public function testOrdinalRule32Cornish(string $locale, int $n, int $expected): void
+    {
+        self::assertSame($expected, PluralRules::getOrdinalFormIndex($locale, $n));
+    }
+
+    /**
+     * @return array<array<string|int>>
+     */
+    public static function ordinalRule32Provider(): array
+    {
+        return [
+            ['kw', 1, 0],   // one
+            ['kw', 2, 0],   // one
+            ['kw', 3, 0],   // one
+            ['kw', 4, 0],   // one
+            ['kw', 5, 1],   // many
+            ['kw', 6, 2],   // other
+            ['kw', 10, 2],  // other
+            ['kw', 21, 0],  // one
+            ['kw', 22, 0],  // one
+            ['kw', 105, 1], // many (n%100=5)
+            ['kw', 100, 2], // other
+        ];
+    }
+
+    // =========================================================================
+    // Moldavian (mo) = Romanian (ro) - cardinal rule 12, ordinal rule 2
+    // =========================================================================
+
+    #[DataProvider('moldavianProvider')]
+    public function testMoldavianSameAsRomanian(string $locale, int $n, int $expected): void
+    {
+        self::assertSame($expected, PluralRules::getCardinalFormIndex($locale, $n));
+    }
+
+    /**
+     * @return array<array<string|int>>
+     */
+    public static function moldavianProvider(): array
+    {
+        return [
+            ['mo', 1, 0],   // one
+            ['mo', 0, 1],   // few
+            ['mo', 2, 1],   // few
+            ['mo', 12, 1],  // few
+            ['mo', 19, 1],  // few
+            ['mo', 101, 1], // few (n%100=1 and n!=1)
+            ['mo', 20, 2],  // other
+            ['mo', 100, 2], // other
+        ];
+    }
+
+    public function testMoldavianOrdinalSameAsRomanian(): void
+    {
+        // Ordinal rule 2: n=1 → 0 (one), else → 1 (other)
+        self::assertSame(0, PluralRules::getOrdinalFormIndex('mo', 1));
+        self::assertSame(1, PluralRules::getOrdinalFormIndex('mo', 2));
+        self::assertSame(1, PluralRules::getOrdinalFormIndex('mo', 10));
+    }
+
+    // =========================================================================
+    // Haitian Creole (ht) fix: cardinal 20, ordinal 2 (CLDR 49)
+    // =========================================================================
+
+    public function testHaitianCreoleCLDR49(): void
+    {
+        // Cardinal rule 20: one/many/other
+        self::assertSame(0, PluralRules::getCardinalFormIndex('ht', 1));  // one
+        self::assertSame(2, PluralRules::getCardinalFormIndex('ht', 0));  // other
+        self::assertSame(2, PluralRules::getCardinalFormIndex('ht', 2));  // other
+        self::assertSame(2, PluralRules::getCardinalFormIndex('ht', 5));  // other
+        self::assertSame(1, PluralRules::getCardinalFormIndex('ht', 1000000)); // many
+
+        // Ordinal rule 2: one/other
+        self::assertSame(0, PluralRules::getOrdinalFormIndex('ht', 1));
+        self::assertSame(1, PluralRules::getOrdinalFormIndex('ht', 2));
+    }
+
+    // =========================================================================
+    // Category name tests for new rules
+    // =========================================================================
+
+    public function testCategoryNamesForNewRules(): void
+    {
+        // Rule 21: one/two/other
+        self::assertSame('one', PluralRules::getCardinalCategoryName('iu', 1));
+        self::assertSame('two', PluralRules::getCardinalCategoryName('iu', 2));
+        self::assertSame('other', PluralRules::getCardinalCategoryName('iu', 3));
+
+        // Rule 22: zero/one/other
+        self::assertSame('zero', PluralRules::getCardinalCategoryName('ksh', 0));
+        self::assertSame('one', PluralRules::getCardinalCategoryName('ksh', 1));
+        self::assertSame('other', PluralRules::getCardinalCategoryName('ksh', 2));
+
+        // Rule 23: one/few/other
+        self::assertSame('one', PluralRules::getCardinalCategoryName('shi', 0));
+        self::assertSame('one', PluralRules::getCardinalCategoryName('shi', 1));
+        self::assertSame('few', PluralRules::getCardinalCategoryName('shi', 5));
+        self::assertSame('other', PluralRules::getCardinalCategoryName('shi', 11));
+
+        // Rule 24: zero/one/two/few/many/other (Cornish)
+        self::assertSame('zero', PluralRules::getCardinalCategoryName('kw', 0));
+        self::assertSame('one', PluralRules::getCardinalCategoryName('kw', 1));
+        self::assertSame('two', PluralRules::getCardinalCategoryName('kw', 2));
+        self::assertSame('few', PluralRules::getCardinalCategoryName('kw', 3));
+        self::assertSame('many', PluralRules::getCardinalCategoryName('kw', 21));
+        self::assertSame('other', PluralRules::getCardinalCategoryName('kw', 10));
+    }
+
+    public function testOrdinalCategoryNamesForNewRules(): void
+    {
+        // Rule 31: zero/one/few/other (Anii)
+        self::assertSame('zero', PluralRules::getOrdinalCategoryName('blo', 0));
+        self::assertSame('one', PluralRules::getOrdinalCategoryName('blo', 1));
+        self::assertSame('few', PluralRules::getOrdinalCategoryName('blo', 3));
+        self::assertSame('other', PluralRules::getOrdinalCategoryName('blo', 10));
+
+        // Rule 32: one/many/other (Cornish)
+        self::assertSame('one', PluralRules::getOrdinalCategoryName('kw', 1));
+        self::assertSame('many', PluralRules::getOrdinalCategoryName('kw', 5));
+        self::assertSame('other', PluralRules::getOrdinalCategoryName('kw', 10));
+    }
+
+    // =========================================================================
+    // Plural count and categories for new rules
+    // =========================================================================
+
+    public function testPluralCountForNewRules(): void
+    {
+        // Rule 21: 3 forms (one/two/other)
+        self::assertSame(3, PluralRules::getPluralCount('iu'));
+        self::assertSame(3, PluralRules::getPluralCount('se'));
+
+        // Rule 22: 3 forms (zero/one/other)
+        self::assertSame(3, PluralRules::getPluralCount('ksh'));
+        self::assertSame(3, PluralRules::getPluralCount('lag'));
+
+        // Rule 23: 3 forms (one/few/other)
+        self::assertSame(3, PluralRules::getPluralCount('shi'));
+
+        // Rule 24: 6 forms (Cornish)
+        self::assertSame(6, PluralRules::getPluralCount('kw'));
+
+        // Moldavian = Romanian = 3 forms
+        self::assertSame(3, PluralRules::getPluralCount('mo'));
+    }
+
+    public function testCardinalCategoriesForNewRules(): void
+    {
+        self::assertSame(['one', 'two', 'other'], PluralRules::getCardinalCategories('iu'));
+        self::assertSame(['zero', 'one', 'other'], PluralRules::getCardinalCategories('ksh'));
+        self::assertSame(['one', 'few', 'other'], PluralRules::getCardinalCategories('shi'));
+        self::assertSame(
+            ['zero', 'one', 'two', 'few', 'many', 'other'],
+            PluralRules::getCardinalCategories('kw')
+        );
+    }
+
+    public function testOrdinalCategoriesForNewRules(): void
+    {
+        self::assertSame(['zero', 'one', 'few', 'other'], PluralRules::getOrdinalCategories('blo'));
+        self::assertSame(['one', 'many', 'other'], PluralRules::getOrdinalCategories('kw'));
     }
 
 }

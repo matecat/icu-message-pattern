@@ -25,6 +25,24 @@ use PHPUnit\Framework\TestCase;
  */
 final class LanguagesTest extends TestCase
 {
+    /**
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Languages::destroyInstance();
+    }
+
+    /**
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        Languages::destroyInstance();
+        parent::tearDown();
+    }
+
     // =========================================================================
     // Singleton Tests
     // =========================================================================
@@ -325,7 +343,7 @@ final class LanguagesTest extends TestCase
         // Get a localized name first, then verify we can get the RFC code back
         $localizedName = $langs->getLocalizedName('en-US');
         self::assertNotNull($localizedName);
-        $rfcCode = $langs->get3066Code($localizedName);
+        $rfcCode = $langs->getBCP47Code($localizedName);
 
         self::assertNotEmpty($rfcCode);
         // RFC code should contain a hyphen (e.g., en-US)

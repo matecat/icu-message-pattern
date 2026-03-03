@@ -9,7 +9,7 @@
             "isocode": "ace",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ace-ID",
+            "bcp47code": "ace-ID",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -24,7 +24,7 @@
             "isocode": "aa",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "aa-ET",
+            "bcp47code": "aa-ET",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -39,7 +39,7 @@
             "isocode": "af",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "af-ZA",
+            "bcp47code": "af-ZA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -54,7 +54,7 @@
             "isocode": "ak",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ak-GH",
+            "bcp47code": "ak-GH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -69,7 +69,7 @@
             "isocode": "sq",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sq-AL",
+            "bcp47code": "sq-AL",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -84,7 +84,7 @@
             "isocode": "am",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "am-ET",
+            "bcp47code": "am-ET",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -99,7 +99,7 @@
             "isocode": "aig",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "aig-AG",
+            "bcp47code": "aig-AG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -114,7 +114,7 @@
             "isocode": "ar",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "ar-SA",
+            "bcp47code": "ar-SA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -129,7 +129,7 @@
             "isocode": "ar",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "ar-EG",
+            "bcp47code": "ar-EG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -144,7 +144,7 @@
             "isocode": "ar",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "ar-JO",
+            "bcp47code": "ar-JO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -159,7 +159,7 @@
             "isocode": "ar",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "ar-MA",
+            "bcp47code": "ar-MA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -174,7 +174,7 @@
             "isocode": "ar",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "ar-TN",
+            "bcp47code": "ar-TN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -189,7 +189,7 @@
             "isocode": "ar",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "ar-AE",
+            "bcp47code": "ar-AE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -204,7 +204,7 @@
             "isocode": "an",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "an-ES",
+            "bcp47code": "an-ES",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -219,7 +219,7 @@
             "isocode": "hy",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "hy-AM",
+            "bcp47code": "hy-AM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -234,7 +234,7 @@
             "isocode": "asm",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "as-IN",
+            "bcp47code": "as-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -249,7 +249,7 @@
             "isocode": "ast",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ast-ES",
+            "bcp47code": "ast-ES",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -264,7 +264,7 @@
             "isocode": "awa",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "awa-IN",
+            "bcp47code": "awa-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -279,7 +279,7 @@
             "isocode": "quy",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "quy-PE",
+            "bcp47code": "quy-PE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -294,7 +294,7 @@
             "isocode": "az",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "az-AZ",
+            "bcp47code": "az-AZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -310,7 +310,7 @@
             "isocode": "bah",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bah-BS",
+            "bcp47code": "bah-BS",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -325,7 +325,7 @@
             "isocode": "bjs",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bjs-BB",
+            "bcp47code": "bjs-BB",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -340,7 +340,7 @@
             "isocode": "ban",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ban-ID",
+            "bcp47code": "ban-ID",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -355,7 +355,7 @@
             "isocode": "rmn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "rmn-BG",
+            "bcp47code": "rmn-BG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -370,7 +370,7 @@
             "isocode": "bal",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bal-PK",
+            "bcp47code": "bal-PK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -385,7 +385,7 @@
             "isocode": "bm",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bm-ML",
+            "bcp47code": "bm-ML",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -400,7 +400,7 @@
             "isocode": "bjn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bjn-ID",
+            "bcp47code": "bjn-ID",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -415,7 +415,7 @@
             "isocode": "ba",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ba-RU",
+            "bcp47code": "ba-RU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -430,7 +430,7 @@
             "isocode": "eu",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "eu-ES",
+            "bcp47code": "eu-ES",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -445,7 +445,7 @@
             "isocode": "be",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "be-BY",
+            "bcp47code": "be-BY",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -460,7 +460,7 @@
             "isocode": "bem",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bem-ZM",
+            "bcp47code": "bem-ZM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -475,7 +475,7 @@
             "isocode": "bn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bn-BD",
+            "bcp47code": "bn-BD",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -490,7 +490,7 @@
             "isocode": "bn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bn-IN",
+            "bcp47code": "bn-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -505,7 +505,7 @@
             "isocode": "bho",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bho-IN",
+            "bcp47code": "bho-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -520,7 +520,7 @@
             "isocode": "bh",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bh-IN",
+            "bcp47code": "bh-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -535,7 +535,7 @@
             "isocode": "bi",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bi-VU",
+            "bcp47code": "bi-VU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -550,7 +550,7 @@
             "isocode": "brx",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "brx-IN",
+            "bcp47code": "brx-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -565,7 +565,7 @@
             "isocode": "gax",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "gax-KE",
+            "bcp47code": "gax-KE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -580,7 +580,7 @@
             "isocode": "bs",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bs-Cyrl-BA",
+            "bcp47code": "bs-Cyrl-BA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -596,7 +596,7 @@
             "isocode": "bs",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bs-BA",
+            "bcp47code": "bs-BA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -612,7 +612,7 @@
             "isocode": "br",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "br-FR",
+            "bcp47code": "br-FR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -627,7 +627,7 @@
             "isocode": "bug",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bug-ID",
+            "bcp47code": "bug-ID",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -642,7 +642,7 @@
             "isocode": "bg",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bg-BG",
+            "bcp47code": "bg-BG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -657,7 +657,7 @@
             "isocode": "my",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "my-MM",
+            "bcp47code": "my-MM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -672,7 +672,7 @@
             "isocode": "ca",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ca-ES",
+            "bcp47code": "ca-ES",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -687,7 +687,7 @@
             "isocode": "cav",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "cav-ES",
+            "bcp47code": "cav-ES",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -702,7 +702,7 @@
             "isocode": "cb",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ceb-PH",
+            "bcp47code": "ceb-PH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -717,7 +717,7 @@
             "isocode": "tzm",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tzm-MA",
+            "bcp47code": "tzm-MA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -732,7 +732,7 @@
             "isocode": "ayr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ayr-BO",
+            "bcp47code": "ayr-BO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -747,7 +747,7 @@
             "isocode": "knc",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "knc-NG",
+            "bcp47code": "knc-NG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -762,7 +762,7 @@
             "isocode": "shu",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "shu-TD",
+            "bcp47code": "shu-TD",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -777,7 +777,7 @@
             "isocode": "ch",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ch-GU",
+            "bcp47code": "ch-GU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -792,7 +792,7 @@
             "isocode": "ce",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ce-RU",
+            "bcp47code": "ce-RU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -807,7 +807,7 @@
             "isocode": "chr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "chr-US",
+            "bcp47code": "chr-US",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -822,7 +822,7 @@
             "isocode": "hne",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "hne-IN",
+            "bcp47code": "hne-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -837,7 +837,7 @@
             "isocode": "zh",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "zh-CN",
+            "bcp47code": "zh-CN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -852,7 +852,7 @@
             "isocode": "zh",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "zh-SG",
+            "bcp47code": "zh-SG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -867,7 +867,7 @@
             "isocode": "zh",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "zh-HK",
+            "bcp47code": "zh-HK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -882,7 +882,7 @@
             "isocode": "zh",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "zh-MO",
+            "bcp47code": "zh-MO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -897,7 +897,7 @@
             "isocode": "zh",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "zh-TW",
+            "bcp47code": "zh-TW",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -912,7 +912,7 @@
             "isocode": "ctg",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ctg-BD",
+            "bcp47code": "ctg-BD",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -927,7 +927,7 @@
             "isocode": "cjk",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "cjk-AO",
+            "bcp47code": "cjk-AO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -942,7 +942,7 @@
             "isocode": "cac",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "cac-GT",
+            "bcp47code": "cac-GT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -957,7 +957,7 @@
             "isocode": "chk",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "chk-FM",
+            "bcp47code": "chk-FM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -972,7 +972,7 @@
             "isocode": "grc",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "grc-GR",
+            "bcp47code": "grc-GR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -987,7 +987,7 @@
             "isocode": "zdj",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "zdj-KM",
+            "bcp47code": "zdj-KM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1002,7 +1002,7 @@
             "isocode": "cop",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "cop-EG",
+            "bcp47code": "cop-EG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1017,7 +1017,7 @@
             "isocode": "crh",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "crh-RU",
+            "bcp47code": "crh-RU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1032,7 +1032,7 @@
             "isocode": "pov",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "pov-GW",
+            "bcp47code": "pov-GW",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1047,7 +1047,7 @@
             "isocode": "hr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "hr-HR",
+            "bcp47code": "hr-HR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1062,7 +1062,7 @@
             "isocode": "cs",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "cs-CZ",
+            "bcp47code": "cs-CZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1077,7 +1077,7 @@
             "isocode": "da",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "da-DK",
+            "bcp47code": "da-DK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1092,7 +1092,7 @@
             "isocode": "prs",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "prs-AF",
+            "bcp47code": "prs-AF",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1107,7 +1107,7 @@
             "isocode": "diq",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "diq-TR",
+            "bcp47code": "diq-TR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1122,7 +1122,7 @@
             "isocode": "doi",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "doi-IN",
+            "bcp47code": "doi-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1137,7 +1137,7 @@
             "isocode": "nl",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "nl-BE",
+            "bcp47code": "nl-BE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1152,7 +1152,7 @@
             "isocode": "nl",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "nl-NL",
+            "bcp47code": "nl-NL",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1167,7 +1167,7 @@
             "isocode": "dyu",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "dyu-CI",
+            "bcp47code": "dyu-CI",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1182,7 +1182,7 @@
             "isocode": "dz",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "dz-BT",
+            "bcp47code": "dz-BT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1197,7 +1197,7 @@
             "isocode": "ydd",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "ydd-US",
+            "bcp47code": "ydd-US",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1212,7 +1212,7 @@
             "isocode": "vmw",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "vmw-MZ",
+            "bcp47code": "vmw-MZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1227,7 +1227,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-AU",
+            "bcp47code": "en-AU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1242,7 +1242,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-AT",
+            "bcp47code": "en-AT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1257,7 +1257,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-BD",
+            "bcp47code": "en-BD",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1272,7 +1272,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-KH",
+            "bcp47code": "en-KH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1287,7 +1287,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-CA",
+            "bcp47code": "en-CA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1302,7 +1302,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-CZ",
+            "bcp47code": "en-CZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1317,7 +1317,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-FI",
+            "bcp47code": "en-FI",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1332,7 +1332,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-HK",
+            "bcp47code": "en-HK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1347,7 +1347,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-HU",
+            "bcp47code": "en-HU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1362,7 +1362,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-IN",
+            "bcp47code": "en-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1377,7 +1377,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-IE",
+            "bcp47code": "en-IE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1392,7 +1392,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-LA",
+            "bcp47code": "en-LA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1407,7 +1407,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-MY",
+            "bcp47code": "en-MY",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1422,7 +1422,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-MM",
+            "bcp47code": "en-MM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1437,7 +1437,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-NZ",
+            "bcp47code": "en-NZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1452,7 +1452,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-PK",
+            "bcp47code": "en-PK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1467,7 +1467,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-SG",
+            "bcp47code": "en-SG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1482,7 +1482,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-ZA",
+            "bcp47code": "en-ZA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1497,7 +1497,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-SE",
+            "bcp47code": "en-SE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1512,7 +1512,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-TW",
+            "bcp47code": "en-TW",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1527,7 +1527,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-TR",
+            "bcp47code": "en-TR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1542,7 +1542,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-GB",
+            "bcp47code": "en-GB",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1557,7 +1557,7 @@
             "isocode": "en",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "en-US",
+            "bcp47code": "en-US",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1572,7 +1572,7 @@
             "isocode": "eo",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "eo-EU",
+            "bcp47code": "eo-EU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1587,7 +1587,7 @@
             "isocode": "et",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "et-EE",
+            "bcp47code": "et-EE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1602,7 +1602,7 @@
             "isocode": "ee",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ee-GH",
+            "bcp47code": "ee-GH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1617,7 +1617,7 @@
             "isocode": "fn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "fn-FNG",
+            "bcp47code": "fn-FNG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1632,7 +1632,7 @@
             "isocode": "fo",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "fo-FO",
+            "bcp47code": "fo-FO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1647,7 +1647,7 @@
             "isocode": "fj",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "fj-FJ",
+            "bcp47code": "fj-FJ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1662,7 +1662,7 @@
             "isocode": "fil",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "fil-PH",
+            "bcp47code": "fil-PH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1677,7 +1677,7 @@
             "isocode": "fi",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "fi-FI",
+            "bcp47code": "fi-FI",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1692,7 +1692,7 @@
             "isocode": "fon",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "fon-BJ",
+            "bcp47code": "fon-BJ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1707,7 +1707,7 @@
             "isocode": "qnt",
             "enabled": false,
             "rtl": false,
-            "rfc3066code": "qnt-Latn-XA",
+            "bcp47code": "qnt-Latn-XA",
             "ocr": {
                 "supported": false,
                 "not_supported_or_rtl": true
@@ -1722,7 +1722,7 @@
             "isocode": "fr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "fr-BE",
+            "bcp47code": "fr-BE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1737,7 +1737,7 @@
             "isocode": "fr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "fr-CA",
+            "bcp47code": "fr-CA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1752,7 +1752,7 @@
             "isocode": "fr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "fr-FR",
+            "bcp47code": "fr-FR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1767,7 +1767,7 @@
             "isocode": "fr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "fr-MA",
+            "bcp47code": "fr-MA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1782,7 +1782,7 @@
             "isocode": "fr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "fr-CH",
+            "bcp47code": "fr-CH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1797,7 +1797,7 @@
             "isocode": "fur",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "fur-IT",
+            "bcp47code": "fur-IT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1812,7 +1812,7 @@
             "isocode": "ff",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ff-FUL",
+            "bcp47code": "ff-FUL",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1827,7 +1827,7 @@
             "isocode": "ff",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ff-GN",
+            "bcp47code": "ff-GN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1842,7 +1842,7 @@
             "isocode": "gl",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "gl-ES",
+            "bcp47code": "gl-ES",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1857,7 +1857,7 @@
             "isocode": "grt",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "grt-IN",
+            "bcp47code": "grt-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1872,7 +1872,7 @@
             "isocode": "ka",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ka-GE",
+            "bcp47code": "ka-GE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1887,7 +1887,7 @@
             "isocode": "de",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "de-AT",
+            "bcp47code": "de-AT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1902,7 +1902,7 @@
             "isocode": "de",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "de-DE",
+            "bcp47code": "de-DE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1917,7 +1917,7 @@
             "isocode": "de",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "de-CH",
+            "bcp47code": "de-CH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1932,7 +1932,7 @@
             "isocode": "gil",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "gil-KI",
+            "bcp47code": "gil-KI",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1947,7 +1947,7 @@
             "isocode": "glw",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "glw-NG",
+            "bcp47code": "glw-NG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1962,7 +1962,7 @@
             "isocode": "el",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "el-GR",
+            "bcp47code": "el-GR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1977,7 +1977,7 @@
             "isocode": "gcl",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "gcl-GD",
+            "bcp47code": "gcl-GD",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -1992,7 +1992,7 @@
             "isocode": "gn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "gn-PY",
+            "bcp47code": "gn-PY",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2007,7 +2007,7 @@
             "isocode": "gu",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "gu-IN",
+            "bcp47code": "gu-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2022,7 +2022,7 @@
             "isocode": "gyn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "gyn-GY",
+            "bcp47code": "gyn-GY",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2037,7 +2037,7 @@
             "isocode": "ht",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ht-HT",
+            "bcp47code": "ht-HT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2052,7 +2052,7 @@
             "isocode": "khk",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "khk-MN",
+            "bcp47code": "khk-MN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2067,7 +2067,7 @@
             "isocode": "ha",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ha-NE",
+            "bcp47code": "ha-NE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2079,10 +2079,10 @@
                     "en": "Hawaiian"
                 }
             ],
-            "isocode": "HAW",
+            "isocode": "haw",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "haw-US",
+            "bcp47code": "haw-US",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2097,7 +2097,7 @@
             "isocode": "he",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "he-IL",
+            "bcp47code": "he-IL",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2112,7 +2112,7 @@
             "isocode": "hig",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "hig-NG",
+            "bcp47code": "hig-NG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2127,7 +2127,7 @@
             "isocode": "hil",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "hil-PH",
+            "bcp47code": "hil-PH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2142,7 +2142,7 @@
             "isocode": "mrj",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mrj-RU",
+            "bcp47code": "mrj-RU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2157,7 +2157,7 @@
             "isocode": "hi",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "hi-IN",
+            "bcp47code": "hi-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2172,7 +2172,7 @@
             "isocode": "hi",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "hi-FJ",
+            "bcp47code": "hi-FJ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2187,7 +2187,7 @@
             "isocode": "hmn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "hmn-CN",
+            "bcp47code": "hmn-CN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2202,7 +2202,7 @@
             "isocode": "hoc",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "hoc-IN",
+            "bcp47code": "hoc-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2217,7 +2217,7 @@
             "isocode": "hu",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "hu-HU",
+            "bcp47code": "hu-HU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2232,7 +2232,7 @@
             "isocode": "is",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "is-IS",
+            "bcp47code": "is-IS",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2247,7 +2247,7 @@
             "isocode": "ig",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ig-NG",
+            "bcp47code": "ig-NG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2262,7 +2262,7 @@
             "isocode": "ilo",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ilo-PH",
+            "bcp47code": "ilo-PH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2277,7 +2277,7 @@
             "isocode": "id",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "id-ID",
+            "bcp47code": "id-ID",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2292,7 +2292,7 @@
             "isocode": "iu",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "iu-CA",
+            "bcp47code": "iu-CA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2307,7 +2307,7 @@
             "isocode": "kal",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kl-GL",
+            "bcp47code": "kl-GL",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2322,7 +2322,7 @@
             "isocode": "ga",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ga-IE",
+            "bcp47code": "ga-IE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2337,7 +2337,7 @@
             "isocode": "it",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "it-IT",
+            "bcp47code": "it-IT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2352,7 +2352,7 @@
             "isocode": "it",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "it-CH",
+            "bcp47code": "it-CH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2367,7 +2367,7 @@
             "isocode": "jam",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "jam-JM",
+            "bcp47code": "jam-JM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2382,7 +2382,7 @@
             "isocode": "ja",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ja-JP",
+            "bcp47code": "ja-JP",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2397,7 +2397,7 @@
             "isocode": "jv",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "jv-ID",
+            "bcp47code": "jv-ID",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2412,7 +2412,7 @@
             "isocode": "kac",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kac-MM",
+            "bcp47code": "kac-MM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2427,7 +2427,7 @@
             "isocode": "quc",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "quc-GT",
+            "bcp47code": "quc-GT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2442,7 +2442,7 @@
             "isocode": "kbp",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kbp-TG",
+            "bcp47code": "kbp-TG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2457,7 +2457,7 @@
             "isocode": "kea",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kea-CV",
+            "bcp47code": "kea-CV",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2472,7 +2472,7 @@
             "isocode": "kab",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kab-DZ",
+            "bcp47code": "kab-DZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2487,7 +2487,7 @@
             "isocode": "kln",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kln-KE",
+            "bcp47code": "kln-KE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2502,7 +2502,7 @@
             "isocode": "kam",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kam-KE",
+            "bcp47code": "kam-KE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2517,7 +2517,7 @@
             "isocode": "kjb",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kjb-GT",
+            "bcp47code": "kjb-GT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2532,7 +2532,7 @@
             "isocode": "kn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kn-IN",
+            "bcp47code": "kn-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2547,7 +2547,7 @@
             "isocode": "kn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kr-KAU",
+            "bcp47code": "kr-KAU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2562,7 +2562,7 @@
             "isocode": "kar",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kar-MM",
+            "bcp47code": "kar-MM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2577,7 +2577,7 @@
             "isocode": "ks",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ks-IN",
+            "bcp47code": "ks-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2592,7 +2592,7 @@
             "isocode": "kas",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "kas-IN",
+            "bcp47code": "kas-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2607,7 +2607,7 @@
             "isocode": "ks",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ks-IN",
+            "bcp47code": "ks-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2622,7 +2622,7 @@
             "isocode": "kk",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kk-KZ",
+            "bcp47code": "kk-KZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2637,7 +2637,7 @@
             "isocode": "kha",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kha-IN",
+            "bcp47code": "kha-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2652,7 +2652,7 @@
             "isocode": "km",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "km-KH",
+            "bcp47code": "km-KH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2667,7 +2667,7 @@
             "isocode": "ki",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ki-KE",
+            "bcp47code": "ki-KE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2682,7 +2682,7 @@
             "isocode": "kmb",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kmb-AO",
+            "bcp47code": "kmb-AO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2697,7 +2697,7 @@
             "isocode": "rw",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "rw-RW",
+            "bcp47code": "rw-RW",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2712,7 +2712,7 @@
             "isocode": "run",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "rn-BI",
+            "bcp47code": "rn-BI",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2727,7 +2727,7 @@
             "isocode": "guz",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "guz-KE",
+            "bcp47code": "guz-KE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2742,7 +2742,7 @@
             "isocode": "kg",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kg-CG",
+            "bcp47code": "kg-CG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2757,7 +2757,7 @@
             "isocode": "kok",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kok-IN",
+            "bcp47code": "kok-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2772,7 +2772,7 @@
             "isocode": "ko",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ko-KR",
+            "bcp47code": "ko-KR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2787,7 +2787,7 @@
             "isocode": "ku",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kmr-TR",
+            "bcp47code": "kmr-TR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2802,7 +2802,7 @@
             "isocode": "ku",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "ckb-IQ",
+            "bcp47code": "ckb-IQ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2817,7 +2817,7 @@
             "isocode": "ky",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ky-KG",
+            "bcp47code": "ky-KG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2832,7 +2832,7 @@
             "isocode": "lo",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "lo-LA",
+            "bcp47code": "lo-LA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2847,7 +2847,7 @@
             "isocode": "ltg",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ltg-LV",
+            "bcp47code": "ltg-LV",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2862,7 +2862,7 @@
             "isocode": "la",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "la-VA",
+            "bcp47code": "la-VA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2877,7 +2877,7 @@
             "isocode": "lv",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "lv-LV",
+            "bcp47code": "lv-LV",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2892,7 +2892,7 @@
             "isocode": "lij",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "lij-IT",
+            "bcp47code": "lij-IT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2907,7 +2907,7 @@
             "isocode": "li",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "li-NL",
+            "bcp47code": "li-NL",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2922,7 +2922,7 @@
             "isocode": "ln",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ln-CD",
+            "bcp47code": "ln-CD",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2937,7 +2937,7 @@
             "isocode": "lt",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "lt-LT",
+            "bcp47code": "lt-LT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2952,7 +2952,7 @@
             "isocode": "lmo",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "lmo-IT",
+            "bcp47code": "lmo-IT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2967,7 +2967,7 @@
             "isocode": "lua",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "lua-CD",
+            "bcp47code": "lua-CD",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2982,7 +2982,7 @@
             "isocode": "lug",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "lg-UG",
+            "bcp47code": "lg-UG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -2997,7 +2997,7 @@
             "isocode": "luy",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "luy-KE",
+            "bcp47code": "luy-KE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3012,7 +3012,7 @@
             "isocode": "luo",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "luo-KE",
+            "bcp47code": "luo-KE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3027,7 +3027,7 @@
             "isocode": "lb",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "lb-LU",
+            "bcp47code": "lb-LU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3042,7 +3042,7 @@
             "isocode": "mas",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mas-KE",
+            "bcp47code": "mas-KE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3057,7 +3057,7 @@
             "isocode": "ymm",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ymm-SO",
+            "bcp47code": "ymm-SO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3072,7 +3072,7 @@
             "isocode": "mk",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mk-MK",
+            "bcp47code": "mk-MK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3087,7 +3087,7 @@
             "isocode": "mag",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mag-IN",
+            "bcp47code": "mag-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3102,7 +3102,7 @@
             "isocode": "mai",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mai-IN",
+            "bcp47code": "mai-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3117,7 +3117,7 @@
             "isocode": "mg",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mg-MG",
+            "bcp47code": "mg-MG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3132,7 +3132,7 @@
             "isocode": "ms",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ms-MY",
+            "bcp47code": "ms-MY",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3147,7 +3147,7 @@
             "isocode": "ml",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ml-IN",
+            "bcp47code": "ml-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3162,7 +3162,7 @@
             "isocode": "div",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "dv-MV",
+            "bcp47code": "dv-MV",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3177,7 +3177,7 @@
             "isocode": "mfi",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mfi-NG",
+            "bcp47code": "mfi-NG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3192,7 +3192,7 @@
             "isocode": "mt",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mt-MT",
+            "bcp47code": "mt-MT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3207,7 +3207,7 @@
             "isocode": "mam",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mam-GT",
+            "bcp47code": "mam-GT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3222,7 +3222,7 @@
             "isocode": "mnk",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mnk-GM",
+            "bcp47code": "mnk-GM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3237,7 +3237,7 @@
             "isocode": "mfv",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mfv-SN",
+            "bcp47code": "mfv-SN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3252,7 +3252,7 @@
             "isocode": "mni",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mni-IN",
+            "bcp47code": "mni-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3267,7 +3267,7 @@
             "isocode": "gv",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "gv-IM",
+            "bcp47code": "gv-IM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3282,7 +3282,7 @@
             "isocode": "mi",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mi-NZ",
+            "bcp47code": "mi-NZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3297,7 +3297,7 @@
             "isocode": "mr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mr-IN",
+            "bcp47code": "mr-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3312,7 +3312,7 @@
             "isocode": "mrt",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mrt-NG",
+            "bcp47code": "mrt-NG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3327,7 +3327,7 @@
             "isocode": "mhr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mhr-RU",
+            "bcp47code": "mhr-RU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3342,7 +3342,7 @@
             "isocode": "mh",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mh-MH",
+            "bcp47code": "mh-MH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3357,7 +3357,7 @@
             "isocode": "men",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "men-SL",
+            "bcp47code": "men-SL",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3372,7 +3372,7 @@
             "isocode": "mer",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mer-KE",
+            "bcp47code": "mer-KE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3387,7 +3387,7 @@
             "isocode": "nyf",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "nyf-KE",
+            "bcp47code": "nyf-KE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3402,7 +3402,7 @@
             "isocode": "min",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "min-ID",
+            "bcp47code": "min-ID",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3417,7 +3417,7 @@
             "isocode": "lus",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "lus-IN",
+            "bcp47code": "lus-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3432,7 +3432,7 @@
             "isocode": "mn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mn-MN",
+            "bcp47code": "mn-MN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3447,7 +3447,7 @@
             "isocode": "me",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sr-ME",
+            "bcp47code": "sr-ME",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3463,7 +3463,7 @@
             "isocode": "mfe",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mfe-MU",
+            "bcp47code": "mfe-MU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3478,7 +3478,7 @@
             "isocode": "mos",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mos-BF",
+            "bcp47code": "mos-BF",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3493,7 +3493,7 @@
             "isocode": "ndc",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ndc-MZ",
+            "bcp47code": "ndc-MZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3508,7 +3508,7 @@
             "isocode": "ne",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ne-NP",
+            "bcp47code": "ne-NP",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3523,7 +3523,7 @@
             "isocode": "fuv",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "fuv-NG",
+            "bcp47code": "fuv-NG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3538,7 +3538,7 @@
             "isocode": "niu",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "niu-NU",
+            "bcp47code": "niu-NU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3553,7 +3553,7 @@
             "isocode": "azj",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "azj-AZ",
+            "bcp47code": "azj-AZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3568,7 +3568,7 @@
             "isocode": "kmr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "kmr-TR",
+            "bcp47code": "kmr-TR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3583,7 +3583,7 @@
             "isocode": "nd",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "nd-ZW",
+            "bcp47code": "nd-ZW",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3599,7 +3599,7 @@
             "isocode": "nso",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "nso-ZA",
+            "bcp47code": "nso-ZA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3614,7 +3614,7 @@
             "isocode": "uzn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "uzn-UZ",
+            "bcp47code": "uzn-UZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3629,7 +3629,7 @@
             "isocode": "nb",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "nb-NO",
+            "bcp47code": "nb-NO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3644,7 +3644,7 @@
             "isocode": "nn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "nn-NO",
+            "bcp47code": "nn-NO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3659,7 +3659,7 @@
             "isocode": "nus",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "nus-SS",
+            "bcp47code": "nus-SS",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3674,7 +3674,7 @@
             "isocode": "nup",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "nup-NG",
+            "bcp47code": "nup-NG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3689,7 +3689,7 @@
             "isocode": "ny",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ny-MW",
+            "bcp47code": "ny-MW",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3704,7 +3704,7 @@
             "isocode": "oc",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "oc-ES",
+            "bcp47code": "oc-ES",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3719,7 +3719,7 @@
             "isocode": "oc",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "oc-FR",
+            "bcp47code": "oc-FR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3734,7 +3734,7 @@
             "isocode": "or",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "or-IN",
+            "bcp47code": "or-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3749,7 +3749,7 @@
             "isocode": "ory",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ory-IN",
+            "bcp47code": "ory-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3764,7 +3764,7 @@
             "isocode": "om",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "om-ET",
+            "bcp47code": "om-ET",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3779,7 +3779,7 @@
             "isocode": "ur",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "ur-PK",
+            "bcp47code": "ur-PK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3794,7 +3794,7 @@
             "isocode": "pau",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "pau-PW",
+            "bcp47code": "pau-PW",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3809,7 +3809,7 @@
             "isocode": "pi",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "pi-IN",
+            "bcp47code": "pi-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3824,7 +3824,7 @@
             "isocode": "pag",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "pag-PH",
+            "bcp47code": "pag-PH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3839,7 +3839,7 @@
             "isocode": "pap",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "pap-CW",
+            "bcp47code": "pap-CW",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3855,7 +3855,7 @@
             "enabled": true,
             "rtl": true,
             "languageRegionCode": "ps-AF",
-            "rfc3066code": "ps-PK",
+            "bcp47code": "ps-PK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3870,7 +3870,7 @@
             "isocode": "fa",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "fa-IR",
+            "bcp47code": "fa-IR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3885,7 +3885,7 @@
             "isocode": "pis",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "pis-SB",
+            "bcp47code": "pis-SB",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3900,7 +3900,7 @@
             "isocode": "plt",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "plt-MG",
+            "bcp47code": "plt-MG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3915,7 +3915,7 @@
             "isocode": "pon",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "pon-FM",
+            "bcp47code": "pon-FM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3930,7 +3930,7 @@
             "isocode": "pl",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "pl-PL",
+            "bcp47code": "pl-PL",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3945,7 +3945,7 @@
             "isocode": "pt",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "pt-BR",
+            "bcp47code": "pt-BR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3960,7 +3960,7 @@
             "isocode": "pt",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "pt-PT",
+            "bcp47code": "pt-PT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3975,7 +3975,7 @@
             "isocode": "pot",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "pot-US",
+            "bcp47code": "pot-US",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -3990,7 +3990,7 @@
             "isocode": "fuc",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "fuc-SN",
+            "bcp47code": "fuc-SN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4005,7 +4005,7 @@
             "isocode": "pa",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "pa-IN",
+            "bcp47code": "pa-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4020,7 +4020,7 @@
             "isocode": "pa",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "pa-PK",
+            "bcp47code": "pa-PK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4035,7 +4035,7 @@
             "isocode": "pko",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "pko-KE",
+            "bcp47code": "pko-KE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4050,7 +4050,7 @@
             "isocode": "pko",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "pko-UG",
+            "bcp47code": "pko-UG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4065,7 +4065,7 @@
             "isocode": "qu",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "qu-PE",
+            "bcp47code": "qu-PE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4080,7 +4080,7 @@
             "isocode": "rhg",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "rhg-MM",
+            "bcp47code": "rhg-MM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4095,7 +4095,7 @@
             "isocode": "rhl",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "rhl-MM",
+            "bcp47code": "rhl-MM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4110,7 +4110,7 @@
             "isocode": "ro",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ro-RO",
+            "bcp47code": "ro-RO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4125,7 +4125,7 @@
             "isocode": "rm",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "roh-CH",
+            "bcp47code": "roh-CH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4140,7 +4140,7 @@
             "isocode": "run",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "run-BI",
+            "bcp47code": "run-BI",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4155,7 +4155,7 @@
             "isocode": "ru",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ru-RU",
+            "bcp47code": "ru-RU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4170,7 +4170,7 @@
             "isocode": "ksw",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ksw-MM",
+            "bcp47code": "ksw-MM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4185,7 +4185,7 @@
             "isocode": "ssy",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ssy-ER",
+            "bcp47code": "ssy-ER",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4200,7 +4200,7 @@
             "isocode": "acf",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "acf-LC",
+            "bcp47code": "acf-LC",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4215,7 +4215,7 @@
             "isocode": "smo",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sm-WS",
+            "bcp47code": "sm-WS",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4230,7 +4230,7 @@
             "isocode": "sg",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sg-CF",
+            "bcp47code": "sg-CF",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4245,7 +4245,7 @@
             "isocode": "sa",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sa-IN",
+            "bcp47code": "sa-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4260,7 +4260,7 @@
             "isocode": "sat",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sat-IN",
+            "bcp47code": "sat-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4275,7 +4275,7 @@
             "isocode": "sc",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sc-IT",
+            "bcp47code": "sc-IT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4290,7 +4290,7 @@
             "isocode": "gd",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "gd-GB",
+            "bcp47code": "gd-GB",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4305,7 +4305,7 @@
             "isocode": "seh",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "seh-ZW",
+            "bcp47code": "seh-ZW",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4320,7 +4320,7 @@
             "isocode": "sr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sr-Cyrl-RS",
+            "bcp47code": "sr-Cyrl-RS",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4336,7 +4336,7 @@
             "isocode": "sr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sr-Latn-RS",
+            "bcp47code": "sr-Latn-RS",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4352,7 +4352,7 @@
             "isocode": "sh",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sh-HR",
+            "bcp47code": "sh-HR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4367,7 +4367,7 @@
             "isocode": "crs",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "crs-SC",
+            "bcp47code": "crs-SC",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4382,7 +4382,7 @@
             "isocode": "ns",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "nso-ZA",
+            "bcp47code": "nso-ZA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4397,7 +4397,7 @@
             "isocode": "shn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "shn-MM",
+            "bcp47code": "shn-MM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4412,7 +4412,7 @@
             "isocode": "sna",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sn-ZW",
+            "bcp47code": "sn-ZW",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4427,7 +4427,7 @@
             "isocode": "scn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "scn-IT",
+            "bcp47code": "scn-IT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4442,7 +4442,7 @@
             "isocode": "szl",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "szl-PL",
+            "bcp47code": "szl-PL",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4457,7 +4457,7 @@
             "isocode": "sd",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "sd-PK",
+            "bcp47code": "sd-PK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4472,7 +4472,7 @@
             "isocode": "si",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "si-LK",
+            "bcp47code": "si-LK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4487,7 +4487,7 @@
             "isocode": "rmo",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "rmo-NL",
+            "bcp47code": "rmo-NL",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4502,7 +4502,7 @@
             "isocode": "sk",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sk-SK",
+            "bcp47code": "sk-SK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4517,7 +4517,7 @@
             "isocode": "sl",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sl-SI",
+            "bcp47code": "sl-SI",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4532,7 +4532,7 @@
             "isocode": "so",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "so-SO",
+            "bcp47code": "so-SO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4547,7 +4547,7 @@
             "isocode": "snk",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "snk-ML",
+            "bcp47code": "snk-ML",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4562,7 +4562,7 @@
             "isocode": "st",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "st-LS",
+            "bcp47code": "st-LS",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4577,7 +4577,7 @@
             "isocode": "azb",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "azb-AZ",
+            "bcp47code": "azb-AZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4592,7 +4592,7 @@
             "isocode": "nr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "nr-ZA",
+            "bcp47code": "nr-ZA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4608,7 +4608,7 @@
             "isocode": "pbt",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "pbt-PK",
+            "bcp47code": "pbt-PK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4623,7 +4623,7 @@
             "isocode": "dik",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "dik-SS",
+            "bcp47code": "dik-SS",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4638,7 +4638,7 @@
             "isocode": "es",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "es-AR",
+            "bcp47code": "es-AR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4653,7 +4653,7 @@
             "isocode": "es",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "es-CO",
+            "bcp47code": "es-CO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4668,7 +4668,7 @@
             "isocode": "es",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "es-DO",
+            "bcp47code": "es-DO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4683,7 +4683,7 @@
             "isocode": "es",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "es-HN",
+            "bcp47code": "es-HN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4698,7 +4698,7 @@
             "isocode": "es",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "es-JM",
+            "bcp47code": "es-JM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4713,7 +4713,7 @@
             "isocode": "es",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "es-419",
+            "bcp47code": "es-419",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4728,7 +4728,7 @@
             "isocode": "es",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "es-MX",
+            "bcp47code": "es-MX",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4743,7 +4743,7 @@
             "isocode": "es",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "es-PA",
+            "bcp47code": "es-PA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4758,7 +4758,7 @@
             "isocode": "es",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "es-PE",
+            "bcp47code": "es-PE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4773,7 +4773,7 @@
             "isocode": "es",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "es-PR",
+            "bcp47code": "es-PR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4788,7 +4788,7 @@
             "isocode": "es",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "es-ES",
+            "bcp47code": "es-ES",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4803,7 +4803,7 @@
             "isocode": "es",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "es-UY",
+            "bcp47code": "es-UY",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4818,7 +4818,7 @@
             "isocode": "es",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "es-US",
+            "bcp47code": "es-US",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4833,7 +4833,7 @@
             "isocode": "es",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "es-VE",
+            "bcp47code": "es-VE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4848,7 +4848,7 @@
             "isocode": "srn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "srn-SR",
+            "bcp47code": "srn-SR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4863,7 +4863,7 @@
             "isocode": "lvs",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "lvs-LV",
+            "bcp47code": "lvs-LV",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4878,7 +4878,7 @@
             "isocode": "zsm",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "zsm-MY",
+            "bcp47code": "zsm-MY",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4893,7 +4893,7 @@
             "isocode": "su",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "su-ID",
+            "bcp47code": "su-ID",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4908,7 +4908,7 @@
             "isocode": "sus",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sus-GN",
+            "bcp47code": "sus-GN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4923,7 +4923,7 @@
             "isocode": "sw",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sw-KE",
+            "bcp47code": "sw-KE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4939,7 +4939,7 @@
             "isocode": "ss",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ss-SZ",
+            "bcp47code": "ss-SZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4954,7 +4954,7 @@
             "isocode": "sv",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "sv-SE",
+            "bcp47code": "sv-SE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4969,7 +4969,7 @@
             "isocode": "syc",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "syc-TR",
+            "bcp47code": "syc-TR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4984,7 +4984,7 @@
             "isocode": "tl",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tl-PH",
+            "bcp47code": "tl-PH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4999,7 +4999,7 @@
             "isocode": "ty",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ty-PF",
+            "bcp47code": "ty-PF",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5014,7 +5014,7 @@
             "isocode": "tg",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tg-TJ",
+            "bcp47code": "tg-TJ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5029,7 +5029,7 @@
             "isocode": "tmh",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "tmh-DZ",
+            "bcp47code": "tmh-DZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5044,7 +5044,7 @@
             "isocode": "taq",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "taq-ML",
+            "bcp47code": "taq-ML",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5060,7 +5060,7 @@
             "enabled": true,
             "rtl": false,
             "languageRegionCode": "ta-IN",
-            "rfc3066code": "ta-IN",
+            "bcp47code": "ta-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5076,7 +5076,7 @@
             "enabled": true,
             "rtl": false,
             "languageRegionCode": "ta-LK",
-            "rfc3066code": "ta-LK",
+            "bcp47code": "ta-LK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5091,7 +5091,7 @@
             "isocode": "trv",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "trv-TW",
+            "bcp47code": "trv-TW",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5106,7 +5106,7 @@
             "isocode": "tt",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tt-RU",
+            "bcp47code": "tt-RU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5121,7 +5121,7 @@
             "isocode": "te",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "te-IN",
+            "bcp47code": "te-IN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5136,7 +5136,7 @@
             "isocode": "tet",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tet-TL",
+            "bcp47code": "tet-TL",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5151,7 +5151,7 @@
             "isocode": "th",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "th-TH",
+            "bcp47code": "th-TH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5166,7 +5166,7 @@
             "isocode": "bod",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "bo-CN",
+            "bcp47code": "bo-CN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5181,7 +5181,7 @@
             "isocode": "ti",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ti-ET",
+            "bcp47code": "ti-ET",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5196,7 +5196,7 @@
             "isocode": "tiv",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tiv-NG",
+            "bcp47code": "tiv-NG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5211,7 +5211,7 @@
             "isocode": "tpi",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tpi-PG",
+            "bcp47code": "tpi-PG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5226,7 +5226,7 @@
             "isocode": "tkl",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tkl-TK",
+            "bcp47code": "tkl-TK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5241,7 +5241,7 @@
             "isocode": "ton",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "to-TO",
+            "bcp47code": "to-TO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5256,7 +5256,7 @@
             "isocode": "als",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "als-AL",
+            "bcp47code": "als-AL",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5271,7 +5271,7 @@
             "isocode": "ts",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ts-ZA",
+            "bcp47code": "ts-ZA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5286,7 +5286,7 @@
             "isocode": "tsc",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tsc-MZ",
+            "bcp47code": "tsc-MZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5301,7 +5301,7 @@
             "isocode": "tn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tn-BW",
+            "bcp47code": "tn-BW",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5316,7 +5316,7 @@
             "isocode": "tn",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tn-ZA",
+            "bcp47code": "tn-ZA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5331,7 +5331,7 @@
             "isocode": "tum",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tum-MW",
+            "bcp47code": "tum-MW",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5346,7 +5346,7 @@
             "isocode": "tr",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tr-TR",
+            "bcp47code": "tr-TR",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5361,7 +5361,7 @@
             "isocode": "tk",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tk-TM",
+            "bcp47code": "tk-TM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5376,7 +5376,7 @@
             "isocode": "tvl",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tvl-TV",
+            "bcp47code": "tvl-TV",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5391,7 +5391,7 @@
             "isocode": "tw",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "tw-GH",
+            "bcp47code": "tw-GH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5406,7 +5406,7 @@
             "isocode": "udm",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "udm-RU",
+            "bcp47code": "udm-RU",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5421,7 +5421,7 @@
             "isocode": "uk",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "uk-UA",
+            "bcp47code": "uk-UA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5436,7 +5436,7 @@
             "isocode": "ppk",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ppk-ID",
+            "bcp47code": "ppk-ID",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5451,7 +5451,7 @@
             "isocode": "umb",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "umb-AO",
+            "bcp47code": "umb-AO",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5466,7 +5466,7 @@
             "isocode": "ur",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "ur-Latn-PK",
+            "bcp47code": "ur-Latn-PK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5481,7 +5481,7 @@
             "isocode": "ur",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "ur-PK",
+            "bcp47code": "ur-PK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5496,7 +5496,7 @@
             "isocode": "ug",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "ug-CN",
+            "bcp47code": "ug-CN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5511,7 +5511,7 @@
             "isocode": "uz",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "uz-UZ",
+            "bcp47code": "uz-UZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5527,7 +5527,7 @@
             "isocode": "vec",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "vec-IT",
+            "bcp47code": "vec-IT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5542,7 +5542,7 @@
             "isocode": "vi",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "vi-VN",
+            "bcp47code": "vi-VN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5557,7 +5557,7 @@
             "isocode": "svc",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "svc-VC",
+            "bcp47code": "svc-VC",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5572,7 +5572,7 @@
             "isocode": "vic",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "vic-US",
+            "bcp47code": "vic-US",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5587,7 +5587,7 @@
             "isocode": "wls",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "wls-WF",
+            "bcp47code": "wls-WF",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5602,7 +5602,7 @@
             "isocode": "mfi",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "mfi-CM",
+            "bcp47code": "mfi-CM",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5617,7 +5617,7 @@
             "isocode": "war",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "war-PH",
+            "bcp47code": "war-PH",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5632,7 +5632,7 @@
             "isocode": "cy",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "cy-GB",
+            "bcp47code": "cy-GB",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5647,7 +5647,7 @@
             "isocode": "gaz",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "gaz-ET",
+            "bcp47code": "gaz-ET",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5662,7 +5662,7 @@
             "isocode": "vls",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "vls-BE",
+            "bcp47code": "vls-BE",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5677,7 +5677,7 @@
             "isocode": "wo",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "wo-SN",
+            "bcp47code": "wo-SN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5692,7 +5692,7 @@
             "isocode": "xh",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "xh-ZA",
+            "bcp47code": "xh-ZA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5707,7 +5707,7 @@
             "isocode": "yi",
             "enabled": true,
             "rtl": true,
-            "rfc3066code": "yi-YD",
+            "bcp47code": "yi-YD",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5722,7 +5722,7 @@
             "isocode": "yo",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "yo-NG",
+            "bcp47code": "yo-NG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -5737,7 +5737,892 @@
             "isocode": "zu",
             "enabled": true,
             "rtl": false,
-            "rfc3066code": "zu-ZA",
+            "bcp47code": "zu-ZA",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Asu"
+                }
+            ],
+            "isocode": "asa",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "asa-TZ",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Bena"
+                }
+            ],
+            "isocode": "bez",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "bez-TZ",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Anii"
+                }
+            ],
+            "isocode": "blo",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "blo-BJ",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Chiga"
+                }
+            ],
+            "isocode": "cgg",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "cgg-UG",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Swampy Cree"
+                }
+            ],
+            "isocode": "csw",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "csw-CA",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Lower Sorbian"
+                }
+            ],
+            "isocode": "dsb",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "dsb-DE",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Western Frisian"
+                }
+            ],
+            "isocode": "fy",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "fy-NL",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Swiss German"
+                }
+            ],
+            "isocode": "gsw",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "gsw-CH",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Hmong Njua"
+                }
+            ],
+            "isocode": "hnj",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "hnj-LA",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Upper Sorbian"
+                }
+            ],
+            "isocode": "hsb",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "hsb-DE",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Interlingua"
+                }
+            ],
+            "isocode": "ia",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "ia-001",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Sichuan Yi"
+                }
+            ],
+            "isocode": "ii",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "ii-CN",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Ido"
+                }
+            ],
+            "isocode": "io",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "io-001",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Lojban"
+                }
+            ],
+            "isocode": "jbo",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "jbo-001",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Ngomba"
+                }
+            ],
+            "isocode": "jgo",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "jgo-CM",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Machame"
+                }
+            ],
+            "isocode": "jmc",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "jmc-TZ",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Jju"
+                }
+            ],
+            "isocode": "kaj",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "kaj-NG",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Tyap"
+                }
+            ],
+            "isocode": "kcg",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "kcg-NG",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Makonde"
+                }
+            ],
+            "isocode": "kde",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "kde-TZ",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Kako"
+                }
+            ],
+            "isocode": "kkj",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "kkj-CM",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Shambala"
+                }
+            ],
+            "isocode": "ksb",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "ksb-TZ",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Colognian"
+                }
+            ],
+            "isocode": "ksh",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "ksh-DE",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Cornish"
+                }
+            ],
+            "isocode": "kw",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "kw-GB",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Langi"
+                }
+            ],
+            "isocode": "lag",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "lag-TZ",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Lakota"
+                }
+            ],
+            "isocode": "lkt",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "lkt-US",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Ladin"
+                }
+            ],
+            "isocode": "lld",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "lld-IT",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Moldavian"
+                }
+            ],
+            "isocode": "mo",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "mo-MD",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Metaʼ"
+                }
+            ],
+            "isocode": "mgo",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "mgo-CM",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Nama"
+                }
+            ],
+            "isocode": "naq",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "naq-NA",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Ngiemboon"
+                }
+            ],
+            "isocode": "nnh",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "nnh-CM",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Norwegian"
+                }
+            ],
+            "isocode": "no",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "no-NO",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "N'Ko"
+                }
+            ],
+            "isocode": "nqo",
+            "enabled": true,
+            "rtl": true,
+            "bcp47code": "nqo-GN",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Nyankole"
+                }
+            ],
+            "isocode": "nyn",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "nyn-UG",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Ossetic"
+                }
+            ],
+            "isocode": "os",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "os-GE",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Osage"
+                }
+            ],
+            "isocode": "osa",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "osa-US",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Nigerian Pidgin"
+                }
+            ],
+            "isocode": "pcm",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "pcm-NG",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Prussian"
+                }
+            ],
+            "isocode": "prg",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "prg-001",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Rombo"
+                }
+            ],
+            "isocode": "rof",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "rof-TZ",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Rwa"
+                }
+            ],
+            "isocode": "rwk",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "rwk-TZ",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Yakut"
+                }
+            ],
+            "isocode": "sah",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "sah-RU",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Samburu"
+                }
+            ],
+            "isocode": "saq",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "saq-KE",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Southern Kurdish"
+                }
+            ],
+            "isocode": "sdh",
+            "enabled": true,
+            "rtl": true,
+            "bcp47code": "sdh-IR",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Northern Sami"
+                }
+            ],
+            "isocode": "se",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "se-NO",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Koyraboro Senni"
+                }
+            ],
+            "isocode": "ses",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "ses-ML",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Tachelhit"
+                }
+            ],
+            "isocode": "shi",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "shi-MA",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Southern Sami"
+                }
+            ],
+            "isocode": "sma",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "sma-SE",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Lule Sami"
+                }
+            ],
+            "isocode": "smj",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "smj-SE",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Inari Sami"
+                }
+            ],
+            "isocode": "smn",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "smn-FI",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Skolt Sami"
+                }
+            ],
+            "isocode": "sms",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "sms-FI",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Syriac"
+                }
+            ],
+            "isocode": "syr",
+            "enabled": true,
+            "rtl": true,
+            "bcp47code": "syr-SY",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Teso"
+                }
+            ],
+            "isocode": "teo",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "teo-UG",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Tigre"
+                }
+            ],
+            "isocode": "tig",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "tig-ER",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Venda"
+                }
+            ],
+            "isocode": "ve",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "ve-ZA",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Volapük"
+                }
+            ],
+            "isocode": "vo",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "vo-001",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Vunjo"
+                }
+            ],
+            "isocode": "vun",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "vun-TZ",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Walloon"
+                }
+            ],
+            "isocode": "wa",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "wa-BE",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Walser"
+                }
+            ],
+            "isocode": "wae",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "wae-CH",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Soga"
+                }
+            ],
+            "isocode": "xog",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "xog-UG",
+            "ocr": {
+                "supported": false,
+                "not_supported_or_rtl": true
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Cantonese"
+                }
+            ],
+            "isocode": "yue",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "yue-HK",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false

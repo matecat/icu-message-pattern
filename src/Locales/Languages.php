@@ -100,17 +100,17 @@ class Languages
     private function processLocalizedTagPair(int|string $langIndex, array $lang, array $localizedTagPair): void
     {
         foreach ($localizedTagPair as $isocode => $localizedTag) {
-            self::$mapString2rfc[$localizedTag] = $lang['rfc3066code'];
+            self::$mapString2rfc[$localizedTag] = $lang['bcp47code'];
             self::$languagesDefinition[$langIndex]['localized'][$isocode] = $localizedTag;
 
             // ocr support
             if ($lang['ocr']['supported'] === true) {
-                self::$ocrSupported[$localizedTag] = $lang['rfc3066code'];
+                self::$ocrSupported[$localizedTag] = $lang['bcp47code'];
             }
 
             // @codeCoverageIgnoreStart
             if ($lang['ocr']['not_supported_or_rtl'] === true) {
-                self::$ocrNotSupported[$localizedTag] = $lang['rfc3066code'];
+                self::$ocrNotSupported[$localizedTag] = $lang['bcp47code'];
             }
             // @codeCoverageIgnoreEnd
         }
@@ -137,15 +137,15 @@ class Languages
         foreach (self::$languagesDefinition as $lang) {
             // map the optional language-region code (e.g. "it_IT") to its RFC code
             if (isset($lang['languageRegionCode'])) {
-                self::$mapString2rfc[$lang['languageRegionCode']] = $lang['rfc3066code'];
+                self::$mapString2rfc[$lang['languageRegionCode']] = $lang['bcp47code'];
             }
 
             // identity mapping: RFC code resolves to itself
-            self::$mapString2rfc[$lang['rfc3066code']] = $lang['rfc3066code'];
+            self::$mapString2rfc[$lang['bcp47code']] = $lang['bcp47code'];
             // primary lookup: RFC code -> full language data object
-            self::$mapRfc2obj[$lang['rfc3066code']] = $lang;
+            self::$mapRfc2obj[$lang['bcp47code']] = $lang;
             // ISO -> RFC (last write wins; overridden below for ambiguous codes)
-            self::$mapIso2rfc[$lang['isocode']] = $lang['rfc3066code'];
+            self::$mapIso2rfc[$lang['isocode']] = $lang['bcp47code'];
         }
 
         // Hardcoded overrides for ambiguous ISO codes.
@@ -172,7 +172,7 @@ class Languages
                 self::$enabledLanguageList[$rfc] = [
                     'code' => $rfc,
                     'name' => $lang['localized']['en'],
-                    'direction' => ($lang['rtl']) ? 'rtl' : 'ltr'
+                    'direction' => ($lang['rtl']) ? 'rtl' : 'ltr',
                 ];
             }
         }
@@ -189,9 +189,40 @@ class Languages
     {
         if (!self::$instance) {
             self::$instance = new Languages();
+            self::$instance->injectPluralRules();
         }
 
         return self::$instance;
+    }
+
+    protected function injectPluralRules(): void
+    {
+        $builder = PluralRulesBuilder::getInstance();
+        foreach (self::$mapRfc2obj as $rfc => $lang) {
+            $plurals = $builder->getLanguageRules($lang['isocode']);
+            self::$mapRfc2obj[$rfc]['plurals'] = $plurals;
+            if (isset(self::$enabledLanguageList[$rfc])) {
+                self::$enabledLanguageList[$rfc]['plurals'] = $plurals;
+            }
+        }
+    }
+
+    /**
+     * Destroy the singleton instance.
+     *
+     * This resets all static state so that the next call to getInstance()
+     * will re-run the constructor. Intended for tests only.
+     */
+    public static function destroyInstance(): void
+    {
+        self::$instance = null;
+        self::$mapString2rfc = [];
+        self::$mapRfc2obj = [];
+        self::$mapIso2rfc = [];
+        self::$languagesDefinition = [];
+        self::$ocrSupported = [];
+        self::$ocrNotSupported = [];
+        self::$enabledLanguageList = [];
     }
 
     /**
@@ -232,7 +263,7 @@ class Languages
     {
         $value = self::$mapRfc2obj[self::$mapString2rfc[$localizedName]]['languageRegionCode'] ?? null;
         if (empty($value)) {
-            $value = $this->get3066Code($localizedName);
+            $value = $this->getBCP47Code($localizedName);
         }
 
         return $value;
@@ -245,7 +276,7 @@ class Languages
      *
      * @return string
      */
-    public function get3066Code(string $localizedName): string
+    public function getBCP47Code(string $localizedName): string
     {
         return self::$mapString2rfc[$localizedName];
     }
@@ -263,7 +294,7 @@ class Languages
     }
 
     /**
-     * get a list of enabled languages ordered by name alphabetically, the keys are the language rfc3066code codes
+     * get a list of enabled languages ordered by name alphabetically, the keys are the language bcp47code codes
      *
      * @return array<string, array{code: string, name: string, direction: string}>
      */
@@ -423,14 +454,16 @@ class Languages
     }
 
     /**
-     * @param string $rfc3066code
+     * @param string $bcp47code
      *
      * @return string|null
      */
-    public static function getLocalizedLanguage(string $rfc3066code): ?string
+    public static function getLocalizedLanguage(string $bcp47code): ?string
     {
+        self::getInstance();
+
         foreach (self::$languagesDefinition as $lang) {
-            if ($lang['rfc3066code'] === $rfc3066code) {
+            if ($lang['bcp47code'] === $bcp47code) {
                 return $lang['localized']['en'] ?? null;
             }
         }
@@ -461,6 +494,8 @@ class Languages
      */
     public static function getLanguagesWithOcrSupported(): array
     {
+        self::getInstance();
+
         return self::$ocrSupported;
     }
 
@@ -469,6 +504,8 @@ class Languages
      */
     public static function getLanguagesWithOcrNotSupported(): array
     {
+        self::getInstance();
+
         return self::$ocrNotSupported;
     }
 }
