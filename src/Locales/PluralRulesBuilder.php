@@ -50,6 +50,15 @@ class PluralRulesBuilder
     private const string DEFAULT_FILE_PATH = __DIR__ . '/pluralRules.json';
 
     /**
+     * The file path for per-language overrides of human_rule and example.
+     *
+     * This file contains only the deltas: fields that differ from the
+     * rule-group defaults in CARDINAL_HUMAN_RULES / ORDINAL_HUMAN_RULES.
+     * When present, these values replace the defaults during build().
+     */
+    private const string OVERRIDES_FILE_PATH = __DIR__ . '/pluralRulesOverrides.json';
+
+    /**
      * The built plural rules, keyed by ISO code.
      *
      * @var array<string, LanguageRulesFragment>
@@ -546,7 +555,7 @@ class PluralRulesBuilder
         21 => [
             [
                 'rule' => 'n % 10 = 6,9 or n % 10 = 0 and n != 0',
-                'human_rule' => 'Ends in 0 (except 0), 6 or 9',
+                'human_rule' => 'Ends in 0 (except 0 itself), 6 or 9',
                 'example' => '6, 9, 10, 16, 19, 20, 26, 29, 30, …'
             ],
             ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0~5, 7, 8, 11~15, 17, 18, 21, …'],
@@ -714,6 +723,7 @@ class PluralRulesBuilder
     {
         $languages = Languages::getInstance();
         $enabledLanguages = $languages->getEnabledLanguages();
+        $overrides = $this->loadOverrides();
 
         $result = [];
 
@@ -734,12 +744,14 @@ class PluralRulesBuilder
 
             $cardinalFragments = $this->buildCategoryFragments(
                 PluralRules::getCardinalCategories($isoCode),
-                self::CARDINAL_HUMAN_RULES[PluralRules::getRuleGroup($isoCode)] ?? []
+                self::CARDINAL_HUMAN_RULES[PluralRules::getRuleGroup($isoCode)] ?? [],
+                $overrides[$isoCode]['cardinal'] ?? []
             );
 
             $ordinalFragments = $this->buildCategoryFragments(
                 PluralRules::getOrdinalCategories($isoCode),
-                self::ORDINAL_HUMAN_RULES[PluralRules::getRuleGroup($isoCode, 'ordinal')] ?? []
+                self::ORDINAL_HUMAN_RULES[PluralRules::getRuleGroup($isoCode, 'ordinal')] ?? [],
+                $overrides[$isoCode]['ordinal'] ?? []
             );
 
             $result[$isoCode] = new LanguageRulesFragment($name, $isoCode, $cardinalFragments, $ordinalFragments);
@@ -752,13 +764,14 @@ class PluralRulesBuilder
 
     /**
      * Build CategoryFragment objects by zipping category names from PluralRules
-     * with the positional human rule data.
+     * with the positional human rule data, applying per-language overrides.
      *
      * @param array<int, string> $categories Category names from PluralRules (e.g. ['one', 'other']).
      * @param array<int, array{rule: string, human_rule: string, example: string}> $humanRules Positional human rule data.
-     * @return \Matecat\Locales\DTO\CategoryFragment[]
+     * @param array<int, array{human_rule?: string, example?: string}> $overrides Per-language overrides (sparse, positional).
+     * @return CategoryFragment[]
      */
-    private function buildCategoryFragments(array $categories, array $humanRules): array
+    private function buildCategoryFragments(array $categories, array $humanRules, array $overrides = []): array
     {
         $fragments = [];
 
@@ -769,15 +782,46 @@ class PluralRulesBuilder
                 'example' => '',
             ];
 
+            // Apply per-language overrides if present
+            $humanRule = $overrides[$index]['human_rule'] ?? $ruleData['human_rule'];
+            $example   = $overrides[$index]['example']    ?? $ruleData['example'];
+
             $fragments[] = new CategoryFragment(
                 category: $category,
                 rule: $ruleData['rule'],
-                human_rule: $ruleData['human_rule'],
-                example: $ruleData['example'],
+                human_rule: $humanRule,
+                example: $example,
             );
         }
 
         return $fragments;
+    }
+
+    /**
+     * Load per-language overrides for human_rule and example.
+     *
+     * Returns a sparse array keyed by ISO code, then 'cardinal'/'ordinal',
+     * then positional index, containing only the fields that differ from defaults.
+     *
+     * @return array<string, array{cardinal?: array<int, array{human_rule?: string, example?: string}>, ordinal?: array<int, array{human_rule?: string, example?: string}>}>
+     */
+    private function loadOverrides(): array
+    {
+        if (!file_exists(self::OVERRIDES_FILE_PATH)) {
+            return [];
+        }
+
+        $json = file_get_contents(self::OVERRIDES_FILE_PATH);
+
+        // @codeCoverageIgnoreStart
+        if ($json === false) {
+            return [];
+        }
+        // @codeCoverageIgnoreEnd
+
+        $data = json_decode($json, true);
+
+        return is_array($data) ? $data : [];
     }
 
     /**

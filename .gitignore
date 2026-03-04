@@ -16,3 +16,4 @@ report/
 composer.phar
 clover*coverage-report/
 pluralRules.json
+/scripts/
