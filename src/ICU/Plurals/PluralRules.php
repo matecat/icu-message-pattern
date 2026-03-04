@@ -175,7 +175,7 @@ class PluralRules
         // nplurals=4; one/few/many/other (Lithuanian — CLDR 49: "many" for decimals only)
         6  => self::CATEGORIES_ONE_FEW_MANY_OTHER,
 
-        // nplurals=3; one/few/other (Romanian; Tachelhit)
+        // nplurals=3; one/few/other (Romanian; Moldavian; Tachelhit)
         12 => self::CATEGORIES_ONE_FEW_OTHER,
         23 => self::CATEGORIES_ONE_FEW_OTHER,
 
@@ -258,7 +258,7 @@ class PluralRules
         18 => self::CATEGORIES_OTHER,
         19 => self::CATEGORIES_OTHER,
 
-        // one/other (French-like; Irish; Romanian)
+        // one/other (French-like; Irish; Romanian; Moldavian)
         2  => self::CATEGORIES_ONE_OTHER,
         5  => self::CATEGORIES_ONE_OTHER,
         12 => self::CATEGORIES_ONE_OTHER,
@@ -346,7 +346,7 @@ class PluralRules
      * 8  - nplurals=2; plural=(n%10==1 && n%100!=11) ? 0 : 1; (Macedonian - CLDR 48)
      * 10 - nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2); (Latvian)
      * 11 - nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2); (Polish)
-     * 12 - nplurals=3; plural=(n==1 ? 0 : n==0 || n%100>0 && n%100<20 ? 1 : 2); (Romanian)
+     * 12 - nplurals=3; plural=(n==1 ? 0 : n==0 || n%100>0 && n%100<20 ? 1 : 2); (Romanian; Moldavian)
      * 13 - nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5); (Arabic)
      * 14 - nplurals=6; plural=(n==0) ? 0 : (n==1) ? 1 : (n==2) ? 2 : (n==3) ? 3 : (n==6) ? 4 : 5; (Welsh - CLDR 48)
      * 15 - nplurals=2; plural=(n%10!=1 || n%100==11); (Icelandic)
@@ -376,7 +376,7 @@ class PluralRules
      * 8  - one/two/many/other (Macedonian)
      * 10 - Only "other" (Latvian)
      * 11 - Only "other" (Polish)
-     * 12 - one/other (Romanian)
+     * 12 - one/other (Romanian, Moldavian)
      * 13 - Only "other" (Arabic)
      * 14 - zero/one/two/few/many/other (Welsh)
      * 15 - Only "other" (Icelandic)
@@ -913,7 +913,7 @@ class PluralRules
                 $n % 10 >= 2 && $n % 10 <= 4 && ($n % 100 < 10 || $n % 100 >= 20) => 1,
                 default => 2,
             },
-            // nplurals=3; (Romanian)
+            // nplurals=3; (Romanian, Moldavian)
             12 => match (true) {
                 $n === 1 => 0,
                 $n === 0 || ($n % 100 > 0 && $n % 100 < 20) => 1,

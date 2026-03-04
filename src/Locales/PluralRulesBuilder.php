@@ -59,6 +59,65 @@ class PluralRulesBuilder
      */
     private const string OVERRIDES_FILE_PATH = __DIR__ . '/pluralRulesOverrides.json';
 
+    // ─── Array key constants ─────────────────────────────────────────────
+    private const string K_RULE       = 'rule';
+    private const string K_HUMAN_RULE = 'human_rule';
+    private const string K_EXAMPLE    = 'example';
+    private const string K_CARDINAL   = 'cardinal';
+    private const string K_ORDINAL    = 'ordinal';
+
+    // ─── Rule string constants ───────────────────────────────────────────
+    private const string R_EMPTY                     = '';
+    private const string R_N_EQ_0                    = 'n = 0';
+    private const string R_N_EQ_1                    = 'n = 1';
+    private const string R_N_EQ_2                    = 'n = 2';
+    private const string R_N_EQ_4                    = 'n = 4';
+    private const string R_N_EQ_6                    = 'n = 6';
+    private const string R_N_EQ_2_3                  = 'n = 2, 3';
+    private const string R_N_EQ_1_5                  = 'n = 1, 5';
+    private const string R_I_EQ_0                    = 'i = 0';
+    private const string R_I_EQ_1                    = 'i = 1';
+    private const string R_I1_V0                     = 'i = 1 and v = 0';
+    private const string R_V_NE_0                    = 'v != 0';
+    private const string R_ENDS_1_NOT_11             = 'n % 10 = 1 and n % 100 != 11';
+    private const string R_ENDS_2_NOT_12             = 'n % 10 = 2 and n % 100 != 12';
+
+    // ─── Human rule string constants ─────────────────────────────────────
+    private const string H_ANY_NUMBER                = 'Any number';
+    private const string H_ANY_OTHER                 = 'Any other number';
+    private const string H_EXACTLY_0                 = 'Exactly 0';
+    private const string H_EXACTLY_1                 = 'Exactly 1';
+    private const string H_EXACTLY_1_NO_DEC          = 'Exactly 1 (no decimals)';
+    private const string H_EXACTLY_2                 = 'Exactly 2';
+    private const string H_EXACTLY_4                 = 'Exactly 4';
+    private const string H_EXACTLY_6                 = 'Exactly 6';
+    private const string H_EXACTLY_2_OR_3            = 'Exactly 2 or 3';
+    private const string H_ENDS_1_EXCEPT_11          = 'Ends in 1 (except 11)';
+    private const string H_ENDS_2_EXCEPT_12          = 'Ends in 2 (except 12)';
+    private const string H_DECIMAL_ONLY              = 'Any number with decimals (decimal-only category)';
+
+    // ─── Example string constants ────────────────────────────────────────
+    private const string E_EMPTY                     = '';
+    private const string E_ALL_NUMBERS               = '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …';
+    private const string E_ALL_NUMBERS_LONG          = '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 100, 1000, …';
+    private const string E_0                         = '0';
+    private const string E_1                         = '1';
+    private const string E_2                         = '2';
+    private const string E_3                         = '3';
+    private const string E_4                         = '4';
+    private const string E_6                         = '6';
+    private const string E_0_1                       = '0, 1';
+    private const string E_1_5                       = '1, 5';
+    private const string E_2_3                       = '2, 3';
+    private const string E_ENDS_1_SHORT              = '1, 21, 31, 41, 51, …';
+    private const string E_ENDS_1_LONG               = '1, 21, 31, 41, 51, 61, 71, 81, 101, …';
+    private const string E_ENDS_2_4                  = '2~4, 22~24, 32~34, …';
+    private const string E_OTHER_0_2_16              = '0, 2~16, 100, 1000, …';
+    private const string E_OTHER_2_17                = '2~17, 100, 1000, …';
+    private const string E_OTHER_0_5_20              = '0, 5~20, 100, 1000, …';
+    private const string E_OTHER_0_3_17              = '0, 3~17, 100, 1000, …';
+    private const string E_DECIMAL_01_15             = '0.0~1.5, 10.0, …';
+
     /**
      * The built plural rules, keyed by ISO code.
      *
@@ -78,303 +137,303 @@ class PluralRulesBuilder
         // Rule 0: nplurals=1; only "other" (Asian languages, no plural forms)
         0 => [
             [
-                'rule' => '',
-                'human_rule' => 'Any number',
-                'example' => '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 100, 1000, …'
+                self::K_RULE => self::R_EMPTY,
+                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
+                self::K_EXAMPLE => self::E_ALL_NUMBERS_LONG,
             ],
         ],
         // Rule 1: nplurals=2; plural=(n != 1); (Germanic, most European)
         1 => [
-            ['rule' => 'i = 1 and v = 0', 'human_rule' => 'Exactly 1 (no decimals)', 'example' => '1'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 2~16, 100, 1000, …'],
+            [self::K_RULE => self::R_I1_V0, self::K_HUMAN_RULE => self::H_EXACTLY_1_NO_DEC, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_2_16],
         ],
         // Rule 2: nplurals=2; (Amharic, Persian, Hindi, etc. — CLDR: i = 0 or n = 1; integer approximation: n > 1)
         2 => [
-            ['rule' => 'i = 0 or n = 1', 'human_rule' => '0 or 1', 'example' => '0, 1'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '2~17, 100, 1000, …'],
+            [self::K_RULE => 'i = 0 or n = 1', self::K_HUMAN_RULE => '0 or 1', self::K_EXAMPLE => self::E_0_1],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_2_17],
         ],
         // Rule 3: nplurals=4; Slavic (Russian, Ukrainian, Belarusian, Serbian, Croatian)
         3 => [
             [
-                'rule' => 'n % 10 = 1 and n % 100 != 11',
-                'human_rule' => 'Ends in 1 (except 11)',
-                'example' => '1, 21, 31, 41, 51, 61, 71, 81, 101, …'
+                self::K_RULE => self::R_ENDS_1_NOT_11,
+                self::K_HUMAN_RULE => self::H_ENDS_1_EXCEPT_11,
+                self::K_EXAMPLE => self::E_ENDS_1_LONG,
             ],
             [
-                'rule' => 'n % 10 = 2–4 and n % 100 != 12–14',
-                'human_rule' => 'Ends in 2-4 (except 12–14)',
-                'example' => '2~4, 22~24, 32~34, …'
+                self::K_RULE => 'n % 10 = 2–4 and n % 100 != 12–14',
+                self::K_HUMAN_RULE => 'Ends in 2-4 (except 12–14)',
+                self::K_EXAMPLE => self::E_ENDS_2_4,
             ],
             [
-                'rule' => 'n % 10 = 0 or n % 10 = 5–9 or n % 100 = 11–14',
-                'human_rule' => 'Ends in 0, 5–9, or 11–14',
-                'example' => '0, 5~20, 25~30, 35~40, …'
+                self::K_RULE => 'n % 10 = 0 or n % 10 = 5–9 or n % 100 = 11–14',
+                self::K_HUMAN_RULE => 'Ends in 0, 5–9, or 11–14',
+                self::K_EXAMPLE => '0, 5~20, 25~30, 35~40, …',
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => ''],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_EMPTY],
         ],
         // Rule 4: nplurals=4; (Czech, Slovak — CLDR 49: "many" for decimals only)
         4 => [
-            ['rule' => 'i = 1 and v = 0', 'human_rule' => 'Exactly 1 (no decimals)', 'example' => '1'],
-            ['rule' => 'i = 2–4 and v = 0', 'human_rule' => 'Exactly 2, 3, or 4 (no decimals)', 'example' => '2~4'],
-            ['rule' => 'v != 0', 'human_rule' => 'Any number with decimals (decimal-only category)', 'example' => '0.0~1.5, 10.0, …'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 5~20, 100, 1000, …'],
+            [self::K_RULE => self::R_I1_V0, self::K_HUMAN_RULE => self::H_EXACTLY_1_NO_DEC, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => 'i = 2–4 and v = 0', self::K_HUMAN_RULE => 'Exactly 2, 3, or 4 (no decimals)', self::K_EXAMPLE => '2~4'],
+            [self::K_RULE => self::R_V_NE_0, self::K_HUMAN_RULE => self::H_DECIMAL_ONLY, self::K_EXAMPLE => self::E_DECIMAL_01_15],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_5_20],
         ],
         // Rule 5: nplurals=5; (Irish)
         5 => [
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => 'n = 2', 'human_rule' => 'Exactly 2', 'example' => '2'],
-            ['rule' => 'n = 3–6', 'human_rule' => 'Exactly 3, 4, 5, or 6', 'example' => '3~6'],
-            ['rule' => 'n = 7–10', 'human_rule' => 'Exactly 7, 8, 9, or 10', 'example' => '7~10'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 11~25, 100, 1000, …'],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_N_EQ_2, self::K_HUMAN_RULE => self::H_EXACTLY_2, self::K_EXAMPLE => self::E_2],
+            [self::K_RULE => 'n = 3–6', self::K_HUMAN_RULE => 'Exactly 3, 4, 5, or 6', self::K_EXAMPLE => '3~6'],
+            [self::K_RULE => 'n = 7–10', self::K_HUMAN_RULE => 'Exactly 7, 8, 9, or 10', self::K_EXAMPLE => '7~10'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 11~25, 100, 1000, …'],
         ],
         // Rule 6: nplurals=4; (Lithuanian — CLDR 49: "many" for decimals only)
         6 => [
             [
-                'rule' => 'n % 10 = 1 and n % 100 != 11',
-                'human_rule' => 'Ends in 1 (except 11)',
-                'example' => '1, 21, 31, 41, 51, 61, 71, 81, 101, …'
+                self::K_RULE => self::R_ENDS_1_NOT_11,
+                self::K_HUMAN_RULE => self::H_ENDS_1_EXCEPT_11,
+                self::K_EXAMPLE => self::E_ENDS_1_LONG,
             ],
             [
-                'rule' => 'n % 10 = 2–9 and n % 100 != 12–19',
-                'human_rule' => 'Ends in 2–9 (except 12–19)',
-                'example' => '2~9, 22~29, 32~39, …'
+                self::K_RULE => 'n % 10 = 2–9 and n % 100 != 12–19',
+                self::K_HUMAN_RULE => 'Ends in 2–9 (except 12–19)',
+                self::K_EXAMPLE => '2~9, 22~29, 32~39, …',
             ],
-            ['rule' => 'f != 0', 'human_rule' => 'Any number with decimals (decimal-only category)', 'example' => '0.1~0.9, 1.1~1.7, …'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 10~20, 30, 40, 50, 60, 100, …'],
+            [self::K_RULE => 'f != 0', self::K_HUMAN_RULE => self::H_DECIMAL_ONLY, self::K_EXAMPLE => '0.1~0.9, 1.1~1.7, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 10~20, 30, 40, 50, 60, 100, …'],
         ],
         // Rule 7: nplurals=4; (Slovenian)
         7 => [
             [
-                'rule' => 'v = 0 and i % 100 = 1',
-                'human_rule' => 'Ends in 01 (including the decimal part)',
-                'example' => '1, 101, 201, …'
+                self::K_RULE => 'v = 0 and i % 100 = 1',
+                self::K_HUMAN_RULE => 'Ends in 01 (including the decimal part)',
+                self::K_EXAMPLE => '1, 101, 201, …',
             ],
             [
-                'rule' => 'v = 0 and i % 100 = 2',
-                'human_rule' => 'Ends in 02 (including after the decimal point)',
-                'example' => '2, 102, 202, …'
+                self::K_RULE => 'v = 0 and i % 100 = 2',
+                self::K_HUMAN_RULE => 'Ends in 02 (including after the decimal point)',
+                self::K_EXAMPLE => '2, 102, 202, …',
             ],
             [
-                'rule' => 'v = 0 and i % 100 = 3–4',
-                'human_rule' => 'Ends in 03 or 04 (including after the decimal point)',
-                'example' => '3, 4, 103, 104, 203, 204, …'
+                self::K_RULE => 'v = 0 and i % 100 = 3–4',
+                self::K_HUMAN_RULE => 'Ends in 03 or 04 (including after the decimal point)',
+                self::K_EXAMPLE => '3, 4, 103, 104, 203, 204, …',
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 5~19, 100, 105~119, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 5~19, 100, 105~119, …'],
         ],
         // Rule 8: nplurals=2; (Macedonian)
         8 => [
             [
-                'rule' => 'n % 10 = 1 and n % 100 != 11',
-                'human_rule' => 'Ends in 1 (except 11)',
-                'example' => '1, 21, 31, 41, 51, …'
+                self::K_RULE => self::R_ENDS_1_NOT_11,
+                self::K_HUMAN_RULE => self::H_ENDS_1_EXCEPT_11,
+                self::K_EXAMPLE => self::E_ENDS_1_SHORT,
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 2~20, 22~30, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 2~20, 22~30, …'],
         ],
         // Rule 10: nplurals=3; (Latvian)
         10 => [
             [
-                'rule' => 'n % 10 = 0 or n % 100 = 11–19',
-                'human_rule' => 'Ends in 0 or 11–19',
-                'example' => '0, 10~20, 30, 40, …'
+                self::K_RULE => 'n % 10 = 0 or n % 100 = 11–19',
+                self::K_HUMAN_RULE => 'Ends in 0 or 11–19',
+                self::K_EXAMPLE => '0, 10~20, 30, 40, …'
             ],
             [
-                'rule' => 'n % 10 = 1 and n % 100 != 11',
-                'human_rule' => 'Ends in 1 (except 11)',
-                'example' => '1, 21, 31, 41, …'
+                self::K_RULE => self::R_ENDS_1_NOT_11,
+                self::K_HUMAN_RULE => self::H_ENDS_1_EXCEPT_11,
+                self::K_EXAMPLE => '1, 21, 31, 41, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '2~9, 22~29, 32~39, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '2~9, 22~29, 32~39, …'],
         ],
         // Rule 11: nplurals=3; (Polish)
         11 => [
-            ['rule' => 'i = 1 and v = 0', 'human_rule' => 'Exactly 1 (no decimals)', 'example' => '1'],
+            [self::K_RULE => self::R_I1_V0, self::K_HUMAN_RULE => self::H_EXACTLY_1_NO_DEC, self::K_EXAMPLE => self::E_1],
             [
-                'rule' => 'v = 0 and i % 10 = 2–4 and i % 100 != 12–14',
-                'human_rule' => 'Ends in 2–4 (except 12–14, no decimals)',
-                'example' => '2~4, 22~24, 32~34, …'
+                self::K_RULE => 'v = 0 and i % 10 = 2–4 and i % 100 != 12–14',
+                self::K_HUMAN_RULE => 'Ends in 2–4 (except 12–14, no decimals)',
+                self::K_EXAMPLE => self::E_ENDS_2_4
             ],
             [
-                'rule' => 'v = 0 and i != 1 and i % 10 = 0–1 or v = 0 and i % 10 = 5–9 or v = 0 and i % 100 = 12–14',
-                'human_rule' => 'Ends in 0, 1, 5–9, or 12–14 (except 1, no decimals)',
-                'example' => '0, 5~19, 100, …'
+                self::K_RULE => 'v = 0 and i != 1 and i % 10 = 0–1 or v = 0 and i % 10 = 5–9 or v = 0 and i % 100 = 12–14',
+                self::K_HUMAN_RULE => 'Ends in 0, 1, 5–9, or 12–14 (except 1, no decimals)',
+                self::K_EXAMPLE => '0, 5~19, 100, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0.0~1.5, 10.0, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_DECIMAL_01_15],
         ],
-        // Rule 12: nplurals=3; (Romanian)
+        // Rule 12: nplurals=3; (Romanian, Moldavian)
         12 => [
-            ['rule' => 'i = 1 and v = 0', 'human_rule' => 'Exactly 1 (no decimals)', 'example' => '1'],
+            [self::K_RULE => self::R_I1_V0, self::K_HUMAN_RULE => self::H_EXACTLY_1_NO_DEC, self::K_EXAMPLE => self::E_1],
             [
-                'rule' => 'v != 0 or n = 0 or n % 100 = 2–19',
-                'human_rule' => 'Exactly 0 or ends in 02–19',
-                'example' => '0, 2~19, 102~119, …'
+                self::K_RULE => 'v != 0 or n = 0 or n % 100 = 2–19',
+                self::K_HUMAN_RULE => 'Exactly 0 or ends in 02–19',
+                self::K_EXAMPLE => '0, 2~19, 102~119, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '20~35, 100, 1000, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '20~35, 100, 1000, …'],
         ],
         // Rule 13: nplurals=6; (Arabic)
         13 => [
-            ['rule' => 'n = 0', 'human_rule' => 'Exactly 0', 'example' => '0'],
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => 'n = 2', 'human_rule' => 'Exactly 2', 'example' => '2'],
-            ['rule' => 'n % 100 = 3–10', 'human_rule' => 'Ends in 03–10', 'example' => '3~10, 103~110, …'],
-            ['rule' => 'n % 100 = 11–99', 'human_rule' => 'Ends in 11-99', 'example' => '11~26, 111~126, …'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '100~102, 200~202, …'],
+            [self::K_RULE => self::R_N_EQ_0, self::K_HUMAN_RULE => self::H_EXACTLY_0, self::K_EXAMPLE => self::E_0],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_N_EQ_2, self::K_HUMAN_RULE => self::H_EXACTLY_2, self::K_EXAMPLE => self::E_2],
+            [self::K_RULE => 'n % 100 = 3–10', self::K_HUMAN_RULE => 'Ends in 03–10', self::K_EXAMPLE => '3~10, 103~110, …'],
+            [self::K_RULE => 'n % 100 = 11–99', self::K_HUMAN_RULE => 'Ends in 11-99', self::K_EXAMPLE => '11~26, 111~126, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '100~102, 200~202, …'],
         ],
         // Rule 14: nplurals=6; (Welsh)
         14 => [
-            ['rule' => 'n = 0', 'human_rule' => 'Exactly 0', 'example' => '0'],
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => 'n = 2', 'human_rule' => 'Exactly 2', 'example' => '2'],
-            ['rule' => 'n = 3', 'human_rule' => 'Exactly 3', 'example' => '3'],
-            ['rule' => 'n = 6', 'human_rule' => 'Exactly 6', 'example' => '6'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '4, 5, 7~20, 100, 1000, …'],
+            [self::K_RULE => self::R_N_EQ_0, self::K_HUMAN_RULE => self::H_EXACTLY_0, self::K_EXAMPLE => self::E_0],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_N_EQ_2, self::K_HUMAN_RULE => self::H_EXACTLY_2, self::K_EXAMPLE => self::E_2],
+            [self::K_RULE => 'n = 3', self::K_HUMAN_RULE => 'Exactly 3', self::K_EXAMPLE => self::E_3],
+            [self::K_RULE => self::R_N_EQ_6, self::K_HUMAN_RULE => self::H_EXACTLY_6, self::K_EXAMPLE => self::E_6],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '4, 5, 7~20, 100, 1000, …'],
         ],
         // Rule 15: nplurals=2; (Icelandic)
         15 => [
             [
-                'rule' => 'n % 10 = 1 and n % 100 != 11',
-                'human_rule' => 'Ends in 1 (except 11)',
-                'example' => '1, 21, 31, 41, 51, …'
+                self::K_RULE => self::R_ENDS_1_NOT_11,
+                self::K_HUMAN_RULE => self::H_ENDS_1_EXCEPT_11,
+                self::K_EXAMPLE => self::E_ENDS_1_SHORT
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 2~16, 100, 1000, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_2_16],
         ],
         // Rule 16: nplurals=4; (Scottish Gaelic)
         16 => [
-            ['rule' => 'n = 1, 11', 'human_rule' => 'Exactly 1 or 11', 'example' => '1, 11'],
-            ['rule' => 'n = 2, 12', 'human_rule' => 'Exactly 2 or 12', 'example' => '2, 12'],
-            ['rule' => 'n = 3–10, 13–19', 'human_rule' => 'Exactly 3–10 or 13–19', 'example' => '3~10, 13~19'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 20~34, 100, 1000, …'],
+            [self::K_RULE => 'n = 1, 11', self::K_HUMAN_RULE => 'Exactly 1 or 11', self::K_EXAMPLE => '1, 11'],
+            [self::K_RULE => 'n = 2, 12', self::K_HUMAN_RULE => 'Exactly 2 or 12', self::K_EXAMPLE => '2, 12'],
+            [self::K_RULE => 'n = 3–10, 13–19', self::K_HUMAN_RULE => 'Exactly 3–10 or 13–19', self::K_EXAMPLE => '3~10, 13~19'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 20~34, 100, 1000, …'],
         ],
         // Rule 17: nplurals=5; (Breton)
         17 => [
             [
-                'rule' => 'n % 10 = 1 and n % 100 != 11, 71, 91',
-                'human_rule' => 'Ends in 1 (except 11, 71 or 91)',
-                'example' => '1, 21, 31, 41, 51, 61, 81, 101, …'
+                self::K_RULE => 'n % 10 = 1 and n % 100 != 11, 71, 91',
+                self::K_HUMAN_RULE => 'Ends in 1 (except 11, 71 or 91)',
+                self::K_EXAMPLE => '1, 21, 31, 41, 51, 61, 81, 101, …'
             ],
             [
-                'rule' => 'n % 10 = 2 and n % 100 != 12, 72, 92',
-                'human_rule' => 'Ends in 2 (except 12, 72 or 92)',
-                'example' => '2, 22, 32, 42, 52, 62, 82, 102, …'
+                self::K_RULE => 'n % 10 = 2 and n % 100 != 12, 72, 92',
+                self::K_HUMAN_RULE => 'Ends in 2 (except 12, 72 or 92)',
+                self::K_EXAMPLE => '2, 22, 32, 42, 52, 62, 82, 102, …'
             ],
             [
-                'rule' => 'n % 10 = 3–4, 9 and n % 100 != 10–19, 70–79, 90–99',
-                'human_rule' => 'Ends in 3, 4, or 9 (except 10–19, 70–79, 90–99)',
-                'example' => '3, 4, 9, 23, 24, 29, …'
+                self::K_RULE => 'n % 10 = 3–4, 9 and n % 100 != 10–19, 70–79, 90–99',
+                self::K_HUMAN_RULE => 'Ends in 3, 4, or 9 (except 10–19, 70–79, 90–99)',
+                self::K_EXAMPLE => '3, 4, 9, 23, 24, 29, …'
             ],
             [
-                'rule' => 'n != 0 and n % 1000000 = 0',
-                'human_rule' => 'Non-zero multiple of 1,000,000',
-                'example' => '1000000, 2000000, …'
+                self::K_RULE => 'n != 0 and n % 1000000 = 0',
+                self::K_HUMAN_RULE => 'Non-zero multiple of 1,000,000',
+                self::K_EXAMPLE => '1000000, 2000000, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 5~8, 10~20, 100, 1000, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 5~8, 10~20, 100, 1000, …'],
         ],
         // Rule 18: nplurals=5; (Manx — CLDR 49: "many" for decimals only)
         18 => [
-            ['rule' => 'n % 10 = 1', 'human_rule' => 'Ends in 1', 'example' => '1, 11, 21, 31, …'],
-            ['rule' => 'n % 10 = 2', 'human_rule' => 'Ends in 2', 'example' => '2, 12, 22, 32, …'],
-            ['rule' => 'n % 20 = 0', 'human_rule' => 'Multiple of 20', 'example' => '0, 20, 40, 60, 80, 100, …'],
-            ['rule' => 'v != 0', 'human_rule' => 'Any number with decimals (decimal-only category)', 'example' => '0.0~1.5, 10.0, …'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '3~9, 13~19, 23~29, …'],
+            [self::K_RULE => 'n % 10 = 1', self::K_HUMAN_RULE => 'Ends in 1', self::K_EXAMPLE => '1, 11, 21, 31, …'],
+            [self::K_RULE => 'n % 10 = 2', self::K_HUMAN_RULE => 'Ends in 2', self::K_EXAMPLE => '2, 12, 22, 32, …'],
+            [self::K_RULE => 'n % 20 = 0', self::K_HUMAN_RULE => 'Multiple of 20', self::K_EXAMPLE => '0, 20, 40, 60, 80, 100, …'],
+            [self::K_RULE => self::R_V_NE_0, self::K_HUMAN_RULE => self::H_DECIMAL_ONLY, self::K_EXAMPLE => self::E_DECIMAL_01_15],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '3~9, 13~19, 23~29, …'],
         ],
         // Rule 19: nplurals=3; (Hebrew — CLDR 49: removed "many")
         19 => [
-            ['rule' => 'i = 1 and v = 0', 'human_rule' => 'Exactly 1 (no decimals)', 'example' => '1'],
-            ['rule' => 'i = 2 and v = 0', 'human_rule' => 'Exactly 2 (no decimals)', 'example' => '2'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 3~17, 100, 1000, …'],
+            [self::K_RULE => self::R_I1_V0, self::K_HUMAN_RULE => self::H_EXACTLY_1_NO_DEC, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => 'i = 2 and v = 0', self::K_HUMAN_RULE => 'Exactly 2 (no decimals)', self::K_EXAMPLE => self::E_2],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_3_17],
         ],
         // Rule 20: nplurals=3; (Italian, Spanish, French, Portuguese, Catalan - CLDR 49)
         20 => [
-            ['rule' => 'i = 1 and v = 0', 'human_rule' => 'Exactly 1 (no decimals)', 'example' => '1'],
+            [self::K_RULE => self::R_I1_V0, self::K_HUMAN_RULE => self::H_EXACTLY_1_NO_DEC, self::K_EXAMPLE => self::E_1],
             [
-                'rule' => 'e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0–5',
-                'human_rule' => 'Multiple of 1,000,000 (no decimals)',
-                'example' => '1000000, 2000000, …'
+                self::K_RULE => 'e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0–5',
+                self::K_HUMAN_RULE => 'Multiple of 1,000,000 (no decimals)',
+                self::K_EXAMPLE => '1000000, 2000000, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 2~16, 100, 1000, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_2_16],
         ],
         // Rule 21: nplurals=3; (Inuktitut, Sami, Nama, Swampy Cree)
         21 => [
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => 'n = 2', 'human_rule' => 'Exactly 2', 'example' => '2'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 3~17, 100, 1000, …'],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_N_EQ_2, self::K_HUMAN_RULE => self::H_EXACTLY_2, self::K_EXAMPLE => self::E_2],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_3_17],
         ],
         // Rule 22: nplurals=3; (Colognian, Anii, Langi)
         22 => [
-            ['rule' => 'n = 0', 'human_rule' => 'Exactly 0', 'example' => '0'],
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '2~17, 100, 1000, …'],
+            [self::K_RULE => self::R_N_EQ_0, self::K_HUMAN_RULE => self::H_EXACTLY_0, self::K_EXAMPLE => self::E_0],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_2_17],
         ],
         // Rule 23: nplurals=3; (Tachelhit)
         23 => [
-            ['rule' => 'n = 0–1', 'human_rule' => 'Exactly 0 or 1', 'example' => '0, 1'],
-            ['rule' => 'n = 2–10', 'human_rule' => 'Exactly 2 through 10', 'example' => '2~10'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '11~26, 100, 1000, …'],
+            [self::K_RULE => 'n = 0–1', self::K_HUMAN_RULE => 'Exactly 0 or 1', self::K_EXAMPLE => self::E_0_1],
+            [self::K_RULE => 'n = 2–10', self::K_HUMAN_RULE => 'Exactly 2 through 10', self::K_EXAMPLE => '2~10'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '11~26, 100, 1000, …'],
         ],
         // Rule 24: nplurals=6; (Cornish)
         24 => [
-            ['rule' => 'n = 0', 'human_rule' => 'Exactly 0', 'example' => '0'],
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
+            [self::K_RULE => self::R_N_EQ_0, self::K_HUMAN_RULE => self::H_EXACTLY_0, self::K_EXAMPLE => self::E_0],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
             [
-                'rule' => 'n % 100 = 2, 22, 42, 62, 82 or n % 1000 = 0 ...',
-                'human_rule' => 'Ends in 02, 22, 42, 62, 82 (or special multiples of 1000)',
-                'example' => '2, 22, 42, 62, 82, 102, …'
+                self::K_RULE => 'n % 100 = 2, 22, 42, 62, 82 or n % 1000 = 0 ...',
+                self::K_HUMAN_RULE => 'Ends in 02, 22, 42, 62, 82 (or special multiples of 1000)',
+                self::K_EXAMPLE => '2, 22, 42, 62, 82, 102, …'
             ],
             [
-                'rule' => 'n % 100 = 3, 23, 43, 63, 83',
-                'human_rule' => 'Ends in 03, 23, 43, 63, 83',
-                'example' => '3, 23, 43, 63, 83, 103, …'
+                self::K_RULE => 'n % 100 = 3, 23, 43, 63, 83',
+                self::K_HUMAN_RULE => 'Ends in 03, 23, 43, 63, 83',
+                self::K_EXAMPLE => '3, 23, 43, 63, 83, 103, …'
             ],
             [
-                'rule' => 'n != 1 and n % 100 = 1, 21, 41, 61, 81',
-                'human_rule' => 'Ends in 01, 21, 41, 61, 81 (except 1)',
-                'example' => '21, 41, 61, 81, 101, …'
+                self::K_RULE => 'n != 1 and n % 100 = 1, 21, 41, 61, 81',
+                self::K_HUMAN_RULE => 'Ends in 01, 21, 41, 61, 81 (except 1)',
+                self::K_EXAMPLE => '21, 41, 61, 81, 101, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '4~20, 24~40, 44~60, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '4~20, 24~40, 44~60, …'],
         ],
         // Rule 25: nplurals=2; (Filipino, Tagalog - CLDR 49)
         // one: v = 0 and i = 1,2,3 or v = 0 and i % 10 != 4,6,9 or v != 0 and f % 10 != 4,6,9
         25 => [
             [
-                'rule' => 'v = 0 and i = 1, 2, 3 or v = 0 and i % 10 != 4, 6, 9 or v != 0 and f % 10 != 4, 6, 9',
-                'human_rule' => 'Does not end in 4, 6, 9 (including the part after the decimal point)',
-                'example' => '0, 1, 2, 3, 5, 7, 8, 10, 11, 12, 13, 15, …'
+                self::K_RULE => 'v = 0 and i = 1, 2, 3 or v = 0 and i % 10 != 4, 6, 9 or v != 0 and f % 10 != 4, 6, 9',
+                self::K_HUMAN_RULE => 'Does not end in 4, 6, 9 (including the part after the decimal point)',
+                self::K_EXAMPLE => '0, 1, 2, 3, 5, 7, 8, 10, 11, 12, 13, 15, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '4, 6, 9, 14, 16, 19, 24, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '4, 6, 9, 14, 16, 19, 24, …'],
         ],
         // Rule 26: nplurals=2; (Central Atlas Tamazight - CLDR 49)
         // one: n = 0..1 or n = 11..99
         26 => [
             [
-                'rule' => 'n = 0–1 or n = 11–99',
-                'human_rule' => 'Exactly 0–1 or 11–99',
-                'example' => '0, 1, 11~99'
+                self::K_RULE => 'n = 0–1 or n = 11–99',
+                self::K_HUMAN_RULE => 'Exactly 0–1 or 11–99',
+                self::K_EXAMPLE => '0, 1, 11~99'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '2~10, 100~110, 1000, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '2~10, 100~110, 1000, …'],
         ],
         // Rule 27: nplurals=3; (Bosnian, Croatian, Serbian — CLDR 49: one/few/other)
         27 => [
             [
-                'rule' => 'v = 0 and i % 10 = 1 and i % 100 != 11 or f % 10 = 1 and f % 100 != 11',
-                'human_rule' => 'Ends in 1 (except 11)',
-                'example' => '1, 21, 31, 41, 51, 61, 71, 81, 101, …'
+                self::K_RULE => 'v = 0 and i % 10 = 1 and i % 100 != 11 or f % 10 = 1 and f % 100 != 11',
+                self::K_HUMAN_RULE => self::H_ENDS_1_EXCEPT_11,
+                self::K_EXAMPLE => self::E_ENDS_1_LONG
             ],
             [
-                'rule' => 'v = 0 and i % 10 = 2–4 and i % 100 != 12–14 or f % 10 = 2–4 and f % 100 != 12–14',
-                'human_rule' => 'Ends in 2-4 (except 12–14)',
-                'example' => '2~4, 22~24, 32~34, …'
+                self::K_RULE => 'v = 0 and i % 10 = 2–4 and i % 100 != 12–14 or f % 10 = 2–4 and f % 100 != 12–14',
+                self::K_HUMAN_RULE => 'Ends in 2-4 (except 12–14)',
+                self::K_EXAMPLE => self::E_ENDS_2_4
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 5~20, 25~30, 35~40, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 5~20, 25~30, 35~40, …'],
         ],
         // Rule 28: nplurals=5; (Maltese — CLDR 49: one/two/few/many/other)
         28 => [
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => 'n = 2', 'human_rule' => 'Exactly 2', 'example' => '2'],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_N_EQ_2, self::K_HUMAN_RULE => self::H_EXACTLY_2, self::K_EXAMPLE => self::E_2],
             [
-                'rule' => 'n = 0 or n % 100 = 2–10',
-                'human_rule' => 'Exactly 0 or ends in 02–10',
-                'example' => '0, 3~10, 103~110, …'
+                self::K_RULE => 'n = 0 or n % 100 = 2–10',
+                self::K_HUMAN_RULE => 'Exactly 0 or ends in 02–10',
+                self::K_EXAMPLE => '0, 3~10, 103~110, …'
             ],
-            ['rule' => 'n % 100 = 11–19', 'human_rule' => 'Ends in 11–19', 'example' => '11~19, 111~119, …'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '20~35, 100, 1000, …'],
+            [self::K_RULE => 'n % 100 = 11–19', self::K_HUMAN_RULE => 'Ends in 11–19', self::K_EXAMPLE => '11~19, 111~119, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '20~35, 100, 1000, …'],
         ],
     ];
 
@@ -390,326 +449,326 @@ class PluralRulesBuilder
         // Rule 0: Only "other"
         0 => [
             [
-                'rule' => '',
-                'human_rule' => 'Any number',
-                'example' => '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …'
+                self::K_RULE => self::R_EMPTY,
+                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
+                self::K_EXAMPLE => self::E_ALL_NUMBERS
             ],
         ],
         // Rule 1: English-like ordinals (one/two/few/other)
         1 => [
             [
-                'rule' => 'n % 10 = 1 and n % 100 != 11',
-                'human_rule' => 'Ends in 1 (except 11)',
-                'example' => '1, 21, 31, 41, 51, …'
+                self::K_RULE => self::R_ENDS_1_NOT_11,
+                self::K_HUMAN_RULE => self::H_ENDS_1_EXCEPT_11,
+                self::K_EXAMPLE => self::E_ENDS_1_SHORT
             ],
             [
-                'rule' => 'n % 10 = 2 and n % 100 != 12',
-                'human_rule' => 'Ends in 2 (except 12)',
-                'example' => '2, 22, 32, 42, 52, …'
+                self::K_RULE => self::R_ENDS_2_NOT_12,
+                self::K_HUMAN_RULE => self::H_ENDS_2_EXCEPT_12,
+                self::K_EXAMPLE => '2, 22, 32, 42, 52, …'
             ],
             [
-                'rule' => 'n % 10 = 3 and n % 100 != 13',
-                'human_rule' => 'Ends in 3 (except 13)',
-                'example' => '3, 23, 33, 43, 53, …'
+                self::K_RULE => 'n % 10 = 3 and n % 100 != 13',
+                self::K_HUMAN_RULE => 'Ends in 3 (except 13)',
+                self::K_EXAMPLE => '3, 23, 33, 43, 53, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 4~18, 100, 1000, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 4~18, 100, 1000, …'],
         ],
         // Rule 2: French-like ordinals (one/other)
         2 => [
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 2~16, 100, 1000, …'],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_2_16],
         ],
         // Rule 3: Only "other" (Slavic)
         3 => [
             [
-                'rule' => '',
-                'human_rule' => 'Any number',
-                'example' => '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …'
+                self::K_RULE => self::R_EMPTY,
+                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
+                self::K_EXAMPLE => self::E_ALL_NUMBERS
             ],
         ],
         // Rule 4: Only "other" (Czech/Slovak)
         4 => [
             [
-                'rule' => '',
-                'human_rule' => 'Any number',
-                'example' => '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …'
+                self::K_RULE => self::R_EMPTY,
+                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
+                self::K_EXAMPLE => self::E_ALL_NUMBERS
             ],
         ],
         // Rule 5: Irish ordinals (one/other)
         5 => [
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 2~16, 100, 1000, …'],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_2_16],
         ],
         // Rule 6: Only "other" (Lithuanian)
         6 => [
             [
-                'rule' => '',
-                'human_rule' => 'Any number',
-                'example' => '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …'
+                self::K_RULE => self::R_EMPTY,
+                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
+                self::K_EXAMPLE => self::E_ALL_NUMBERS
             ],
         ],
         // Rule 7: Only "other" (Slovenian)
         7 => [
             [
-                'rule' => '',
-                'human_rule' => 'Any number',
-                'example' => '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …'
+                self::K_RULE => self::R_EMPTY,
+                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
+                self::K_EXAMPLE => self::E_ALL_NUMBERS
             ],
         ],
         // Rule 8: Macedonian ordinals (one/two/many/other)
         8 => [
             [
-                'rule' => 'n % 10 = 1 and n % 100 != 11',
-                'human_rule' => 'Ends in 1 (except 11)',
-                'example' => '1, 21, 31, 41, 51, …'
+                self::K_RULE => self::R_ENDS_1_NOT_11,
+                self::K_HUMAN_RULE => self::H_ENDS_1_EXCEPT_11,
+                self::K_EXAMPLE => self::E_ENDS_1_SHORT
             ],
             [
-                'rule' => 'n % 10 = 2 and n % 100 != 12',
-                'human_rule' => 'Ends in 2 (except 12)',
-                'example' => '2, 22, 32, 42, 52, …'
+                self::K_RULE => self::R_ENDS_2_NOT_12,
+                self::K_HUMAN_RULE => self::H_ENDS_2_EXCEPT_12,
+                self::K_EXAMPLE => '2, 22, 32, 42, 52, …'
             ],
             [
-                'rule' => 'n % 10 = 7, 8 and n % 100 != 17, 18',
-                'human_rule' => 'Ends in 7 or 8 (except 17, 18)',
-                'example' => '7, 8, 27, 28, 37, 38, …'
+                self::K_RULE => 'n % 10 = 7, 8 and n % 100 != 17, 18',
+                self::K_HUMAN_RULE => 'Ends in 7 or 8 (except 17, 18)',
+                self::K_EXAMPLE => '7, 8, 27, 28, 37, 38, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 3~6, 9~19, 23~26, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 3~6, 9~19, 23~26, …'],
         ],
         // Rule 10: Only "other" (Latvian)
         10 => [
             [
-                'rule' => '',
-                'human_rule' => 'Any number',
-                'example' => '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …'
+                self::K_RULE => self::R_EMPTY,
+                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
+                self::K_EXAMPLE => self::E_ALL_NUMBERS
             ],
         ],
         // Rule 11: Only "other" (Polish)
         11 => [
             [
-                'rule' => '',
-                'human_rule' => 'Any number',
-                'example' => '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …'
+                self::K_RULE => self::R_EMPTY,
+                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
+                self::K_EXAMPLE => self::E_ALL_NUMBERS
             ],
         ],
         // Rule 12: Romanian ordinals (one/other)
         12 => [
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 2~16, 100, 1000, …'],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_2_16],
         ],
         // Rule 13: Only "other" (Arabic)
         13 => [
             [
-                'rule' => '',
-                'human_rule' => 'Any number',
-                'example' => '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …'
+                self::K_RULE => self::R_EMPTY,
+                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
+                self::K_EXAMPLE => self::E_ALL_NUMBERS
             ],
         ],
         // Rule 14: Welsh ordinals (zero/one/two/few/many/other)
         14 => [
-            ['rule' => 'n = 0, 7, 8, 9', 'human_rule' => 'Exactly 0, 7, 8 ,9', 'example' => '0, 7, 8, 9'],
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => 'n = 2', 'human_rule' => 'Exactly 2', 'example' => '2'],
-            ['rule' => 'n = 3, 4', 'human_rule' => 'Exactly 3 or 4', 'example' => '3, 4'],
-            ['rule' => 'n = 5, 6', 'human_rule' => 'Exactly 5 or 6', 'example' => '5, 6'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '10~25, 100, 1000, …'],
+            [self::K_RULE => 'n = 0, 7, 8, 9', self::K_HUMAN_RULE => 'Exactly 0, 7, 8 ,9', self::K_EXAMPLE => '0, 7, 8, 9'],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_N_EQ_2, self::K_HUMAN_RULE => self::H_EXACTLY_2, self::K_EXAMPLE => self::E_2],
+            [self::K_RULE => 'n = 3, 4', self::K_HUMAN_RULE => 'Exactly 3 or 4', self::K_EXAMPLE => '3, 4'],
+            [self::K_RULE => 'n = 5, 6', self::K_HUMAN_RULE => 'Exactly 5 or 6', self::K_EXAMPLE => '5, 6'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '10~25, 100, 1000, …'],
         ],
         // Rule 15: Only "other" (Icelandic)
         15 => [
             [
-                'rule' => '',
-                'human_rule' => 'Any number',
-                'example' => '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …'
+                self::K_RULE => self::R_EMPTY,
+                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
+                self::K_EXAMPLE => self::E_ALL_NUMBERS
             ],
         ],
         // Rule 16: Scottish Gaelic ordinals (one/two/few/other)
         16 => [
-            ['rule' => 'n = 1, 11', 'human_rule' => 'Exactly 1 or 11', 'example' => '1, 11'],
-            ['rule' => 'n = 2, 12', 'human_rule' => 'Exactly 2 or 12', 'example' => '2, 12'],
-            ['rule' => 'n = 3, 13', 'human_rule' => 'Exactly 3 or 13', 'example' => '3, 13'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 4~10, 14~21, 100, …'],
+            [self::K_RULE => 'n = 1, 11', self::K_HUMAN_RULE => 'Exactly 1 or 11', self::K_EXAMPLE => '1, 11'],
+            [self::K_RULE => 'n = 2, 12', self::K_HUMAN_RULE => 'Exactly 2 or 12', self::K_EXAMPLE => '2, 12'],
+            [self::K_RULE => 'n = 3, 13', self::K_HUMAN_RULE => 'Exactly 3 or 13', self::K_EXAMPLE => '3, 13'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 4~10, 14~21, 100, …'],
         ],
         // Rule 17: Only "other" (Breton)
         17 => [
             [
-                'rule' => '',
-                'human_rule' => 'Any number',
-                'example' => '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …'
+                self::K_RULE => self::R_EMPTY,
+                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
+                self::K_EXAMPLE => self::E_ALL_NUMBERS
             ],
         ],
         // Rule 18: Only "other" (Manx)
         18 => [
             [
-                'rule' => '',
-                'human_rule' => 'Any number',
-                'example' => '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …'
+                self::K_RULE => self::R_EMPTY,
+                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
+                self::K_EXAMPLE => self::E_ALL_NUMBERS
             ],
         ],
         // Rule 19: Only "other" (Hebrew)
         19 => [
             [
-                'rule' => '',
-                'human_rule' => 'Any number',
-                'example' => '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …'
+                self::K_RULE => self::R_EMPTY,
+                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
+                self::K_EXAMPLE => self::E_ALL_NUMBERS
             ],
         ],
         // Rule 20: Italian ordinals (many/other)
         20 => [
-            ['rule' => 'n = 8, 11, 80, 800', 'human_rule' => 'Exactly 8, 11, 80 or 800', 'example' => '8, 11, 80, 800'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0~7, 9, 10, 12~79, 81~99, 100, …'],
+            [self::K_RULE => 'n = 8, 11, 80, 800', self::K_HUMAN_RULE => 'Exactly 8, 11, 80 or 800', self::K_EXAMPLE => '8, 11, 80, 800'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0~7, 9, 10, 12~79, 81~99, 100, …'],
         ],
         // Rule 21: Kazakh, Azerbaijani ordinals (many/other)
         21 => [
             [
-                'rule' => 'n % 10 = 6,9 or n % 10 = 0 and n != 0',
-                'human_rule' => 'Ends in 0 (except 0 itself), 6 or 9',
-                'example' => '6, 9, 10, 16, 19, 20, 26, 29, 30, …'
+                self::K_RULE => 'n % 10 = 6,9 or n % 10 = 0 and n != 0',
+                self::K_HUMAN_RULE => 'Ends in 0 (except 0 itself), 6 or 9',
+                self::K_EXAMPLE => '6, 9, 10, 16, 19, 20, 26, 29, 30, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0~5, 7, 8, 11~15, 17, 18, 21, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0~5, 7, 8, 11~15, 17, 18, 21, …'],
         ],
         // Rule 22: Ukrainian, Turkmen ordinals (few/other)
         22 => [
-            ['rule' => 'n = 1, 5', 'human_rule' => 'Exactly 1 or 5', 'example' => '1, 5'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 2~4, 6~17, 100, 1000, …'],
+            [self::K_RULE => self::R_N_EQ_1_5, self::K_HUMAN_RULE => 'Exactly 1 or 5', self::K_EXAMPLE => self::E_1_5],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 2~4, 6~17, 100, 1000, …'],
         ],
         // Rule 23: Bengali, Assamese, Hindi ordinals (one/two/few/many/other) — CLDR 49
         23 => [
             [
-                'rule' => 'n = 1, 5, 7, 8, 9, 10',
-                'human_rule' => 'Exactly 1, 5, 7, 8, 9 or 10',
-                'example' => '1, 5, 7, 8, 9, 10'
+                self::K_RULE => 'n = 1, 5, 7, 8, 9, 10',
+                self::K_HUMAN_RULE => 'Exactly 1, 5, 7, 8, 9 or 10',
+                self::K_EXAMPLE => '1, 5, 7, 8, 9, 10'
             ],
-            ['rule' => 'n = 2, 3', 'human_rule' => 'Exactly 2 or 3', 'example' => '2, 3'],
-            ['rule' => 'n = 4', 'human_rule' => 'Exactly 4', 'example' => '4'],
-            ['rule' => 'n = 6', 'human_rule' => 'Exactly 6', 'example' => '6'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 11~25, 100, 1000, …'],
+            [self::K_RULE => self::R_N_EQ_2_3, self::K_HUMAN_RULE => self::H_EXACTLY_2_OR_3, self::K_EXAMPLE => self::E_2_3],
+            [self::K_RULE => self::R_N_EQ_4, self::K_HUMAN_RULE => self::H_EXACTLY_4, self::K_EXAMPLE => self::E_4],
+            [self::K_RULE => self::R_N_EQ_6, self::K_HUMAN_RULE => self::H_EXACTLY_6, self::K_EXAMPLE => self::E_6],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 11~25, 100, 1000, …'],
         ],
         // Rule 24: Gujarati ordinals (one/two/few/many/other)
         24 => [
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => 'n = 2, 3', 'human_rule' => 'Exactly 2 or 3', 'example' => '2, 3'],
-            ['rule' => 'n = 4', 'human_rule' => 'Exactly 4', 'example' => '4'],
-            ['rule' => 'n = 6', 'human_rule' => 'Exactly 6', 'example' => '6'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 5, 7~20, 100, 1000, …'],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_N_EQ_2_3, self::K_HUMAN_RULE => self::H_EXACTLY_2_OR_3, self::K_EXAMPLE => self::E_2_3],
+            [self::K_RULE => self::R_N_EQ_4, self::K_HUMAN_RULE => self::H_EXACTLY_4, self::K_EXAMPLE => self::E_4],
+            [self::K_RULE => self::R_N_EQ_6, self::K_HUMAN_RULE => self::H_EXACTLY_6, self::K_EXAMPLE => self::E_6],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 5, 7~20, 100, 1000, …'],
         ],
         // Rule 26: Marathi/Konkani ordinals (one/two/few/other) — CLDR 49
         26 => [
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => 'n = 2, 3', 'human_rule' => 'Exactly 2 or 3', 'example' => '2, 3'],
-            ['rule' => 'n = 4', 'human_rule' => 'Exactly 4', 'example' => '4'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 5~20, 100, 1000, …'],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_N_EQ_2_3, self::K_HUMAN_RULE => self::H_EXACTLY_2_OR_3, self::K_EXAMPLE => self::E_2_3],
+            [self::K_RULE => self::R_N_EQ_4, self::K_HUMAN_RULE => self::H_EXACTLY_4, self::K_EXAMPLE => self::E_4],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_5_20],
         ],
         // Rule 27: Odia ordinals (one/two/few/many/other)
         27 => [
-            ['rule' => 'n = 1, 5, 7–9', 'human_rule' => 'Exactly 1, 5, 7, 8, or 9', 'example' => '1, 5, 7, 8, 9'],
-            ['rule' => 'n = 2, 3', 'human_rule' => 'Exactly 2 or 3', 'example' => '2, 3'],
-            ['rule' => 'n = 4', 'human_rule' => 'Exactly 4', 'example' => '4'],
-            ['rule' => 'n = 6', 'human_rule' => 'Exactly 6', 'example' => '6'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 10~25, 100, 1000, …'],
+            [self::K_RULE => 'n = 1, 5, 7–9', self::K_HUMAN_RULE => 'Exactly 1, 5, 7, 8, or 9', self::K_EXAMPLE => '1, 5, 7, 8, 9'],
+            [self::K_RULE => self::R_N_EQ_2_3, self::K_HUMAN_RULE => self::H_EXACTLY_2_OR_3, self::K_EXAMPLE => self::E_2_3],
+            [self::K_RULE => self::R_N_EQ_4, self::K_HUMAN_RULE => self::H_EXACTLY_4, self::K_EXAMPLE => self::E_4],
+            [self::K_RULE => self::R_N_EQ_6, self::K_HUMAN_RULE => self::H_EXACTLY_6, self::K_EXAMPLE => self::E_6],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 10~25, 100, 1000, …'],
         ],
         // Rule 29: Nepali ordinals (one/other) — CLDR 49: simplified
         29 => [
-            ['rule' => 'n = 1–4', 'human_rule' => 'Exactly 1, 2, 3 or 4', 'example' => '1~4'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 5~20, 100, 1000, …'],
+            [self::K_RULE => 'n = 1–4', self::K_HUMAN_RULE => 'Exactly 1, 2, 3 or 4', self::K_EXAMPLE => '1~4'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_5_20],
         ],
         // Rule 30: Albanian ordinals (one/many/other)
         30 => [
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => 'n = 4', 'human_rule' => 'Exactly 4', 'example' => '4'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 2, 3, 5~16, 100, 1000, …'],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_N_EQ_4, self::K_HUMAN_RULE => self::H_EXACTLY_4, self::K_EXAMPLE => self::E_4],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 2, 3, 5~16, 100, 1000, …'],
         ],
         // Rule 31: Anii ordinals (zero/one/few/other)
         31 => [
-            ['rule' => 'i = 0', 'human_rule' => 'Exactly 0', 'example' => '0'],
-            ['rule' => 'i = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => 'i = 2, 3, 4, 5, 6', 'human_rule' => 'Exactly 2, 3, 4, 5 or 6', 'example' => '2~6'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '7~20, 100, 1000, …'],
+            [self::K_RULE => self::R_I_EQ_0, self::K_HUMAN_RULE => self::H_EXACTLY_0, self::K_EXAMPLE => self::E_0],
+            [self::K_RULE => self::R_I_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => 'i = 2, 3, 4, 5, 6', self::K_HUMAN_RULE => 'Exactly 2, 3, 4, 5 or 6', self::K_EXAMPLE => '2~6'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '7~20, 100, 1000, …'],
         ],
         // Rule 32: Cornish ordinals (one/many/other)
         32 => [
             [
-                'rule' => 'n = 1–4 or n % 100 = 1–4, 21–24, 41–44, 61–64, 81–84',
-                'human_rule' => 'Exactly 1–4 or ends in 01–04, 21–24, 41–44, 61–64, 81–84',
-                'example' => '1~4, 21~24, 41~44, 61~64, 81~84, …'
+                self::K_RULE => 'n = 1–4 or n % 100 = 1–4, 21–24, 41–44, 61–64, 81–84',
+                self::K_HUMAN_RULE => 'Exactly 1–4 or ends in 01–04, 21–24, 41–44, 61–64, 81–84',
+                self::K_EXAMPLE => '1~4, 21~24, 41~44, 61~64, 81~84, …'
             ],
             [
-                'rule' => 'n = 5 or n % 100 = 5',
-                'human_rule' => 'Exactly 5 or ends in 05',
-                'example' => '5, 105, 205, …'
+                self::K_RULE => 'n = 5 or n % 100 = 5',
+                self::K_HUMAN_RULE => 'Exactly 5 or ends in 05',
+                self::K_EXAMPLE => '5, 105, 205, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 6~20, 25~40, 45~60, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 6~20, 25~40, 45~60, …'],
         ],
         // Rule 33: Afrikaans ordinals (few/other) — CLDR 49
         33 => [
             [
-                'rule' => 'i % 100 = 2–19',
-                'human_rule' => 'Ends in 02–19',
-                'example' => '2~19, 102~119, 202~219, …'
+                self::K_RULE => 'i % 100 = 2–19',
+                self::K_HUMAN_RULE => 'Ends in 02–19',
+                self::K_EXAMPLE => '2~19, 102~119, 202~219, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 1, 20~101, 120~201, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 1, 20~101, 120~201, …'],
         ],
         // Rule 34: Spanish ordinals (one/other) — CLDR 49
         34 => [
-            ['rule' => 'n = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 2~16, 100, 1000, …'],
+            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_2_16],
         ],
         // Rule 35: Hungarian ordinals (one/other) — CLDR 49
         35 => [
-            ['rule' => 'n = 1, 5', 'human_rule' => 'Exactly 1 or 5', 'example' => '1, 5'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 2~4, 6~17, 100, 1000, …'],
+            [self::K_RULE => self::R_N_EQ_1_5, self::K_HUMAN_RULE => 'Exactly 1 or 5', self::K_EXAMPLE => self::E_1_5],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 2~4, 6~17, 100, 1000, …'],
         ],
         // Rule 36: Azerbaijani ordinals (one/few/many/other) — CLDR 49
         36 => [
             [
-                'rule' => 'i % 10 = 1, 2, 5, 7, 8 or i % 100 = 20, 50, 70, 80',
-                'human_rule' => 'Ends in 1, 2, 5, 7, 8 or ends in 20, 50, 70, 80',
-                'example' => '1, 2, 5, 7, 8, 11, 12, 15, 17, 18, 20, …'
+                self::K_RULE => 'i % 10 = 1, 2, 5, 7, 8 or i % 100 = 20, 50, 70, 80',
+                self::K_HUMAN_RULE => 'Ends in 1, 2, 5, 7, 8 or ends in 20, 50, 70, 80',
+                self::K_EXAMPLE => '1, 2, 5, 7, 8, 11, 12, 15, 17, 18, 20, …'
             ],
             [
-                'rule' => 'i % 10 = 3, 4 or i % 1000 = 100, 200, 300, 400, 500, 600, 700, 800, 900',
-                'human_rule' => 'Ends in 3, 4 or multiples of 100',
-                'example' => '3, 4, 13, 14, 23, 24, 100, 200, …'
+                self::K_RULE => 'i % 10 = 3, 4 or i % 1000 = 100, 200, 300, 400, 500, 600, 700, 800, 900',
+                self::K_HUMAN_RULE => 'Ends in 3, 4 or multiples of 100',
+                self::K_EXAMPLE => '3, 4, 13, 14, 23, 24, 100, 200, …'
             ],
             [
-                'rule' => 'i = 0 or i % 10 = 6 or i % 100 = 40, 60, 90',
-                'human_rule' => 'Exactly 0, or ends in 6, 40, 60, or 90',
-                'example' => '0, 6, 16, 26, 36, 40, 46, 56, 60, …'
+                self::K_RULE => 'i = 0 or i % 10 = 6 or i % 100 = 40, 60, 90',
+                self::K_HUMAN_RULE => 'Exactly 0, or ends in 6, 40, 60, or 90',
+                self::K_EXAMPLE => '0, 6, 16, 26, 36, 40, 46, 56, 60, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '9, 10, 19, 29, 30, 39, 49, 59, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '9, 10, 19, 29, 30, 39, 49, 59, …'],
         ],
         // Rule 37: Belarusian ordinals (few/other) — CLDR 49
         37 => [
             [
-                'rule' => 'n % 10 = 2, 3 and n % 100 != 12, 13',
-                'human_rule' => 'Ends in 2 or 3 (except 12, 13)',
-                'example' => '2, 3, 22, 23, 32, 33, 42, 43, …'
+                self::K_RULE => 'n % 10 = 2, 3 and n % 100 != 12, 13',
+                self::K_HUMAN_RULE => 'Ends in 2 or 3 (except 12, 13)',
+                self::K_EXAMPLE => '2, 3, 22, 23, 32, 33, 42, 43, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 1, 4~21, 24~31, 34~41, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 1, 4~21, 24~31, 34~41, …'],
         ],
         // Rule 38: Bulgarian ordinals (zero/one/two/few/many/other) — CLDR 49
         38 => [
-            ['rule' => 'i % 100 = 11', 'human_rule' => 'Ends in 11', 'example' => '11, 111, 211, …'],
-            ['rule' => 'i % 100 = 1', 'human_rule' => 'Ends in 1 (except 11)', 'example' => '1, 21, 31, 41, …'],
-            ['rule' => 'i % 100 = 2', 'human_rule' => 'Ends in 2 (except 12)', 'example' => '2, 22, 32, 42, …'],
-            ['rule' => 'i % 100 = 7, 8', 'human_rule' => 'Ends in 7 or 8', 'example' => '7, 8, 27, 28, …'],
-            ['rule' => 'i % 100 = 3–6', 'human_rule' => 'Ends in 3–6', 'example' => '3~6, 23~26, 43~46, …'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 9, 10, 12~20, 29, 30, …'],
+            [self::K_RULE => 'i % 100 = 11', self::K_HUMAN_RULE => 'Ends in 11', self::K_EXAMPLE => '11, 111, 211, …'],
+            [self::K_RULE => 'i % 100 = 1', self::K_HUMAN_RULE => self::H_ENDS_1_EXCEPT_11, self::K_EXAMPLE => '1, 21, 31, 41, …'],
+            [self::K_RULE => 'i % 100 = 2', self::K_HUMAN_RULE => self::H_ENDS_2_EXCEPT_12, self::K_EXAMPLE => '2, 22, 32, 42, …'],
+            [self::K_RULE => 'i % 100 = 7, 8', self::K_HUMAN_RULE => 'Ends in 7 or 8', self::K_EXAMPLE => '7, 8, 27, 28, …'],
+            [self::K_RULE => 'i % 100 = 3–6', self::K_HUMAN_RULE => 'Ends in 3–6', self::K_EXAMPLE => '3~6, 23~26, 43~46, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 9, 10, 12~20, 29, 30, …'],
         ],
         // Rule 39: Catalan ordinals (one/two/few/other) — CLDR 49
         39 => [
-            ['rule' => 'n = 1, 3', 'human_rule' => 'Exactly 1 or 3', 'example' => '1, 3'],
-            ['rule' => 'n = 2', 'human_rule' => 'Exactly 2', 'example' => '2'],
-            ['rule' => 'n = 4', 'human_rule' => 'Exactly 4', 'example' => '4'],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '0, 5~20, 100, 1000, …'],
+            [self::K_RULE => 'n = 1, 3', self::K_HUMAN_RULE => 'Exactly 1 or 3', self::K_EXAMPLE => '1, 3'],
+            [self::K_RULE => self::R_N_EQ_2, self::K_HUMAN_RULE => self::H_EXACTLY_2, self::K_EXAMPLE => self::E_2],
+            [self::K_RULE => self::R_N_EQ_4, self::K_HUMAN_RULE => self::H_EXACTLY_4, self::K_EXAMPLE => self::E_4],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_5_20],
         ],
         // Rule 40: Georgian ordinals (one/many/other) — CLDR 49
         40 => [
-            ['rule' => 'i = 1', 'human_rule' => 'Exactly 1', 'example' => '1'],
+            [self::K_RULE => self::R_I_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
             [
-                'rule' => 'i = 0 or i % 100 = 2–20, 40, 60, 80',
-                'human_rule' => 'Exactly 0, or ends in 02–20, 40, 60, or 80',
-                'example' => '0, 2~20, 40, 60, 80, 102~120, …'
+                self::K_RULE => 'i = 0 or i % 100 = 2–20, 40, 60, 80',
+                self::K_HUMAN_RULE => 'Exactly 0, or ends in 02–20, 40, 60, or 80',
+                self::K_EXAMPLE => '0, 2~20, 40, 60, 80, 102~120, …'
             ],
-            ['rule' => '', 'human_rule' => 'Any other number', 'example' => '21~39, 41~59, 61~79, 81~101, …'],
+            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '21~39, 41~59, 61~79, 81~101, …'],
         ],
     ];
 
@@ -847,13 +906,13 @@ class PluralRulesBuilder
         $cardinalFragments = $this->buildCategoryFragments(
             PluralRules::getCardinalCategories($code),
             self::CARDINAL_HUMAN_RULES[PluralRules::getRuleGroup($code)] ?? [],
-            $overrides[$code]['cardinal'] ?? []
+            $overrides[$code][self::K_CARDINAL] ?? []
         );
 
         $ordinalFragments = $this->buildCategoryFragments(
             PluralRules::getOrdinalCategories($code),
-            self::ORDINAL_HUMAN_RULES[PluralRules::getRuleGroup($code, 'ordinal')] ?? [],
-            $overrides[$code]['ordinal'] ?? []
+            self::ORDINAL_HUMAN_RULES[PluralRules::getRuleGroup($code, self::K_ORDINAL)] ?? [],
+            $overrides[$code][self::K_ORDINAL] ?? []
         );
 
         return new LanguageRulesFragment($name, $code, $cardinalFragments, $ordinalFragments);
@@ -874,18 +933,18 @@ class PluralRulesBuilder
 
         foreach ($categories as $index => $category) {
             $ruleData = $humanRules[$index] ?? [
-                'rule' => '',
-                'human_rule' => 'Any other number',
-                'example' => '',
+                self::K_RULE => self::R_EMPTY,
+                self::K_HUMAN_RULE => self::H_ANY_OTHER,
+                self::K_EXAMPLE => self::E_EMPTY,
             ];
 
             // Apply per-language overrides if present (keyed by category name)
-            $humanRule = $overrides[$category]['human_rule'] ?? $ruleData['human_rule'];
-            $example   = $overrides[$category]['example']    ?? $ruleData['example'];
+            $humanRule = $overrides[$category][self::K_HUMAN_RULE] ?? $ruleData[self::K_HUMAN_RULE];
+            $example   = $overrides[$category][self::K_EXAMPLE]    ?? $ruleData[self::K_EXAMPLE];
 
             $fragments[] = new CategoryFragment(
                 category: $category,
-                rule: $ruleData['rule'],
+                rule: $ruleData[self::K_RULE],
                 human_rule: $humanRule,
                 example: $example,
             );
@@ -929,22 +988,22 @@ class PluralRulesBuilder
 
         foreach ($data as $isoCode => $langData) {
             $cardinalFragments = [];
-            foreach ($langData['cardinal'] ?? [] as $cat) {
+            foreach ($langData[self::K_CARDINAL] ?? [] as $cat) {
                 $cardinalFragments[] = new CategoryFragment(
                     category: $cat['category'],
-                    rule: $cat['rule'],
-                    human_rule: $cat['human_rule'],
-                    example: $cat['example'],
+                    rule: $cat[self::K_RULE],
+                    human_rule: $cat[self::K_HUMAN_RULE],
+                    example: $cat[self::K_EXAMPLE],
                 );
             }
 
             $ordinalFragments = [];
-            foreach ($langData['ordinal'] ?? [] as $cat) {
+            foreach ($langData[self::K_ORDINAL] ?? [] as $cat) {
                 $ordinalFragments[] = new CategoryFragment(
                     category: $cat['category'],
-                    rule: $cat['rule'],
-                    human_rule: $cat['human_rule'],
-                    example: $cat['example'],
+                    rule: $cat[self::K_RULE],
+                    human_rule: $cat[self::K_HUMAN_RULE],
+                    example: $cat[self::K_EXAMPLE],
                 );
             }
 
