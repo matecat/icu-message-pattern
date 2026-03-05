@@ -179,8 +179,11 @@ class PluralRules
         12 => self::CATEGORIES_ONE_FEW_OTHER,
         23 => self::CATEGORIES_ONE_FEW_OTHER,
 
-        // nplurals=3; one/many/other (Italian, Spanish, French, Portuguese, Catalan - CLDR 49)
+        // nplurals=3; one/many/other (Italian, Spanish, Catalan - CLDR 49: one = i = 1 and v = 0)
         20 => self::CATEGORIES_ONE_MANY_OTHER,
+
+        // nplurals=3; one/many/other (French, Portuguese - CLDR 49: one = i = 0,1)
+        29 => self::CATEGORIES_ONE_MANY_OTHER,
 
         // nplurals=3; one/two/other (Inuktitut, Sami, Nama, Swampy Cree)
         21 => self::CATEGORIES_ONE_TWO_OTHER,
@@ -337,14 +340,14 @@ class PluralRules
      * Plural Rules (Cardinal):
      * 0  - nplurals=1; plural=0; (Asian, no plural forms)
      * 1  - nplurals=2; plural=(n != 1); (Germanic, most European)
-     * 2  - nplurals=2; plural=(n > 1); (French, Brazilian Portuguese)
+     * 2  - nplurals=2; plural=(n > 1); (Amharic, Persian, Hindi, Fulah, Armenian, Sinhala, etc.)
      * 3  - nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2); (Slavic: Russian, Ukrainian, Belarusian)
      * 4  - nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3; (Czech, Slovak — CLDR 49: "many" for decimals at index 2)
-     * 5  - nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : (n>2 && n<7) ? 2 :(n>6 && n<11) ? 3 : 4; (Irish)
+     * 5  - nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : (n>=3 && n<=6) ? 2 : (n>=7 && n<=10) ? 3 : 4; (Irish)
      * 6  - nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 3); (Lithuanian — CLDR 49: "many" for decimals at index 2)
-     * 7  - nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3); (Slovenian)
+     * 7  - nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3); (Slovenian, Lower/Upper Sorbian)
      * 8  - nplurals=2; plural=(n%10==1 && n%100!=11) ? 0 : 1; (Macedonian - CLDR 48)
-     * 10 - nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2); (Latvian)
+     * 10 - nplurals=3; plural=(n%10==0 || n%100 in 11..19) ? 0 : (n%10==1 && n%100!=11) ? 1 : 2; (Latvian)
      * 11 - nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2); (Polish)
      * 12 - nplurals=3; plural=(n==1 ? 0 : n==0 || n%100>0 && n%100<20 ? 1 : 2); (Romanian; Moldavian)
      * 13 - nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5); (Arabic)
@@ -354,7 +357,7 @@ class PluralRules
      * 17 - nplurals=5; plural=(n==1) ? 0 : (n==2) ? 1 : (n==3) ? 2 : 3; (Breton - CLDR 48)
      * 18 - nplurals=5; plural=(n%10==1) ? 0 : (n%10==2) ? 1 : (n%20==0) ? 2 : 4; (Manx — CLDR 49: "many" for decimals at index 3)
      * 19 - nplurals=3; plural=(n==1) ? 0 : (n==2) ? 1 : 2; (Hebrew — CLDR 49: removed "many")
-     * 20 - nplurals=3; plural=(n==1) ? 0 : (n!=0 && n%1000000==0) ? 1 : 2; (Italian, Spanish, French, Portuguese, Catalan - CLDR 49)
+     * 20 - nplurals=3; plural=(n==1) ? 0 : (n!=0 && n%1000000==0) ? 1 : 2; (Italian, Spanish, Catalan - CLDR 49: one = i = 1)
      * 21 - nplurals=3; plural=(n==1) ? 0 : (n==2) ? 1 : 2; (Inuktitut, Sami, Nama)
      * 22 - nplurals=3; plural=(n==0) ? 0 : (n==1) ? 1 : 2; (Colognian, Anii, Langi)
      * 23 - nplurals=3; plural=(n<=1) ? 0 : (n>=2 && n<=10) ? 1 : 2; (Tachelhit)
@@ -362,7 +365,8 @@ class PluralRules
      * 25 - nplurals=2; (Filipino/Tagalog - CLDR 49)
      * 26 - nplurals=2; (Central Atlas Tamazight - CLDR 49)
      * 27 - nplurals=3; (Bosnian, Croatian, Serbian — CLDR 49: one/few/other)
-     * 28 - nplurals=5; (Maltese — CLDR 49: one/two/few/many/other)
+     * 28 - nplurals=5; plural=(n==1) ? 0 : (n==2) ? 1 : (n==0 || n%100>=3 && n%100<=10) ? 2 : (n%100>=11 && n%100<=19) ? 3 : 4; (Maltese — CLDR 49)
+     * 29 - nplurals=3; plural=(n<=1) ? 0 : (n!=0 && n%1000000==0) ? 1 : 2; (French, Portuguese - CLDR 49: one = i = 0,1)
      *
      * Ordinal Rules:
      * 0  - Only "other" (no ordinal distinction)
@@ -496,14 +500,14 @@ class PluralRules
 
         // F
         'fa' => ['cardinal' => 2, 'ordinal' => 0],    // Persian
-        'ff' => ['cardinal' => 1, 'ordinal' => 0],    // Fulah
+        'ff' => ['cardinal' => 2, 'ordinal' => 0],    // Fulah - CLDR 49: one = i = 0,1
         'fi' => ['cardinal' => 1, 'ordinal' => 0],    // Finnish
         'fil' => ['cardinal' => 25, 'ordinal' => 2],   // Filipino - CLDR 49 cardinal: one/other (does not end in 4,6,9)
         'fj' => ['cardinal' => 0, 'ordinal' => 0],    // Fijian
         'fn' => ['cardinal' => 0, 'ordinal' => 0],    // Fanagalo
         'fo' => ['cardinal' => 1, 'ordinal' => 0],    // Faroese
         'fon' => ['cardinal' => 0, 'ordinal' => 0],   // Fon
-        'fr' => ['cardinal' => 20, 'ordinal' => 2],   // French - CLDR 49 ordinal: one/other
+        'fr' => ['cardinal' => 29, 'ordinal' => 2],   // French - CLDR 49: one = i = 0,1; ordinal: one/other
         'fuc' => ['cardinal' => 1, 'ordinal' => 0],   // Pulaar
         'fur' => ['cardinal' => 1, 'ordinal' => 0],   // Friulian
         'fuv' => ['cardinal' => 1, 'ordinal' => 0],   // Nigerian Fulfulde
@@ -540,9 +544,9 @@ class PluralRules
         'hoc' => ['cardinal' => 1, 'ordinal' => 0],   // Ho
         'hr' => ['cardinal' => 27, 'ordinal' => 0],    // Croatian - CLDR 49: one/few/other
         'hsb' => ['cardinal' => 7, 'ordinal' => 0],   // Upper Sorbian - CLDR 49
-        'ht' => ['cardinal' => 20, 'ordinal' => 2],   // Haitian Creole - CLDR 49: one/many/other
+        'ht' => ['cardinal' => 29, 'ordinal' => 2],   // Haitian Creole - follows French: one = i = 0,1
         'hu' => ['cardinal' => 1, 'ordinal' => 35],   // Hungarian - CLDR 49 ordinal: one/other
-        'hy' => ['cardinal' => 1, 'ordinal' => 2],    // Armenian - CLDR 49 ordinal: one/other
+        'hy' => ['cardinal' => 2, 'ordinal' => 2],    // Armenian - CLDR 49: one = i = 0,1; ordinal: one/other
 
         // I
         'ia' => ['cardinal' => 1, 'ordinal' => 0],    // Interlingua - CLDR 49
@@ -703,7 +707,7 @@ class PluralRules
         'prg' => ['cardinal' => 10, 'ordinal' => 0],  // Prussian - CLDR 49
         'prs' => ['cardinal' => 2, 'ordinal' => 0],   // Dari
         'ps' => ['cardinal' => 1, 'ordinal' => 0],    // Pashto
-        'pt' => ['cardinal' => 20, 'ordinal' => 0],   // Portuguese - CLDR 49
+        'pt' => ['cardinal' => 29, 'ordinal' => 0],   // Portuguese - CLDR 49: one = i = 0..1
         'pt_pt' => ['cardinal' => 20, 'ordinal' => 0], // European Portuguese - CLDR 49
 
         // Q
@@ -744,7 +748,7 @@ class PluralRules
         'shi' => ['cardinal' => 23, 'ordinal' => 0],  // Tachelhit - CLDR 49
         'shn' => ['cardinal' => 0, 'ordinal' => 0],   // Shan
         'shu' => ['cardinal' => 13, 'ordinal' => 0],  // Chadian Arabic
-        'si' => ['cardinal' => 1, 'ordinal' => 0],    // Sinhala
+        'si' => ['cardinal' => 2, 'ordinal' => 0],    // Sinhala - CLDR 49: one = n = 0,1
         'sk' => ['cardinal' => 4, 'ordinal' => 0],    // Slovak
         'sl' => ['cardinal' => 7, 'ordinal' => 0],    // Slovenian
         'sm' => ['cardinal' => 0, 'ordinal' => 0],    // Samoan
@@ -861,65 +865,115 @@ class PluralRules
         $ruleGroup = self::getRuleGroup($locale);
 
         return match ($ruleGroup) {
-            // nplurals=1; plural=0; (Asian, no plural forms)
+
+            // Rule 0 — nplurals=1; only "other" (no plural forms)
+            // Locales: ace, ayr, ba, ban, bi, bjn, bm, bo, bod, bug, ch, chk, crh, dyu, dz,
+            //   fj, fn, fon, gil, hmn, hnj, id, ig, ii, ja, jbo, jv, kac, kar, kbp, kde, kea,
+            //   km, ko, kr, ksw, lkt, lo, mh, min, mos, ms, my, niu, nqo, osa, pau, pis, pon,
+            //   ppk, sah, ses, sg, shn, sm, smo, su, sus, taq, th, tkl, tmh, to, ton, tpi, trv,
+            //   tt, tvl, ty, vi, wls, wo, yo, yue, zh, zsm
             0 => 0,
-            // nplurals=2; plural=(n > 1); (Amharic, Persian, Hindi, etc. — integer approximation of CLDR "i = 0 or n = 1")
+
+            // Rule 2 — nplurals=2; plural=(n > 1)
+            // CLDR: one = "i = 0 or n = 1" / "i = 0,1" / "n = 0..1" / "n = 0,1 or i = 0 and f = 1"
+            // For integers: n = 0 or n = 1 → "one"; else "other"
+            // Locales: acf, ak, am, bh, crs, csw, fa, ff, gcl, hi, hy, kab, ln, mfe, mg, mi,
+            //   ns, nso, oc, pcm, plt, prs, si, tg, ti, tw, wa
             2 => $n > 1 ? 1 : 0,
-            // nplurals=3/4; Slavic (Rule 3: ru/uk/be → one/few/many/other; Rule 27: bs/hr/sr → one/few/other)
+
+            // Rules 3, 27 — Slavic one/few/many (or other)
+            // CLDR: one = n%10=1 and n%100!=11; few = n%10=2..4 and n%100 not in 12..14; else many/other
             // Same integer computation; category arrays differ in $cardinalCategoryMap.
+            // Rule 3 locales (one/few/many/other): be, ru, uk
+            // Rule 27 locales (one/few/other): bs, hr, me, rmn, sh, sr
             3, 27 => match (true) {
                 $n % 10 === 1 && $n % 100 !== 11 => 0,
                 $n % 10 >= 2 && $n % 10 <= 4 && ($n % 100 < 10 || $n % 100 >= 20) => 1,
                 default => 2,
             },
-            // nplurals=4; (Czech, Slovak — CLDR 49: "many" at index 2 is for decimals v!=0, unreachable for int)
+
+            // Rule 4 — nplurals=4; one/few/many/other (Czech, Slovak)
+            // CLDR: one = i=1 and v=0; few = i=2..4 and v=0; many = v!=0 (decimals only); other = rest
+            // For integers: "many" (index 2) is unreachable; skip to "other" (index 3).
+            // Locales: cs, sk
             4 => match (true) {
                 $n === 1 => 0,
                 $n >= 2 && $n <= 4 => 1,
                 default => 3,   // index 3 = "other" (index 2 = "many" is decimal-only)
             },
-            // nplurals=5; (Irish)
+
+            // Rule 5 — nplurals=5; one/two/few/many/other (Irish)
+            // CLDR: one = n=1; two = n=2; few = n=3..6; many = n=7..10; other = everything else
+            // Locales: ga
             5 => match (true) {
                 $n === 1 => 0,
                 $n === 2 => 1,
-                $n < 7 => 2,
-                $n < 11 => 3,
+                $n >= 3 && $n <= 6 => 2,
+                $n >= 7 && $n <= 10 => 3,
                 default => 4,
             },
-            // nplurals=4; (Lithuanian — CLDR 49: "many" at index 2 is for decimals f!=0, unreachable for int)
+
+            // Rule 6 — nplurals=4; one/few/many/other (Lithuanian)
+            // CLDR: one = n%10=1 and n%100 not in 11..19; few = n%10=2..9 and n%100 not in 11..19;
+            //        many = f!=0 (decimals only); other = rest
+            // For integers: "many" (index 2) is unreachable; skip to "other" (index 3).
+            // Locales: lt
             6 => match (true) {
                 $n % 10 === 1 && $n % 100 !== 11 => 0,
                 $n % 10 >= 2 && ($n % 100 < 10 || $n % 100 >= 20) => 1,
                 default => 3,   // index 3 = "other" (index 2 = "many" is decimal-only)
             },
-            // nplurals=4; (Slovenian)
+
+            // Rule 7 — nplurals=4; one/two/few/other (Slovenian, Lower/Upper Sorbian)
+            // CLDR: one = i%100=1; two = i%100=2; few = i%100=3..4 or v!=0; other = rest
+            // For integers: v=0 always, so few = n%100 in {3,4} only.
+            // Locales: dsb, hsb, sl
             7 => match (true) {
                 $n % 100 === 1 => 0,
                 $n % 100 === 2 => 1,
                 in_array($n % 100, [3, 4], true) => 2,
                 default => 3,
             },
-            // nplurals=2; (Macedonian - CLDR 48)
+
+            // Rule 8 — nplurals=2; one/other (Macedonian)
+            // CLDR: one = v=0 and i%10=1 and i%100!=11 or f%10=1 and f%100!=11
+            // For integers: n%10=1 and n%100!=11 → "one"; else "other"
+            // Locales: mk
             8 => $n % 10 === 1 && $n % 100 !== 11 ? 0 : 1,
-            // nplurals=3; (Latvian - CLDR 48)
+
+            // Rule 10 — nplurals=3; zero/one/other (Latvian)
+            // CLDR: zero = n%10=0 or n%100=11..19; one = n%10=1 and n%100!=11; other = rest
+            // For integers: zero catches 0, 10, 11–19, 20, 30, 40, ...
+            // Locales: ltg, lv, lvs, prg
             10 => match (true) {
-                $n === 0 => 0,
-                $n % 10 === 1 && $n % 100 !== 11 => 1,
+                $n % 10 === 0 || ($n % 100 >= 11 && $n % 100 <= 19) => 0,
+                $n % 10 === 1 => 1,  // n%100!=11 is guaranteed (caught by the zero arm above)
                 default => 2,
             },
-            // nplurals=3; (Polish)
+
+            // Rule 11 — nplurals=3; one/few/many/other (Polish)
+            // CLDR: one = i=1 and v=0; few = v=0 and i%10=2..4 and i%100 not in 12..14; else many
+            // For integers: "other" (index 3) is decimal-only; index 2 = "many" is the integer default.
+            // Locales: pl, szl
             11 => match (true) {
                 $n === 1 => 0,
                 $n % 10 >= 2 && $n % 10 <= 4 && ($n % 100 < 10 || $n % 100 >= 20) => 1,
                 default => 2,
             },
-            // nplurals=3; (Romanian, Moldavian)
+
+            // Rule 12 — nplurals=3; one/few/other (Romanian, Moldavian)
+            // CLDR: one = i=1 and v=0; few = v!=0 or n=0 or n!=1 and n%100=1..19; other = rest
+            // For integers: n=1 → one; n=0 or n%100 in 1..19 (and n!=1) → few; else other
+            // Locales: mo, ro
             12 => match (true) {
                 $n === 1 => 0,
                 $n === 0 || ($n % 100 > 0 && $n % 100 < 20) => 1,
                 default => 2,
             },
-            // nplurals=6; (Arabic)
+
+            // Rule 13 — nplurals=6; zero/one/two/few/many/other (Arabic)
+            // CLDR: zero = n=0; one = n=1; two = n=2; few = n%100=3..10; many = n%100=11..99; other = rest
+            // Locales: ar, shu
             13 => match (true) {
                 $n === 0 => 0,
                 $n === 1 => 1,
@@ -928,7 +982,10 @@ class PluralRules
                 $n % 100 >= 11 => 4,
                 default => 5,
             },
-            // nplurals=6; (Welsh - CLDR 48)
+
+            // Rule 14 — nplurals=6; zero/one/two/few/many/other (Welsh)
+            // CLDR: zero = n=0; one = n=1; two = n=2; few = n=3; many = n=6; other = rest
+            // Locales: cy
             14 => match ($n) { // @codeCoverageIgnore strange behavior of curly brackets and match in code coverage,
                 0 => 0,
                 1 => 1,
@@ -937,77 +994,142 @@ class PluralRules
                 6 => 4,
                 default => 5,
             }, // @codeCoverageIgnore
-            // nplurals=2; (Icelandic)
+
+            // Rule 15 — nplurals=2; one/other (Icelandic)
+            // CLDR: one = t=0 and i%10=1 and i%100!=11 or t%10=1 and t%100!=11
+            // For integers (t=0): n%10=1 and n%100!=11 → "one"; else "other"
+            // Locales: is
             15 => $n % 10 !== 1 || $n % 100 === 11 ? 1 : 0,
-            // nplurals=4; (Scottish Gaelic)
+
+            // Rule 16 — nplurals=4; one/two/few/other (Scottish Gaelic)
+            // CLDR: one = n=1,11; two = n=2,12; few = n=3..10,13..19; other = rest
+            // Locales: gd
             16 => match (true) {
                 in_array($n, [1, 11], true) => 0,
                 in_array($n, [2, 12], true) => 1,
                 $n > 2 && $n < 20 => 2,
                 default => 3,
             },
-            // nplurals=5; (Breton - CLDR 48)
+
+            // Rule 17 — nplurals=5; one/two/few/many/other (Breton)
+            // CLDR: one = n%10=1 and n%100 not in 11,71,91; two = n%10=2 and n%100 not in 12,72,92;
+            //        few = n%10 in 3,4,9 and n%100 not in 10..19,70..79,90..99; many = n!=0 and n%1M=0
+            // Locales: br
             17 => self::calculateBreton($n),
-            // nplurals=5; (Manx — CLDR 49: "many" at index 3 is for decimals v!=0, unreachable for int)
+
+            // Rule 18 — nplurals=5; one/two/few/many/other (Manx)
+            // CLDR: one = v=0 and i%10=1; two = v=0 and i%10=2;
+            //        few = v=0 and i%100 in 0,20,40,60,80; many = v!=0 (decimals only); other = rest
+            // For integers: "many" (index 3) is unreachable; skip to "other" (index 4).
+            // Locales: gv
             18 => match (true) {
                 $n % 10 === 1 => 0,
                 $n % 10 === 2 => 1,
                 $n % 20 === 0 => 2,
                 default => 4,   // index 4 = "other" (index 3 = "many" is decimal-only)
             },
-            // nplurals=3; (Hebrew — CLDR 49: one/two/other, removed "many")
+
+            // Rule 19 — nplurals=3; one/two/other (Hebrew)
+            // CLDR: one = i=1 and v=0 or i=0 and v!=0; two = i=2 and v=0; other = rest
+            // For integers: n=1 → one; n=2 → two; else other
+            // Locales: he
             19 => match (true) {
                 $n === 1 => 0,
                 $n === 2 => 1,
                 default => 2,
             },
-            // nplurals=3; (Italian, Spanish, Portuguese, French - CLDR 49)
-            // one: i = 1 and v = 0
-            // many: e = 0 and i != 0 and i % 1000000 = 0 and v = 0
-            // other: everything else
+
+            // Rule 20 — nplurals=3; one/many/other (Italian, Spanish, Catalan)
+            // CLDR: one = i=1 and v=0 (or n=1 for es); many = i!=0 and i%1000000=0 and v=0; other = rest
+            // Locales: ca, cav, es, it, lld, pt_pt, scn, vec
             20 => match (true) {
                 $n === 1 => 0,
                 $n !== 0 && $n % 1000000 === 0 => 1,
                 default => 2,
             },
-            // nplurals=3; (Inuktitut, Sami, Nama, Swampy Cree - one/two/other)
+
+            // Rule 21 — nplurals=3; one/two/other (Inuktitut, Sami, Nama, Swampy Cree)
+            // CLDR: one = n=1; two = n=2; other = rest
+            // Locales: iu, naq, sat, se, sma, smj, smn, sms
             21 => match ($n) { // @codeCoverageIgnore
                 1 => 0,
                 2 => 1,
                 default => 2,
             }, // @codeCoverageIgnore
-            // nplurals=3; (Colognian, Anii, Langi - zero/one/other)
+
+            // Rule 22 — nplurals=3; zero/one/other (Colognian, Anii, Langi)
+            // CLDR: zero = n=0; one = n=1 (or i=0,1 and n!=0 for lag); other = rest
+            // For integers: n=0 → zero; n=1 → one; else other
+            // Locales: blo, ksh, lag
             22 => match ($n) { // @codeCoverageIgnore
                 0 => 0,
                 1 => 1,
                 default => 2,
             }, // @codeCoverageIgnore
-            // nplurals=3; (Tachelhit - one/few/other)
+
+            // Rule 23 — nplurals=3; one/few/other (Tachelhit)
+            // CLDR: one = i=0 or n=1; few = n=2..10; other = rest
+            // For integers: n<=1 → one; n in 2..10 → few; else other
+            // Locales: shi
             23 => match (true) {
                 $n <= 1 => 0,
                 $n <= 10 => 1,
                 default => 2,
             },
-            // nplurals=6; (Cornish)
+
+            // Rule 24 — nplurals=6; zero/one/two/few/many/other (Cornish)
+            // CLDR: complex rules for n%100 and n%1000000
+            // Locales: kw
             24 => self::calculateCornish($n),
-            // nplurals=2; (Filipino, Tagalog - CLDR 49)
-            // one: v = 0 and i = 1,2,3 or v = 0 and i % 10 != 4,6,9 or v != 0 and f % 10 != 4,6,9
-            // For integers: "other" when n ends in 4, 6, or 9; "one" otherwise
+
+            // Rule 25 — nplurals=2; one/other (Filipino, Tagalog)
+            // CLDR: one = v=0 and i=1,2,3 or v=0 and i%10!=4,6,9 or v!=0 and f%10!=4,6,9
+            // For integers (v=0): "other" when n%10 in {4,6,9}; "one" otherwise
+            // Locales: fil, tl
             25 => in_array($n % 10, [4, 6, 9], true) ? 1 : 0,
-            // nplurals=2; (Central Atlas Tamazight - CLDR 49)
-            // one: n = 0..1 or n = 11..99
+
+            // Rule 26 — nplurals=2; one/other (Central Atlas Tamazight)
+            // CLDR: one = n=0..1 or n=11..99; other = rest
+            // Locales: tzm
             26 => ($n <= 1 || ($n >= 11 && $n <= 99)) ? 0 : 1,
-            // nplurals=5; (Maltese — CLDR 49: one/two/few/many/other)
+
+            // Rule 28 — nplurals=5; one/two/few/many/other (Maltese)
+            // CLDR: one = n=1; two = n=2; few = n=0 or n%100=3..10; many = n%100=11..19; other = rest
+            // Locales: mt
             28 => match (true) {
                 $n === 1 => 0,
                 $n === 2 => 1,
-                $n === 0 || ($n % 100 >= 2 && $n % 100 <= 10) => 2,
-                $n % 100 > 10 && $n % 100 < 20 => 3,
+                $n === 0 || ($n % 100 >= 3 && $n % 100 <= 10) => 2,
+                $n % 100 >= 11 && $n % 100 <= 19 => 3,
                 default => 4,
             },
-            // nplurals=2; plural=(n != 1); (Germanic, most European)
-            // Fallback: Rule 1 (n != 1) is the most common CLDR cardinal rule,
-            // covering ~170+ locales (Germanic, most European languages).
+
+            // Rule 29 — nplurals=3; one/many/other (French, Portuguese)
+            // CLDR: one = i=0,1 (or i=0..1); many = i!=0 and i%1000000=0 and v=0; other = rest
+            // Differs from Rule 20: n=0 is "one" here (not "other")
+            // Locales: fr, ht, pt
+            29 => match (true) {
+                $n <= 1 => 0,
+                $n % 1000000 === 0 => 1,
+                default => 2,
+            },
+
+            // Default — Rule 1 — nplurals=2; plural=(n != 1)
+            // CLDR: one = n=1 (or i=1 and v=0, or n=1 or t!=0 and i=0,1 — all reduce to n=1 for integers)
+            // Fallback for ~222 locales (Germanic, most European languages).
+            // Locales: aa, af, aig, als, an, as, asa, asm, ast, awa, az, azb, azj, bah, bal, bem,
+            //   bez, bg, bho, bjs, bn, brx, cac, cb, ce, ceb, cgg, chr, cjk, ckb, cop, ctg, da, de,
+            //   dik, diq, div, doi, dv, ee, el, en, eo, et, eu, fi, fo, fuc, fur, fuv, fy, gax, gaz,
+            //   gl, glw, gn, grc, grt, gsw, gu, guz, gyn, ha, haw, hig, hil, hne, hoc, hu, ia, ilo,
+            //   io, jam, jgo, ji, jmc, ka, kaj, kal, kam, kas, kcg, kg, kha, khk, ki, kjb, kk, kkj,
+            //   kl, kln, kmb, kmr, kn, knc, kok, ks, ksb, ku, ky, la, lb, lg, li, lij, lmo, lua, lug,
+            //   luo, lus, luy, mag, mai, mam, mas, men, mer, mfi, mfv, mgo, mhr, ml, mn, mni, mnk,
+            //   mr, mrj, mrt, nb, nd, ndc, ne, nl, nn, nnh, no, nr, nup, nus, ny, nyf, nyn, om, or,
+            //   ory, os, pa, pag, pap, pbt, pi, pko, pot, pov, ps, qnt, qu, quc, quy, rhg, rhl, rm,
+            //   rmo, rn, rof, roh, run, rw, rwk, sa, saq, sc, sd, sdh, seh, sn, sna, snk, so, sq,
+            //   srn, ss, ssy, st, sv, svc, sw, syc, syr, ta, te, teo, tet, tig, tiv, tk, tn, tr, ts,
+            //   tsc, tum, udm, ug, umb, ur, uz, uzn, ve, vic, vls, vmw, vo, vun, wae, war, xh, xog,
+            //   ydd, yi, ymm, zdj, zu
             default => $n === 1 ? 0 : 1,
         };
     }

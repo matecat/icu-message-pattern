@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
  *
  * - Rule 0: Languages with no plural forms (Asian languages like Japanese, Chinese, Korean)
  * - Rule 1: Languages with 2 forms using n != 1 (English, German, Spanish, etc.)
- * - Rule 2: Languages with 2 forms using n > 1 (French, Brazilian Portuguese)
+ * - Rule 2: Languages with 2 forms using n > 1 (Amharic, Persian, Hindi, Fulah, Armenian, Sinhala)
  * - Rule 3: Slavic languages with 3 forms (Russian, Ukrainian, Serbian, Croatian)
  * - Rule 4: Czech and Slovak with 3 forms
  * - Rule 5: Irish with 5 forms
@@ -26,7 +26,7 @@ use PHPUnit\Framework\TestCase;
  * - Rule 7: Slovenian with 4 forms
  * - Rule 8: Macedonian with 2 forms (CLDR 48)
  * - Rule 9: Maltese with 4 forms
- * - Rule 10: Latvian with 3 forms (CLDR 48: zero/one/other)
+ * - Rule 10: Latvian with 3 forms (CLDR 49: zero/one/other)
  * - Rule 11: Polish with 3 forms
  * - Rule 12: Romanian with 3 forms
  * - Rule 13: Arabic with 6 forms
@@ -36,6 +36,8 @@ use PHPUnit\Framework\TestCase;
  * - Rule 17: Breton with 5 forms (CLDR 48)
  * - Rule 18: Manx with 4 forms (CLDR 48)
  * - Rule 19: Hebrew with 4 forms (CLDR 48)
+ * - Rule 20: Italian, Spanish, Catalan with 3 forms (CLDR 49: one = n=1)
+ * - Rule 29: French, Portuguese with 3 forms (CLDR 49: one = n<=1)
  * - Locale fallback mechanism (handling locale variants like en-US, fr_FR)
  * - Unknown locale handling
  */
@@ -218,6 +220,18 @@ final class PluralRulesTest extends TestCase
             ['ln', 0, 0],
             ['ln', 1, 0],
             ['ln', 2, 1],
+            // Fulah (CLDR: one = i = 0,1)
+            ['ff', 0, 0],
+            ['ff', 1, 0],
+            ['ff', 2, 1],
+            // Armenian (CLDR: one = i = 0,1)
+            ['hy', 0, 0],
+            ['hy', 1, 0],
+            ['hy', 2, 1],
+            // Sinhala (CLDR: one = n = 0,1 or i = 0 and f = 1)
+            ['si', 0, 0],
+            ['si', 1, 0],
+            ['si', 2, 1],
         ];
     }
 
@@ -365,6 +379,7 @@ final class PluralRulesTest extends TestCase
     {
         return [
             // Irish
+            ['ga', 0, 4],   // other (n=0 is not in any specific range)
             ['ga', 1, 0],   // one
             ['ga', 2, 1],   // two
             ['ga', 3, 2],   // few (3-6)
@@ -545,7 +560,8 @@ final class PluralRulesTest extends TestCase
             ['mt', 21, 4],  // other
             ['mt', 100, 4], // other
             ['mt', 101, 4], // other
-            ['mt', 102, 2], // few
+            ['mt', 102, 4], // other (n%100=2 is NOT in 3..10)
+            ['mt', 103, 2], // few (n%100=3, in 3..10)
             ['mt', 111, 3], // many
         ];
     }
@@ -576,17 +592,22 @@ final class PluralRulesTest extends TestCase
     public static function rule10Provider(): array
     {
         return [
-            // CLDR 48: zero = n = 0; one = n % 10 = 1 and n % 100 != 11; other = everything else
-            ['lv', 0, 0],   // zero (n == 0)
+            // CLDR 49: zero = n%10=0 or n%100=11..19; one = n%10=1 and n%100!=11; other = rest
+            ['lv', 0, 0],   // zero (n%10 == 0)
             ['lv', 1, 1],   // one (n%10 == 1, n%100 != 11)
             ['lv', 2, 2],   // other
-            ['lv', 10, 2],  // other
-            ['lv', 11, 2],  // other (special case: n%100 == 11)
-            ['lv', 21, 1],  // one
+            ['lv', 10, 0],  // zero (n%10 == 0)
+            ['lv', 11, 0],  // zero (n%100 == 11, in 11..19)
+            ['lv', 12, 0],  // zero (n%100 == 12, in 11..19)
+            ['lv', 19, 0],  // zero (n%100 == 19, in 11..19)
+            ['lv', 20, 0],  // zero (n%10 == 0)
+            ['lv', 21, 1],  // one (n%10 == 1, n%100 == 21)
+            ['lv', 30, 0],  // zero (n%10 == 0)
             ['lv', 31, 1],  // one
-            ['lv', 100, 2], // other
-            ['lv', 101, 1], // one
-            ['lv', 111, 2], // other (special case: n%100 == 11)
+            ['lv', 100, 0], // zero (n%10 == 0)
+            ['lv', 101, 1], // one (n%10 == 1, n%100 == 1)
+            ['lv', 111, 0], // zero (n%100 == 11, in 11..19)
+            ['lv', 112, 0], // zero (n%100 == 12, in 11..19)
         ];
     }
 
@@ -1023,12 +1044,12 @@ final class PluralRulesTest extends TestCase
     }
 
     // =========================================================================
-    // Rule 20: Italian, Spanish, French, Portuguese, Catalan (nplurals=3 - CLDR 49)
+    // Rule 20: Italian, Spanish, Catalan (nplurals=3 - CLDR 49: one = i = 1)
     // Category order: one, many, other
     // =========================================================================
 
     /**
-     * Tests Rule 20: Italian, Spanish, French, Portuguese, Catalan with 3 forms (CLDR 49).
+     * Tests Rule 20: Italian, Spanish, Catalan with 3 forms (CLDR 49: one = n=1).
      *
      * @param string $locale   The locale code.
      * @param int    $n        The number to test.
@@ -1048,8 +1069,8 @@ final class PluralRulesTest extends TestCase
     public static function rule20Provider(): array
     {
         return [
-            // CLDR 49 rules for Italian, Spanish, French, Portuguese, Catalan:
-            // one: i = 1 and v = 0
+            // CLDR 49 rules for Italian, Spanish, Catalan:
+            // one: i = 1 and v = 0 (or n = 1 for es)
             // many: e = 0 and i != 0 and i % 1000000 = 0 and v = 0
             // other: everything else
 
@@ -1072,23 +1093,67 @@ final class PluralRulesTest extends TestCase
             ['es', 2, 2],         // other
             ['es', 1000000, 1],   // many
 
-            // French
-            ['fr', 1, 0],         // one
-            ['fr', 0, 2],         // other
-            ['fr', 2, 2],         // other
-            ['fr', 1000000, 1],   // many
-
-            // Portuguese
-            ['pt', 1, 0],         // one
-            ['pt', 0, 2],         // other
-            ['pt', 2, 2],         // other
-            ['pt', 1000000, 1],   // many
-
             // Catalan
             ['ca', 1, 0],         // one
             ['ca', 0, 2],         // other
             ['ca', 2, 2],         // other
             ['ca', 1000000, 1],   // many
+        ];
+    }
+
+    // =========================================================================
+    // Rule 29: French, Portuguese (nplurals=3 - CLDR 49: one = i = 0,1)
+    // Category order: one, many, other
+    // Differs from Rule 20: n=0 is "one" (not "other")
+    // =========================================================================
+
+    /**
+     * Tests Rule 29: French, Portuguese with 3 forms (CLDR 49: one = n<=1).
+     *
+     * @param string $locale   The locale code.
+     * @param int    $n        The number to test.
+     * @param int    $expected The expected plural form index.
+     *
+     * @return void
+     */
+    #[DataProvider('rule29Provider')]
+    public function testRule29FrenchPortuguese(string $locale, int $n, int $expected): void
+    {
+        self::assertSame($expected, PluralRules::getCardinalFormIndex($locale, $n));
+    }
+
+    /**
+     * @return array<array<string|int>>
+     */
+    public static function rule29Provider(): array
+    {
+        return [
+            // CLDR 49 rules for French, Portuguese:
+            // one: i = 0,1 (or i = 0..1) — n=0 and n=1 are "one"
+            // many: e = 0 and i != 0 and i % 1000000 = 0 and v = 0
+            // other: everything else
+
+            // French
+            ['fr', 0, 0],         // one (n <= 1)
+            ['fr', 1, 0],         // one
+            ['fr', 2, 2],         // other
+            ['fr', 5, 2],         // other
+            ['fr', 100, 2],       // other
+            ['fr', 1000000, 1],   // many (1 million)
+            ['fr', 2000000, 1],   // many
+            ['fr', 1000001, 2],   // other
+
+            // Portuguese
+            ['pt', 0, 0],         // one (n <= 1)
+            ['pt', 1, 0],         // one
+            ['pt', 2, 2],         // other
+            ['pt', 1000000, 1],   // many
+
+            // Haitian Creole (follows French)
+            ['ht', 0, 0],         // one
+            ['ht', 1, 0],         // one
+            ['ht', 2, 2],         // other
+            ['ht', 1000000, 1],   // many
         ];
     }
 
@@ -1102,8 +1167,8 @@ final class PluralRulesTest extends TestCase
         self::assertSame(0, PluralRules::getCardinalFormIndex('en-US', 1));
         self::assertSame(1, PluralRules::getCardinalFormIndex('en-US', 2));
 
-        // Should extract 'fr' from 'fr-CA' and use French rules (CLDR 49: one/many/other)
-        self::assertSame(2, PluralRules::getCardinalFormIndex('fr-CA', 0));  // other
+        // Should extract 'fr' from 'fr-CA' and use French rules (CLDR 49: one/many/other, Rule 29)
+        self::assertSame(0, PluralRules::getCardinalFormIndex('fr-CA', 0));  // one (n <= 1)
         self::assertSame(0, PluralRules::getCardinalFormIndex('fr-CA', 1));  // one
         self::assertSame(2, PluralRules::getCardinalFormIndex('fr-CA', 2));  // other
 
@@ -1181,7 +1246,7 @@ final class PluralRulesTest extends TestCase
     {
         // Different languages handle zero differently
         self::assertSame(1, PluralRules::getCardinalFormIndex('en', 0));  // "0 items" (plural)
-        self::assertSame(2, PluralRules::getCardinalFormIndex('fr', 0));  // "0 éléments" (other in French - CLDR 49)
+        self::assertSame(0, PluralRules::getCardinalFormIndex('fr', 0));  // "0 élément" (one in French - CLDR 49: Rule 29)
         self::assertSame(0, PluralRules::getCardinalFormIndex('ar', 0));  // "zero" form
         self::assertSame(0, PluralRules::getCardinalFormIndex('ja', 0));  // no plural
     }
@@ -1246,12 +1311,12 @@ final class PluralRulesTest extends TestCase
 
     public function testEnglishVsFrench(): void
     {
-        // French (CLDR 49): Rule 20 - one (n=1), many (n=millions), other (everything else)
+        // French (CLDR 49): Rule 29 - one (n<=1), many (n=millions), other (everything else)
         // English: Rule 1 - one (n=1), other (n!=1)
 
-        // Zero: English=other(1), French=other(2)
+        // Zero: English=other(1), French=one(0)
         self::assertSame(1, PluralRules::getCardinalFormIndex('en', 0));
-        self::assertSame(2, PluralRules::getCardinalFormIndex('fr', 0));
+        self::assertSame(0, PluralRules::getCardinalFormIndex('fr', 0));
 
         // Both treat 1 as 'one' (index 0)
         self::assertSame(0, PluralRules::getCardinalFormIndex('en', 1));
@@ -1295,11 +1360,12 @@ final class PluralRulesTest extends TestCase
             ['de', 1, PluralRules::CATEGORY_ONE],
             ['de', 5, PluralRules::CATEGORY_OTHER],
 
-            // Rule 20: Three forms (one, many, other) - CLDR 49
-            ['fr', 0, PluralRules::CATEGORY_OTHER],
+            // Rule 29: Three forms (one, many, other) - CLDR 49 (French, Portuguese: one = n <= 1)
+            ['fr', 0, PluralRules::CATEGORY_ONE],
             ['fr', 1, PluralRules::CATEGORY_ONE],
             ['fr', 2, PluralRules::CATEGORY_OTHER],
             ['fr', 1000000, PluralRules::CATEGORY_MANY],
+            ['pt', 0, PluralRules::CATEGORY_ONE],
             ['pt', 1, PluralRules::CATEGORY_ONE],
             ['pt', 2, PluralRules::CATEGORY_OTHER],
             ['pt', 1000000, PluralRules::CATEGORY_MANY],
@@ -1364,12 +1430,13 @@ final class PluralRulesTest extends TestCase
             ['mt', 19, PluralRules::CATEGORY_MANY],
             ['mt', 20, PluralRules::CATEGORY_OTHER],
 
-            // Rule 10: Latvian - "zero", "one", "other" (CLDR 48)
+            // Rule 10: Latvian - "zero", "one", "other" (CLDR 49: zero = n%10=0 or n%100=11..19)
             ['lv', 0, PluralRules::CATEGORY_ZERO],
             ['lv', 1, PluralRules::CATEGORY_ONE],
             ['lv', 21, PluralRules::CATEGORY_ONE],
             ['lv', 2, PluralRules::CATEGORY_OTHER],
-            ['lv', 11, PluralRules::CATEGORY_OTHER],
+            ['lv', 10, PluralRules::CATEGORY_ZERO],
+            ['lv', 11, PluralRules::CATEGORY_ZERO],
 
             // Rule 11: Polish - "one", "few", "many"
             ['pl', 1, PluralRules::CATEGORY_ONE],
@@ -1604,9 +1671,9 @@ final class PluralRulesTest extends TestCase
         self::assertSame(PluralRules::CATEGORY_ONE, PluralRules::getCardinalCategoryName('en_US', 1));
         self::assertSame(PluralRules::CATEGORY_OTHER, PluralRules::getCardinalCategoryName('en_US', 2));
         self::assertSame(
-            PluralRules::CATEGORY_OTHER,
+            PluralRules::CATEGORY_ONE,
             PluralRules::getCardinalCategoryName('fr_FR', 0)
-        );  // CLDR 49: 0 is 'other'
+        );  // CLDR 49 Rule 29: 0 is 'one'
         self::assertSame(PluralRules::CATEGORY_OTHER, PluralRules::getCardinalCategoryName('fr_FR', 2));
 
         // Test with hyphen separator
@@ -3832,14 +3899,14 @@ final class PluralRulesTest extends TestCase
     }
 
     // =========================================================================
-    // Haitian Creole (ht) fix: cardinal 20, ordinal 2 (CLDR 49)
+    // Haitian Creole (ht) fix: cardinal 29 (follows French), ordinal 2 (CLDR 49)
     // =========================================================================
 
     public function testHaitianCreoleCLDR49(): void
     {
-        // Cardinal rule 20: one/many/other
+        // Cardinal rule 29: one/many/other (one = n <= 1)
         self::assertSame(0, PluralRules::getCardinalFormIndex('ht', 1));  // one
-        self::assertSame(2, PluralRules::getCardinalFormIndex('ht', 0));  // other
+        self::assertSame(0, PluralRules::getCardinalFormIndex('ht', 0));  // one (n <= 1)
         self::assertSame(2, PluralRules::getCardinalFormIndex('ht', 2));  // other
         self::assertSame(2, PluralRules::getCardinalFormIndex('ht', 5));  // other
         self::assertSame(1, PluralRules::getCardinalFormIndex('ht', 1000000)); // many
