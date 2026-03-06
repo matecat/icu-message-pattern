@@ -21,4 +21,5 @@
 
 /BENCHMARKS.md export-ignore
 /scripts export-ignore
-
+/benchmarks export-ignore
+quodana.yml export-ignore
