@@ -39,7 +39,7 @@ class LanguageDomains
         // SDL supported language codes
         // http://kb.sdl.com/kb/?ArticleId=2993&source=Article&c=12&cid=23#tab:homeTab:crumb:7:artId:4878
 
-        $file = __DIR__ . '/languageDomains.json';
+        $file = __DIR__ . '/../resources/languageDomains.json';
 
         $string = file_get_contents($file);
         // @codeCoverageIgnoreStart

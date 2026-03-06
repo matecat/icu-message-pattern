@@ -179,12 +179,16 @@ final class PluralRulesTest extends TestCase
             ['uz', 0, 1],
             ['uz', 1, 0],
             ['uz', 2, 1],
+            // Occitan (one = i = 1 and v = 0)
+            ['oc', 0, 1],
+            ['oc', 1, 0],
+            ['oc', 2, 1],
         ];
     }
 
     // =========================================================================
     // Rule 2: Two forms, singular for n=0 or n=1 (nplurals=2; plural=(n > 1))
-    // Languages: French, Brazilian Portuguese, Occitan, etc.
+    // Languages: Amharic, Persian, Hindi, Fulah, Armenian, Sinhala, etc.
     // =========================================================================
 
     /**
@@ -208,10 +212,6 @@ final class PluralRulesTest extends TestCase
     public static function rule2Provider(): array
     {
         return [
-            // Occitan
-            ['oc', 0, 0],
-            ['oc', 1, 0],
-            ['oc', 2, 1],
             // Tigrinya
             ['ti', 0, 0],
             ['ti', 1, 0],
@@ -1761,11 +1761,11 @@ final class PluralRulesTest extends TestCase
             ['fi', 2],
             ['et', 2],
             ['bg', 2],
+            ['oc', 2],
 
             // Rule 2: Two forms (nplurals=2)
             ['fil', 2],
             ['tr', 2],
-            ['oc', 2],
             ['ti', 2],
             ['ln', 2],
 

@@ -24,7 +24,6 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Matecat\ICU\Plurals\PluralRules;
 use Matecat\Locales\Languages;
-use Matecat\Locales\PluralRulesBuilder;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Constants
@@ -48,8 +47,8 @@ const LEGACY_CODE_MAP = [
 ];
 
 $sourcesDir    = __DIR__ . '/cldr_sources';
-$cldrJsonPath  = $sourcesDir . '/cldr49_plural_rules.json';
-$overridesPath = __DIR__ . '/../src/Locales/pluralRulesOverrides.json';
+$cldrJsonPath  = __DIR__ . '/../src/resources/build/cldr49_plural_rules.json';
+$overridesPath = __DIR__ . '/../src/resources/build/pluralRulesOverrides.json';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helper functions
@@ -389,12 +388,14 @@ echo "  ✓ All languages match CLDR!\n";
 
 section(4, 'Generate pluralRulesOverrides.json');
 
-$builderRef         = new ReflectionClass(PluralRulesBuilder::class);
-$cardinalHumanRules = $builderRef->getConstant('CARDINAL_HUMAN_RULES');
-$ordinalHumanRules  = $builderRef->getConstant('ORDINAL_HUMAN_RULES');
+// Load human-rule lookup tables (CLDR rule expression → human-readable description)
+$cardinalHumanLookup = readJson(__DIR__ . '/../src/resources/build/cardinal_rules_human.json');
+$ordinalHumanLookup  = readJson(__DIR__ . '/../src/resources/build/ordinal_rules_human.json');
+
+// Load the parent map for non-CLDR locales
+$parentMap = readJson(__DIR__ . '/../src/resources/build/nonCldrParentMap.json');
 
 // Load existing overrides to preserve human_rule customizations
-// (CLDR has no human_rule — those are our own enrichment)
 $existingOverrides = readJson($overridesPath);
 
 // Get all enabled languages
@@ -413,20 +414,22 @@ $newOverrides = [];
 $stats = ['kept' => 0, 'removed' => 0];
 
 foreach (array_keys($processedIsos) as $isoCode) {
-    $cldrLang         = $cldrResult[$isoCode] ?? null;
-    $existingLangOvr  = $existingOverrides[$isoCode] ?? [];
-    $langOverrides    = [];
+    // Resolve CLDR data: direct match → parent map fallback → null
+    $cldrLang = $cldrResult[$isoCode] ?? null;
+    if ($cldrLang === null && isset($parentMap[$isoCode], $cldrResult[$parentMap[$isoCode]])) {
+        $cldrLang = $cldrResult[$parentMap[$isoCode]];
+    }
+
+    $existingLangOvr = $existingOverrides[$isoCode] ?? [];
+    $langOverrides   = [];
 
     foreach (['cardinal', 'ordinal'] as $type) {
-        $ruleGroup  = PluralRules::getRuleGroup($isoCode, $type);
-        $defaults   = ($type === 'cardinal')
-            ? ($cardinalHumanRules[$ruleGroup] ?? [])
-            : ($ordinalHumanRules[$ruleGroup] ?? []);
         $categories = ($type === 'cardinal')
             ? PluralRules::getCardinalCategories($isoCode)
             : PluralRules::getOrdinalCategories($isoCode);
+        $humanLookup = ($type === 'cardinal') ? $cardinalHumanLookup : $ordinalHumanLookup;
 
-        // Build CLDR category → minimal_pair map
+        // Build CLDR category → entry map
         $cldrByCategory = [];
         if ($cldrLang !== null) {
             foreach ($cldrLang[$type] ?? [] as $cldrEntry) {
@@ -434,16 +437,26 @@ foreach (array_keys($processedIsos) as $isoCode) {
             }
         }
 
-        $typeOverrides = [];
+        $isSingleForm  = count($categories) === 1;
+        $typeOverrides  = [];
 
-        foreach ($categories as $index => $category) {
-            $defaultHumanRule = $defaults[$index]['human_rule'] ?? 'Any other number';
-            $defaultExample   = $defaults[$index]['example']    ?? '';
+        foreach ($categories as $category) {
+            $cldrEntry = $cldrByCategory[$category] ?? null;
+
+            // Compute what PluralRulesBuilder would produce as defaults:
+            // - rule: from CLDR, or empty
+            // - human_rule: from lookup table applied to the rule, or generic fallback
+            // - example: from CLDR integer_examples, or empty
+            $defaultRule      = $cldrEntry['rule'] ?? '';
+            $defaultHumanRule = ($isSingleForm && $defaultRule === '')
+                ? 'Any number'
+                : ($humanLookup[$defaultRule] ?? 'Any other number');
+            $defaultExample   = $cldrEntry['integer_examples'] ?? '';
 
             $overrideHumanRule = null;
             $overrideExample   = null;
 
-            // Preserve existing human_rule override if it differs from default
+            // Preserve existing human_rule override if it differs from the default
             if (isset($existingLangOvr[$type][$category]['human_rule'])) {
                 $candidate = $existingLangOvr[$type][$category]['human_rule'];
                 if ($candidate !== $defaultHumanRule) {
@@ -451,7 +464,7 @@ foreach (array_keys($processedIsos) as $isoCode) {
                 }
             }
 
-            // Preserve existing example override if it differs from default
+            // Preserve existing example override if it differs from the default
             if (isset($existingLangOvr[$type][$category]['example'])) {
                 $candidate = $existingLangOvr[$type][$category]['example'];
                 if ($candidate !== $defaultExample) {
@@ -460,6 +473,7 @@ foreach (array_keys($processedIsos) as $isoCode) {
             }
 
             // If no existing example override, try CLDR minimal_pair
+            // (localized example sentence that differs from generic integer examples)
             if ($overrideExample === null && isset($cldrByCategory[$category])) {
                 $minimalPair = $cldrByCategory[$category]['minimal_pair'] ?? '';
                 if ($minimalPair !== '' && $minimalPair !== $defaultExample) {

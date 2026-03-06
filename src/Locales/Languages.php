@@ -58,7 +58,7 @@ class Languages
      */
     private function loadLanguageDefinitions(): array
     {
-        $file = __DIR__ . '/supported_langs.json';
+        $file = __DIR__ . '/../resources/supported_langs.json';
         // @codeCoverageIgnoreStart
         if (!file_exists($file)) {
             throw new RuntimeException("no language defs found in $file");

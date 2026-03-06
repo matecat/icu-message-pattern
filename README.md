@@ -827,8 +827,18 @@ src/ICU/
 src/Locales/
 ├── Languages.php                   # Language data and validation
 ├── LanguageDomains.php             # Domain-specific language groupings
-├── supported_langs.json            # Language data
-└── languageDomains.json            # Domain data
+└── PluralRulesBuilder.php          # Builds pluralRules.json from CLDR data
+
+src/resources/
+├── supported_langs.json            # Language data (runtime)
+├── languageDomains.json            # Domain data (runtime)
+├── pluralRules.json                # Built plural rules output (runtime)
+└── build/                          # Build-time inputs (not needed at runtime)
+    ├── cldr49_plural_rules.json    # CLDR 49 plural rules (source of truth)
+    ├── cardinal_rules_human.json   # Cardinal rule → human description lookup
+    ├── ordinal_rules_human.json    # Ordinal rule → human description lookup
+    ├── nonCldrParentMap.json       # Non-CLDR locale → parent locale mapping
+    └── pluralRulesOverrides.json   # Per-language overrides
 ```
 
 ## License

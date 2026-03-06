@@ -45,19 +45,57 @@ class PluralRulesBuilder
     private static ?self $instance = null;
 
     /**
+     * Base directory for runtime JSON resource files.
+     */
+    private const string RESOURCES_DIR = __DIR__ . '/../resources';
+
+    /**
+     * Base directory for build-time JSON inputs (CLDR data, lookups, overrides).
+     */
+    private const string BUILD_DIR = self::RESOURCES_DIR . '/build';
+
+    /**
      * The default file path for the cached pluralRules.json.
      */
-    private const string DEFAULT_FILE_PATH = __DIR__ . '/pluralRules.json';
+    private const string DEFAULT_FILE_PATH = self::RESOURCES_DIR . '/pluralRules.json';
 
     /**
      * The file path for per-language overrides of example strings.
      *
-     * This file contains only the deltas: example fields that differ from the
-     * rule-group defaults in CARDINAL_HUMAN_RULES / ORDINAL_HUMAN_RULES.
+     * This file contains only the deltas: human_rule and example fields that differ
+     * from the CLDR defaults resolved via the lookup tables.
      * Overrides are keyed by category name (e.g. "one", "other") rather
      * than positional index, making them resilient to category reordering.
      */
-    private const string OVERRIDES_FILE_PATH = __DIR__ . '/pluralRulesOverrides.json';
+    private const string OVERRIDES_FILE_PATH = self::BUILD_DIR . '/pluralRulesOverrides.json';
+
+    /**
+     * The CLDR 49 per-locale plural rules (source of truth for rule expressions,
+     * human-readable descriptions, and examples).
+     *
+     * Used at build time to resolve the exact CLDR rule text, integer examples,
+     * and — via the human-rule lookup tables — human-readable descriptions.
+     */
+    private const string CLDR_RULES_FILE_PATH = self::BUILD_DIR . '/cldr49_plural_rules.json';
+
+    /**
+     * Lookup table: CLDR cardinal rule expression → human-readable description.
+     */
+    private const string CARDINAL_HUMAN_LOOKUP_PATH = self::BUILD_DIR . '/cardinal_rules_human.json';
+
+    /**
+     * Lookup table: CLDR ordinal rule expression → human-readable description.
+     */
+    private const string ORDINAL_HUMAN_LOOKUP_PATH = self::BUILD_DIR . '/ordinal_rules_human.json';
+
+    /**
+     * Parent-locale mapping for locales not in CLDR.
+     *
+     * Maps child locale codes to their closest CLDR parent (e.g. "acf" → "fr").
+     * Used to inherit CLDR rule text, human-readable descriptions, and examples
+     * from the parent when the child has no direct CLDR entry.
+     */
+    private const string PARENT_MAP_FILE_PATH = self::BUILD_DIR . '/nonCldrParentMap.json';
 
     // ─── Array key constants ─────────────────────────────────────────────
     private const string K_RULE       = 'rule';
@@ -66,57 +104,11 @@ class PluralRulesBuilder
     private const string K_CARDINAL   = 'cardinal';
     private const string K_ORDINAL    = 'ordinal';
 
-    // ─── Rule string constants ───────────────────────────────────────────
-    private const string R_EMPTY                     = '';
-    private const string R_N_EQ_0                    = 'n = 0';
-    private const string R_N_EQ_1                    = 'n = 1';
-    private const string R_N_EQ_2                    = 'n = 2';
-    private const string R_N_EQ_4                    = 'n = 4';
-    private const string R_N_EQ_6                    = 'n = 6';
-    private const string R_N_EQ_2_3                  = 'n = 2, 3';
-    private const string R_N_EQ_1_5                  = 'n = 1, 5';
-    private const string R_I_EQ_0                    = 'i = 0';
-    private const string R_I_EQ_1                    = 'i = 1';
-    private const string R_I1_V0                     = 'i = 1 and v = 0';
-    private const string R_V_NE_0                    = 'v != 0';
-    private const string R_ENDS_1_NOT_11             = 'n % 10 = 1 and n % 100 != 11';
-    private const string R_ENDS_2_NOT_12             = 'n % 10 = 2 and n % 100 != 12';
-
-    // ─── Human rule string constants ─────────────────────────────────────
-    private const string H_ANY_NUMBER                = 'Any number';
-    private const string H_ANY_OTHER                 = 'Any other number';
-    private const string H_EXACTLY_0                 = 'Exactly 0';
-    private const string H_EXACTLY_1                 = 'Exactly 1';
-    private const string H_EXACTLY_1_NO_DEC          = 'Exactly 1 (whole number only)';
-    private const string H_EXACTLY_2                 = 'Exactly 2';
-    private const string H_EXACTLY_4                 = 'Exactly 4';
-    private const string H_EXACTLY_6                 = 'Exactly 6';
-    private const string H_EXACTLY_2_OR_3            = 'Exactly 2 or 3';
-    private const string H_ENDS_1_EXCEPT_11          = 'Ends in 1 but not 11';
-    private const string H_ENDS_2_EXCEPT_12          = 'Ends in 2 but not 12';
-    private const string H_DECIMAL_ONLY              = 'Any number with decimals';
-
-    // ─── Example string constants ────────────────────────────────────────
-    private const string E_EMPTY                     = '';
-    private const string E_ALL_NUMBERS               = '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …';
-    private const string E_ALL_NUMBERS_LONG          = '0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 100, 1000, …';
-    private const string E_0                         = '0';
-    private const string E_1                         = '1';
-    private const string E_2                         = '2';
-    private const string E_3                         = '3';
-    private const string E_4                         = '4';
-    private const string E_6                         = '6';
-    private const string E_0_1                       = '0, 1';
-    private const string E_1_5                       = '1, 5';
-    private const string E_2_3                       = '2, 3';
-    private const string E_ENDS_1_SHORT              = '1, 21, 31, 41, 51, …';
-    private const string E_ENDS_1_LONG               = '1, 21, 31, 41, 51, 61, 71, 81, 101, …';
-    private const string E_ENDS_2_4                  = '2~4, 22~24, 32~34, …';
-    private const string E_OTHER_0_2_16              = '0, 2~16, 100, 1000, …';
-    private const string E_OTHER_2_17                = '2~17, 100, 1000, …';
-    private const string E_OTHER_0_5_20              = '0, 5~20, 100, 1000, …';
-    private const string E_OTHER_0_3_17              = '0, 3~17, 100, 1000, …';
-    private const string E_DECIMAL_01_15             = '0.0~1.5, 10.0, …';
+    // ─── Default fallback values ─────────────────────────────────────────
+    // Used only for locales not present in CLDR (the sole source of truth).
+    private const string R_EMPTY      = '';
+    private const string H_ANY_NUMBER = 'Any number';
+    private const string H_ANY_OTHER  = 'Any other number';
 
     /**
      * The built plural rules, keyed by ISO code.
@@ -125,689 +117,6 @@ class PluralRulesBuilder
      */
     private array $rules;
 
-    /**
-     * Human-readable descriptions for cardinal plural rules.
-     *
-     * Maps a rule group number to a positional array of {rule, human_rule, example}.
-     * The position corresponds to the category index returned by PluralRules::getCardinalCategories().
-     *
-     * @var array<int, array<int, array{rule: string, human_rule: string, example: string}>>
-     */
-    private const array CARDINAL_HUMAN_RULES = [
-        // Rule 0: nplurals=1; only "other" (Asian languages, no plural forms)
-        // Locales (76): ace, ayr, ba, ban, bi, bjn, bm, bo, bod, bug, ch, chk, crh, dyu, dz,
-        //   fj, fn, fon, gil, hmn, hnj, id, ig, ii, ja, jbo, jv, kac, kar, kbp, kde, kea, km,
-        //   ko, kr, ksw, lkt, lo, mh, min, mos, ms, my, niu, nqo, osa, pau, pis, pon, ppk,
-        //   sah, ses, sg, shn, sm, smo, su, sus, taq, th, tkl, tmh, to, ton, tpi, trv, tt,
-        //   tvl, ty, vi, wls, wo, yo, yue, zh, zsm
-        0 => [
-            [
-                self::K_RULE => self::R_EMPTY,
-                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
-                self::K_EXAMPLE => self::E_ALL_NUMBERS_LONG,
-            ],
-        ],
-        // Rule 1: nplurals=2; plural=(n != 1); (Germanic, most European)
-        // Locales (222, default): aa, af, aig, als, an, as, asa, asm, ast, awa, az, azb, azj,
-        //   bah, bal, bem, bez, bg, bho, bjs, bn, brx, cac, cb, ce, ceb, cgg, chr, cjk, ckb,
-        //   cop, ctg, da, de, dik, diq, div, doi, dv, ee, el, en, eo, et, eu, fi, fo, fuc,
-        //   fur, fuv, fy, gax, gaz, gl, glw, gn, grc, grt, gsw, gu, guz, gyn, ha, haw, hig,
-        //   hil, hne, hoc, hu, ia, ilo, io, jam, jgo, ji, jmc, ka, kaj, kal, kam, kas, kcg,
-        //   kg, kha, khk, ki, kjb, kk, kkj, kl, kln, kmb, kmr, kn, knc, kok, ks, ksb, ku,
-        //   ky, la, lb, lg, li, lij, lmo, lua, lug, luo, lus, luy, mag, mai, mam, mas, men,
-        //   mer, mfi, mfv, mgo, mhr, ml, mn, mni, mnk, mr, mrj, mrt, nb, nd, ndc, ne, nl,
-        //   nn, nnh, no, nr, nup, nus, ny, nyf, nyn, om, or, ory, os, pa, pag, pap, pbt, pi,
-        //   pko, pot, pov, ps, qnt, qu, quc, quy, rhg, rhl, rm, rmo, rn, rof, roh, run, rw,
-        //   rwk, sa, saq, sc, sd, sdh, seh, sn, sna, snk, so, sq, srn, ss, ssy, st, sv, svc,
-        //   sw, syc, syr, ta, te, teo, tet, tig, tiv, tk, tn, tr, ts, tsc, tum, udm, ug, umb,
-        //   ur, uz, uzn, ve, vic, vls, vmw, vo, vun, wae, war, xh, xog, ydd, yi, ymm, zdj, zu
-        1 => [
-            [self::K_RULE => self::R_I1_V0, self::K_HUMAN_RULE => self::H_EXACTLY_1_NO_DEC, self::K_EXAMPLE => self::E_1],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_2_16],
-        ],
-        // Rule 2: nplurals=2; (Amharic, Persian, Hindi, etc. — CLDR: i = 0 or n = 1; integer approximation: n > 1)
-        // Locales (27): acf, ak, am, bh, crs, csw, fa, ff, gcl, hi, hy, kab, ln, mfe, mg, mi,
-        //   ns, nso, oc, pcm, plt, prs, si, tg, ti, tw, wa
-        2 => [
-            [self::K_RULE => 'i = 0 or n = 1', self::K_HUMAN_RULE => 'Exactly 0, 1, or any decimal starting with 0', self::K_EXAMPLE => self::E_0_1],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_2_17],
-        ],
-        // Rule 3: nplurals=4; Slavic (Russian, Ukrainian, Belarusian, Serbian, Croatian)
-        // Locales (3): be, ru, uk
-        3 => [
-            [
-                self::K_RULE => self::R_ENDS_1_NOT_11,
-                self::K_HUMAN_RULE => self::H_ENDS_1_EXCEPT_11,
-                self::K_EXAMPLE => self::E_ENDS_1_LONG,
-            ],
-            [
-                self::K_RULE => 'n % 10 = 2–4 and n % 100 != 12–14',
-                self::K_HUMAN_RULE => 'Ends in 2–4 but not 12–14',
-                self::K_EXAMPLE => self::E_ENDS_2_4,
-            ],
-            [
-                self::K_RULE => 'n % 10 = 0 or n % 10 = 5–9 or n % 100 = 11–14',
-                self::K_HUMAN_RULE => 'Ends in 0, 5–9, or 11–14',
-                self::K_EXAMPLE => '0, 5~20, 25~30, 35~40, …',
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_EMPTY],
-        ],
-        // Rule 4: nplurals=4; (Czech, Slovak — CLDR 49: "many" for decimals only)
-        // Locales (2): cs, sk
-        4 => [
-            [self::K_RULE => self::R_I1_V0, self::K_HUMAN_RULE => self::H_EXACTLY_1_NO_DEC, self::K_EXAMPLE => self::E_1],
-            [self::K_RULE => 'i = 2–4 and v = 0', self::K_HUMAN_RULE => '2, 3, or 4 (whole numbers only)', self::K_EXAMPLE => '2~4'],
-            [self::K_RULE => self::R_V_NE_0, self::K_HUMAN_RULE => self::H_DECIMAL_ONLY, self::K_EXAMPLE => self::E_DECIMAL_01_15],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_5_20],
-        ],
-        // Rule 5: nplurals=5; (Irish)
-        // Locales (1): ga
-        5 => [
-            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
-            [self::K_RULE => self::R_N_EQ_2, self::K_HUMAN_RULE => self::H_EXACTLY_2, self::K_EXAMPLE => self::E_2],
-            [self::K_RULE => 'n = 3–6', self::K_HUMAN_RULE => '3 through 6', self::K_EXAMPLE => '3~6'],
-            [self::K_RULE => 'n = 7–10', self::K_HUMAN_RULE => '7 through 10', self::K_EXAMPLE => '7~10'],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 11~25, 100, 1000, …'],
-        ],
-        // Rule 6: nplurals=4; (Lithuanian — CLDR 49: "many" for decimals only)
-        // Locales (1): lt
-        6 => [
-            [
-                self::K_RULE => self::R_ENDS_1_NOT_11,
-                self::K_HUMAN_RULE => 'Ends in 1 but not 11–19',
-                self::K_EXAMPLE => self::E_ENDS_1_LONG,
-            ],
-            [
-                self::K_RULE => 'n % 10 = 2–9 and n % 100 != 12–19',
-                self::K_HUMAN_RULE => 'Ends in 2–9 but not 11–19',
-                self::K_EXAMPLE => '2~9, 22~29, 32~39, …',
-            ],
-            [self::K_RULE => 'f != 0', self::K_HUMAN_RULE => 'Any number with decimals', self::K_EXAMPLE => '0.1~0.9, 1.1~1.7, …'],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 10~20, 30, 40, 50, 60, 100, …'],
-        ],
-        // Rule 7: nplurals=4; (Slovenian, Lower/Upper Sorbian)
-        // Locales (3): dsb, hsb, sl
-        7 => [
-            [
-                self::K_RULE => 'v = 0 and i % 100 = 1',
-                self::K_HUMAN_RULE => 'Ends in 01 (whole numbers only)',
-                self::K_EXAMPLE => '1, 101, 201, …',
-            ],
-            [
-                self::K_RULE => 'v = 0 and i % 100 = 2',
-                self::K_HUMAN_RULE => 'Ends in 02 (whole numbers only)',
-                self::K_EXAMPLE => '2, 102, 202, …',
-            ],
-            [
-                self::K_RULE => 'v = 0 and i % 100 = 3–4',
-                self::K_HUMAN_RULE => 'Ends in 03 or 04 (whole numbers only), or any number with decimals',
-                self::K_EXAMPLE => '3, 4, 103, 104, 203, 204, …',
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 5~19, 100, 105~119, …'],
-        ],
-        // Rule 8: nplurals=2; (Macedonian)
-        // Locales (1): mk
-        8 => [
-            [
-                self::K_RULE => self::R_ENDS_1_NOT_11,
-                self::K_HUMAN_RULE => 'Ends in 1 but not 11 (including after decimal point)',
-                self::K_EXAMPLE => self::E_ENDS_1_SHORT,
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 2~20, 22~30, …'],
-        ],
-        // Rule 10: nplurals=3; (Latvian)
-        // Locales (4): ltg, lv, lvs, prg
-        10 => [
-            [
-                self::K_RULE => 'n % 10 = 0 or n % 100 = 11–19',
-                self::K_HUMAN_RULE => 'Ends in 0 or 11–19',
-                self::K_EXAMPLE => '0, 10~20, 30, 40, …'
-            ],
-            [
-                self::K_RULE => self::R_ENDS_1_NOT_11,
-                self::K_HUMAN_RULE => 'Ends in 1 but not 11 (including after decimal point)',
-                self::K_EXAMPLE => '1, 21, 31, 41, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '2~9, 22~29, 32~39, …'],
-        ],
-        // Rule 11: nplurals=3; (Polish)
-        // Locales (2): pl, szl
-        11 => [
-            [self::K_RULE => self::R_I1_V0, self::K_HUMAN_RULE => self::H_EXACTLY_1_NO_DEC, self::K_EXAMPLE => self::E_1],
-            [
-                self::K_RULE => 'v = 0 and i % 10 = 2–4 and i % 100 != 12–14',
-                self::K_HUMAN_RULE => 'Ends in 2–4 but not 12–14 (whole numbers only)',
-                self::K_EXAMPLE => self::E_ENDS_2_4
-            ],
-            [
-                self::K_RULE => 'v = 0 and i != 1 and i % 10 = 0–1 or v = 0 and i % 10 = 5–9 or v = 0 and i % 100 = 12–14',
-                self::K_HUMAN_RULE => 'Ends in 0, 1 (not 1 itself), 5–9, or 12–14 (whole numbers only)',
-                self::K_EXAMPLE => '0, 5~19, 100, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_DECIMAL_01_15],
-        ],
-        // Rule 12: nplurals=3; (Romanian, Moldavian)
-        // Locales (2): mo, ro
-        12 => [
-            [self::K_RULE => self::R_I1_V0, self::K_HUMAN_RULE => self::H_EXACTLY_1_NO_DEC, self::K_EXAMPLE => self::E_1],
-            [
-                self::K_RULE => 'v != 0 or n = 0 or n % 100 = 2–19',
-                self::K_HUMAN_RULE => '0, any number with decimals, or ends in 02–19',
-                self::K_EXAMPLE => '0, 2~19, 102~119, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '20~35, 100, 1000, …'],
-        ],
-        // Rule 13: nplurals=6; (Arabic)
-        // Locales (2): ar, shu
-        13 => [
-            [self::K_RULE => self::R_N_EQ_0, self::K_HUMAN_RULE => self::H_EXACTLY_0, self::K_EXAMPLE => self::E_0],
-            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
-            [self::K_RULE => self::R_N_EQ_2, self::K_HUMAN_RULE => self::H_EXACTLY_2, self::K_EXAMPLE => self::E_2],
-            [self::K_RULE => 'n % 100 = 3–10', self::K_HUMAN_RULE => 'Ends in 03–10', self::K_EXAMPLE => '3~10, 103~110, …'],
-            [self::K_RULE => 'n % 100 = 11–99', self::K_HUMAN_RULE => 'Ends in 11–99', self::K_EXAMPLE => '11~26, 111~126, …'],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '100~102, 200~202, …'],
-        ],
-        // Rule 14: nplurals=6; (Welsh)
-        // Locales (1): cy
-        14 => [
-            [self::K_RULE => self::R_N_EQ_0, self::K_HUMAN_RULE => self::H_EXACTLY_0, self::K_EXAMPLE => self::E_0],
-            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
-            [self::K_RULE => self::R_N_EQ_2, self::K_HUMAN_RULE => self::H_EXACTLY_2, self::K_EXAMPLE => self::E_2],
-            [self::K_RULE => 'n = 3', self::K_HUMAN_RULE => 'Exactly 3', self::K_EXAMPLE => self::E_3],
-            [self::K_RULE => self::R_N_EQ_6, self::K_HUMAN_RULE => self::H_EXACTLY_6, self::K_EXAMPLE => self::E_6],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '4, 5, 7~20, 100, 1000, …'],
-        ],
-        // Rule 15: nplurals=2; (Icelandic)
-        // Locales (1): is
-        15 => [
-            [
-                self::K_RULE => self::R_ENDS_1_NOT_11,
-                self::K_HUMAN_RULE => 'Ends in 1 but not 11 (including after decimal point)',
-                self::K_EXAMPLE => self::E_ENDS_1_SHORT
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_2_16],
-        ],
-        // Rule 16: nplurals=4; (Scottish Gaelic)
-        // Locales (1): gd
-        16 => [
-            [self::K_RULE => 'n = 1, 11', self::K_HUMAN_RULE => 'Exactly 1 or 11', self::K_EXAMPLE => '1, 11'],
-            [self::K_RULE => 'n = 2, 12', self::K_HUMAN_RULE => 'Exactly 2 or 12', self::K_EXAMPLE => '2, 12'],
-            [self::K_RULE => 'n = 3–10, 13–19', self::K_HUMAN_RULE => 'Exactly 3–10 or 13–19', self::K_EXAMPLE => '3~10, 13~19'],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 20~34, 100, 1000, …'],
-        ],
-        // Rule 17: nplurals=5; (Breton)
-        // Locales (1): br
-        17 => [
-            [
-                self::K_RULE => 'n % 10 = 1 and n % 100 != 11, 71, 91',
-                self::K_HUMAN_RULE => 'Ends in 1 but not 11, 71, or 91',
-                self::K_EXAMPLE => '1, 21, 31, 41, 51, 61, 81, 101, …'
-            ],
-            [
-                self::K_RULE => 'n % 10 = 2 and n % 100 != 12, 72, 92',
-                self::K_HUMAN_RULE => 'Ends in 2 but not 12, 72, or 92',
-                self::K_EXAMPLE => '2, 22, 32, 42, 52, 62, 82, 102, …'
-            ],
-            [
-                self::K_RULE => 'n % 10 = 3–4, 9 and n % 100 != 10–19, 70–79, 90–99',
-                self::K_HUMAN_RULE => 'Ends in 3, 4, or 9 but not in teens, seventies, or nineties',
-                self::K_EXAMPLE => '3, 4, 9, 23, 24, 29, …'
-            ],
-            [
-                self::K_RULE => 'n != 0 and n % 1000000 = 0',
-                self::K_HUMAN_RULE => 'Exact millions (1000000, 2000000, …)',
-                self::K_EXAMPLE => '1000000, 2000000, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 5~8, 10~20, 100, 1000, …'],
-        ],
-        // Rule 18: nplurals=5; (Manx — CLDR 49: "many" for decimals only)
-        // Locales (1): gv
-        18 => [
-            [self::K_RULE => 'n % 10 = 1', self::K_HUMAN_RULE => 'Ends in 1 (whole numbers only)', self::K_EXAMPLE => '1, 11, 21, 31, …'],
-            [self::K_RULE => 'n % 10 = 2', self::K_HUMAN_RULE => 'Ends in 2 (whole numbers only)', self::K_EXAMPLE => '2, 12, 22, 32, …'],
-            [self::K_RULE => 'n % 20 = 0', self::K_HUMAN_RULE => 'Exactly 0, 20, 40, 60, 80, 100, …', self::K_EXAMPLE => '0, 20, 40, 60, 80, 100, …'],
-            [self::K_RULE => self::R_V_NE_0, self::K_HUMAN_RULE => self::H_DECIMAL_ONLY, self::K_EXAMPLE => self::E_DECIMAL_01_15],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '3~9, 13~19, 23~29, …'],
-        ],
-        // Rule 19: nplurals=3; (Hebrew — CLDR 49: removed "many")
-        // Locales (1): he
-        19 => [
-            [self::K_RULE => self::R_I1_V0, self::K_HUMAN_RULE => self::H_EXACTLY_1_NO_DEC, self::K_EXAMPLE => self::E_1],
-            [self::K_RULE => 'i = 2 and v = 0', self::K_HUMAN_RULE => 'Exactly 2 (whole number only)', self::K_EXAMPLE => self::E_2],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_3_17],
-        ],
-        // Rule 20: nplurals=3; (Italian, Spanish, Catalan - CLDR 49: one = i = 1 and v = 0)
-        // Locales (8): ca, cav, es, it, lld, pt_pt, scn, vec
-        20 => [
-            [self::K_RULE => self::R_I1_V0, self::K_HUMAN_RULE => self::H_EXACTLY_1_NO_DEC, self::K_EXAMPLE => self::E_1],
-            [
-                self::K_RULE => 'e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0–5',
-                self::K_HUMAN_RULE => 'Exact millions (1000000, 2000000, …)',
-                self::K_EXAMPLE => '1000000, 2000000, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_2_16],
-        ],
-        // Rule 21: nplurals=3; (Inuktitut, Sami, Nama, Swampy Cree)
-        // Locales (8): iu, naq, sat, se, sma, smj, smn, sms
-        21 => [
-            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
-            [self::K_RULE => self::R_N_EQ_2, self::K_HUMAN_RULE => self::H_EXACTLY_2, self::K_EXAMPLE => self::E_2],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_3_17],
-        ],
-        // Rule 22: nplurals=3; (Colognian, Anii, Langi)
-        // Locales (3): blo, ksh, lag
-        22 => [
-            [self::K_RULE => self::R_N_EQ_0, self::K_HUMAN_RULE => self::H_EXACTLY_0, self::K_EXAMPLE => self::E_0],
-            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_2_17],
-        ],
-        // Rule 23: nplurals=3; (Tachelhit)
-        // Locales (1): shi
-        23 => [
-            [self::K_RULE => 'n = 0–1', self::K_HUMAN_RULE => 'Exactly 0 or 1', self::K_EXAMPLE => self::E_0_1],
-            [self::K_RULE => 'n = 2–10', self::K_HUMAN_RULE => '2 through 10', self::K_EXAMPLE => '2~10'],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '11~26, 100, 1000, …'],
-        ],
-        // Rule 24: nplurals=6; (Cornish)
-        // Locales (1): kw
-        24 => [
-            [self::K_RULE => self::R_N_EQ_0, self::K_HUMAN_RULE => self::H_EXACTLY_0, self::K_EXAMPLE => self::E_0],
-            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
-            [
-                self::K_RULE => 'n % 100 = 2, 22, 42, 62, 82 or n % 1000 = 0 ...',
-                self::K_HUMAN_RULE => 'Ends in 02, 22, 42, 62, 82, or large multiples of 1000',
-                self::K_EXAMPLE => '2, 22, 42, 62, 82, 102, …'
-            ],
-            [
-                self::K_RULE => 'n % 100 = 3, 23, 43, 63, 83',
-                self::K_HUMAN_RULE => 'Ends in 03, 23, 43, 63, or 83',
-                self::K_EXAMPLE => '3, 23, 43, 63, 83, 103, …'
-            ],
-            [
-                self::K_RULE => 'n != 1 and n % 100 = 1, 21, 41, 61, 81',
-                self::K_HUMAN_RULE => 'Not 1, and ends in 01, 21, 41, 61, or 81',
-                self::K_EXAMPLE => '21, 41, 61, 81, 101, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '4~20, 24~40, 44~60, …'],
-        ],
-        // Rule 25: nplurals=2; (Filipino, Tagalog - CLDR 49)
-        // one: v = 0 and i = 1,2,3 or v = 0 and i % 10 != 4,6,9 or v != 0 and f % 10 != 4,6,9
-        // Locales (2): fil, tl
-        25 => [
-            [
-                self::K_RULE => 'v = 0 and i = 1, 2, 3 or v = 0 and i % 10 != 4, 6, 9 or v != 0 and f % 10 != 4, 6, 9',
-                self::K_HUMAN_RULE => 'Does not end in 4, 6, or 9',
-                self::K_EXAMPLE => '0, 1, 2, 3, 5, 7, 8, 10, 11, 12, 13, 15, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '4, 6, 9, 14, 16, 19, 24, …'],
-        ],
-        // Rule 26: nplurals=2; (Central Atlas Tamazight - CLDR 49)
-        // one: n = 0..1 or n = 11..99
-        // Locales (1): tzm
-        26 => [
-            [
-                self::K_RULE => 'n = 0–1 or n = 11–99',
-                self::K_HUMAN_RULE => '0, 1, or 11 through 99',
-                self::K_EXAMPLE => '0, 1, 11~99'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '2~10, 100~110, 1000, …'],
-        ],
-        // Rule 27: nplurals=3; (Bosnian, Croatian, Serbian — CLDR 49: one/few/other)
-        // Locales (6): bs, hr, me, rmn, sh, sr
-        27 => [
-            [
-                self::K_RULE => 'v = 0 and i % 10 = 1 and i % 100 != 11 or f % 10 = 1 and f % 100 != 11',
-                self::K_HUMAN_RULE => 'Ends in 1 but not 11 (including after decimal point)',
-                self::K_EXAMPLE => self::E_ENDS_1_LONG
-            ],
-            [
-                self::K_RULE => 'v = 0 and i % 10 = 2–4 and i % 100 != 12–14 or f % 10 = 2–4 and f % 100 != 12–14',
-                self::K_HUMAN_RULE => 'Ends in 2–4 but not 12–14 (including after decimal point)',
-                self::K_EXAMPLE => self::E_ENDS_2_4
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 5~20, 25~30, 35~40, …'],
-        ],
-        // Rule 28: nplurals=5; (Maltese — CLDR 49: one/two/few/many/other)
-        // Locales (1): mt
-        28 => [
-            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
-            [self::K_RULE => self::R_N_EQ_2, self::K_HUMAN_RULE => self::H_EXACTLY_2, self::K_EXAMPLE => self::E_2],
-            [
-                self::K_RULE => 'n = 0 or n % 100 = 3–10',
-                self::K_HUMAN_RULE => '0, or ends in 03–10',
-                self::K_EXAMPLE => '0, 3~10, 103~110, …'
-            ],
-            [self::K_RULE => 'n % 100 = 11–19', self::K_HUMAN_RULE => 'Ends in 11–19', self::K_EXAMPLE => '11~19, 111~119, …'],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '20~35, 100~102, 200~202, 1000, …'],
-        ],
-        // Rule 29: nplurals=3; (French, Portuguese - CLDR 49: one = i = 0,1)
-        // Locales (3): fr, ht, pt
-        29 => [
-            [self::K_RULE => 'i = 0,1', self::K_HUMAN_RULE => '0 or 1', self::K_EXAMPLE => self::E_0_1],
-            [
-                self::K_RULE => 'e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0–5',
-                self::K_HUMAN_RULE => 'Exact millions (1000000, 2000000, …)',
-                self::K_EXAMPLE => '1000000, 2000000, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_2_17],
-        ],
-    ];
-
-    /**
-     * Human-readable descriptions for ordinal plural rules.
-     *
-     * Maps a rule group number to a positional array of {rule, human_rule, example}.
-     * The position corresponds to the category index returned by PluralRules::getOrdinalCategories().
-     *
-     * @var array<int, array<int, array{rule: string, human_rule: string, example: string}>>
-     */
-    private const array ORDINAL_HUMAN_RULES = [
-        // Rule 0: Only "other"
-        // Locales (default): All locales not listed in other ordinal rules
-        0 => [
-            [
-                self::K_RULE => self::R_EMPTY,
-                self::K_HUMAN_RULE => self::H_ANY_NUMBER,
-                self::K_EXAMPLE => self::E_ALL_NUMBERS
-            ],
-        ],
-        // Rule 1: English ordinals (one/two/few/other)
-        // Locales (1): en
-        1 => [
-            [
-                self::K_RULE => self::R_ENDS_1_NOT_11,
-                self::K_HUMAN_RULE => self::H_ENDS_1_EXCEPT_11,
-                self::K_EXAMPLE => self::E_ENDS_1_SHORT
-            ],
-            [
-                self::K_RULE => self::R_ENDS_2_NOT_12,
-                self::K_HUMAN_RULE => self::H_ENDS_2_EXCEPT_12,
-                self::K_EXAMPLE => '2, 22, 32, 42, 52, …'
-            ],
-            [
-                self::K_RULE => 'n % 10 = 3 and n % 100 != 13',
-                self::K_HUMAN_RULE => 'Ends in 3 but not 13',
-                self::K_EXAMPLE => '3, 23, 33, 43, 53, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 4~18, 100, 1000, …'],
-        ],
-        // Rule 2: French-like ordinals (one/other)
-        // Locales (13): bal, fil, fr, ga, ht, hy, lo, mo, ms, ro, tl, vi, zsm
-        2 => [
-            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_2_16],
-        ],
-        // Rule 8: Macedonian ordinals (one/two/many/other)
-        // Locales (1): mk
-        8 => [
-            [
-                self::K_RULE => self::R_ENDS_1_NOT_11,
-                self::K_HUMAN_RULE => self::H_ENDS_1_EXCEPT_11,
-                self::K_EXAMPLE => self::E_ENDS_1_SHORT
-            ],
-            [
-                self::K_RULE => self::R_ENDS_2_NOT_12,
-                self::K_HUMAN_RULE => self::H_ENDS_2_EXCEPT_12,
-                self::K_EXAMPLE => '2, 22, 32, 42, 52, …'
-            ],
-            [
-                self::K_RULE => 'n % 10 = 7, 8 and n % 100 != 17, 18',
-                self::K_HUMAN_RULE => 'Ends in 7 or 8 but not 17 or 18',
-                self::K_EXAMPLE => '7, 8, 27, 28, 37, 38, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 3~6, 9~19, 23~26, …'],
-        ],
-        // Rule 14: Welsh ordinals (zero/one/two/few/many/other)
-        // Locales (1): cy
-        14 => [
-            [self::K_RULE => 'n = 0, 7, 8, 9', self::K_HUMAN_RULE => 'Exactly 0, 7, 8, or 9', self::K_EXAMPLE => '0, 7, 8, 9'],
-            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
-            [self::K_RULE => self::R_N_EQ_2, self::K_HUMAN_RULE => self::H_EXACTLY_2, self::K_EXAMPLE => self::E_2],
-            [self::K_RULE => 'n = 3, 4', self::K_HUMAN_RULE => 'Exactly 3 or 4', self::K_EXAMPLE => '3, 4'],
-            [self::K_RULE => 'n = 5, 6', self::K_HUMAN_RULE => 'Exactly 5 or 6', self::K_EXAMPLE => '5, 6'],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '10~25, 100, 1000, …'],
-        ],
-        // Rule 16: Scottish Gaelic ordinals (one/two/few/other)
-        // Locales (1): gd
-        16 => [
-            [self::K_RULE => 'n = 1, 11', self::K_HUMAN_RULE => 'Exactly 1 or 11', self::K_EXAMPLE => '1, 11'],
-            [self::K_RULE => 'n = 2, 12', self::K_HUMAN_RULE => 'Exactly 2 or 12', self::K_EXAMPLE => '2, 12'],
-            [self::K_RULE => 'n = 3, 13', self::K_HUMAN_RULE => 'Exactly 3 or 13', self::K_EXAMPLE => '3, 13'],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 4~10, 14~21, 100, …'],
-        ],
-        // Rule 20: Italian ordinals (many/other)
-        // Locales (4): it, lld, sc, vec
-        20 => [
-            [self::K_RULE => 'n = 8, 11, 80, 800', self::K_HUMAN_RULE => 'Exactly 8, 11, 80, or 800', self::K_EXAMPLE => '8, 11, 80, 800'],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0~7, 9, 10, 12~79, 81~99, 100, …'],
-        ],
-        // Rule 21: Kazakh ordinals (many/other)
-        // Locales (1): kk
-        21 => [
-            [
-                self::K_RULE => 'n % 10 = 6,9 or n % 10 = 0 and n != 0',
-                self::K_HUMAN_RULE => 'Ends in 0 (except 0 itself), 6 or 9',
-                self::K_EXAMPLE => '6, 9, 10, 16, 19, 20, 26, 29, 30, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0~5, 7, 8, 11~15, 17, 18, 21, …'],
-        ],
-        // Rule 22: Ukrainian ordinals (few/other)
-        // Locales (1): uk
-        22 => [
-            [
-                self::K_RULE => 'n % 10 = 3 and n % 100 != 13',
-                self::K_HUMAN_RULE => 'Ends in 3 but not 13',
-                self::K_EXAMPLE => '3, 23, 33, 43, 53, 63, 73, 83, 103, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0~2, 4~16, 100, 1000, …'],
-        ],
-        // Rule 23: Bengali/Assamese ordinals (one/two/few/many/other)
-        // Locales (3): as, asm, bn
-        23 => [
-            [
-                self::K_RULE => 'n = 1, 5, 7, 8, 9, 10',
-                self::K_HUMAN_RULE => 'Exactly 1, 5, 7, 8, 9, or 10',
-                self::K_EXAMPLE => '1, 5, 7, 8, 9, 10'
-            ],
-            [self::K_RULE => self::R_N_EQ_2_3, self::K_HUMAN_RULE => self::H_EXACTLY_2_OR_3, self::K_EXAMPLE => self::E_2_3],
-            [self::K_RULE => self::R_N_EQ_4, self::K_HUMAN_RULE => self::H_EXACTLY_4, self::K_EXAMPLE => self::E_4],
-            [self::K_RULE => self::R_N_EQ_6, self::K_HUMAN_RULE => self::H_EXACTLY_6, self::K_EXAMPLE => self::E_6],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 11~25, 100, 1000, …'],
-        ],
-        // Rule 24: Gujarati/Hindi ordinals (one/two/few/many/other)
-        // Locales (2): gu, hi
-        24 => [
-            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
-            [self::K_RULE => self::R_N_EQ_2_3, self::K_HUMAN_RULE => self::H_EXACTLY_2_OR_3, self::K_EXAMPLE => self::E_2_3],
-            [self::K_RULE => self::R_N_EQ_4, self::K_HUMAN_RULE => self::H_EXACTLY_4, self::K_EXAMPLE => self::E_4],
-            [self::K_RULE => self::R_N_EQ_6, self::K_HUMAN_RULE => self::H_EXACTLY_6, self::K_EXAMPLE => self::E_6],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 5, 7~20, 100, 1000, …'],
-        ],
-        // Rule 26: Marathi/Konkani ordinals (one/two/few/other)
-        // Locales (2): kok, mr
-        26 => [
-            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
-            [self::K_RULE => self::R_N_EQ_2_3, self::K_HUMAN_RULE => self::H_EXACTLY_2_OR_3, self::K_EXAMPLE => self::E_2_3],
-            [self::K_RULE => self::R_N_EQ_4, self::K_HUMAN_RULE => self::H_EXACTLY_4, self::K_EXAMPLE => self::E_4],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_5_20],
-        ],
-        // Rule 27: Odia ordinals (one/two/few/many/other)
-        // Locales (2): or, ory
-        27 => [
-            [self::K_RULE => 'n = 1, 5, 7–9', self::K_HUMAN_RULE => 'Exactly 1, 5, 7, 8, or 9', self::K_EXAMPLE => '1, 5, 7, 8, 9'],
-            [self::K_RULE => self::R_N_EQ_2_3, self::K_HUMAN_RULE => self::H_EXACTLY_2_OR_3, self::K_EXAMPLE => self::E_2_3],
-            [self::K_RULE => self::R_N_EQ_4, self::K_HUMAN_RULE => self::H_EXACTLY_4, self::K_EXAMPLE => self::E_4],
-            [self::K_RULE => self::R_N_EQ_6, self::K_HUMAN_RULE => self::H_EXACTLY_6, self::K_EXAMPLE => self::E_6],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 10~25, 100, 1000, …'],
-        ],
-        // Rule 29: Nepali ordinals (one/other)
-        // Locales (1): ne
-        29 => [
-            [self::K_RULE => 'n = 1–4', self::K_HUMAN_RULE => '1 through 4', self::K_EXAMPLE => '1~4'],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_5_20],
-        ],
-        // Rule 30: Albanian ordinals (one/many/other)
-        // Locales (2): als, sq
-        30 => [
-            [self::K_RULE => self::R_N_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
-            [
-                self::K_RULE => 'n % 10 = 4 and n % 100 != 14',
-                self::K_HUMAN_RULE => 'Ends in 4 but not 14',
-                self::K_EXAMPLE => '4, 24, 34, 44, 54, 64, 74, 84, 104, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 2, 3, 5~17, 100, 1000, …'],
-        ],
-        // Rule 31: Anii ordinals (zero/one/few/other)
-        // Locales (1): blo
-        31 => [
-            [self::K_RULE => self::R_I_EQ_0, self::K_HUMAN_RULE => self::H_EXACTLY_0, self::K_EXAMPLE => self::E_0],
-            [self::K_RULE => self::R_I_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
-            [self::K_RULE => 'i = 2, 3, 4, 5, 6', self::K_HUMAN_RULE => '2 through 6', self::K_EXAMPLE => '2~6'],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '7~20, 100, 1000, …'],
-        ],
-        // Rule 32: Cornish ordinals (one/many/other)
-        // Locales (1): kw
-        32 => [
-            [
-                self::K_RULE => 'n = 1–4 or n % 100 = 1–4, 21–24, 41–44, 61–64, 81–84',
-                self::K_HUMAN_RULE => '1–4, or ends in 01–04, 21–24, 41–44, 61–64, or 81–84',
-                self::K_EXAMPLE => '1~4, 21~24, 41~44, 61~64, 81~84, …'
-            ],
-            [
-                self::K_RULE => 'n = 5 or n % 100 = 5',
-                self::K_HUMAN_RULE => 'Exactly 5, or ends in 05',
-                self::K_EXAMPLE => '5, 105, 205, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 6~20, 25~40, 45~60, …'],
-        ],
-        // Rule 33: Afrikaans ordinals (few/other)
-        // Locales (1): af
-        33 => [
-            [
-                self::K_RULE => 'i % 100 = 2–19',
-                self::K_HUMAN_RULE => 'Ends in 02–19',
-                self::K_EXAMPLE => '2~19, 102~119, 202~219, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 1, 20~101, 120~201, …'],
-        ],
-        // Rule 34: Spanish ordinals (one/other)
-        // Locales (1): es
-        34 => [
-            [
-                self::K_RULE => 'n % 10 = 1, 3 and n % 100 != 11',
-                self::K_HUMAN_RULE => 'Ends in 1 or 3 but not 11',
-                self::K_EXAMPLE => '1, 3, 21, 23, 31, 33, 41, 43, 51, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 2, 4~12, 14~18, 100, 1000, …'],
-        ],
-        // Rule 35: Hungarian ordinals (one/other)
-        // Locales (1): hu
-        35 => [
-            [self::K_RULE => self::R_N_EQ_1_5, self::K_HUMAN_RULE => 'Exactly 1 or 5', self::K_EXAMPLE => self::E_1_5],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 2~4, 6~17, 100, 1000, …'],
-        ],
-        // Rule 36: Azerbaijani ordinals (one/few/many/other)
-        // Locales (3): az, azb, azj
-        36 => [
-            [
-                self::K_RULE => 'i % 10 = 1, 2, 5, 7, 8 or i % 100 = 20, 50, 70, 80',
-                self::K_HUMAN_RULE => 'Ends in 1, 2, 5, 7, 8, or ends in 20, 50, 70, or 80',
-                self::K_EXAMPLE => '1, 2, 5, 7, 8, 11, 12, 15, 17, 18, 20, …'
-            ],
-            [
-                self::K_RULE => 'i % 10 = 3, 4 or i % 1000 = 100, 200, 300, 400, 500, 600, 700, 800, 900',
-                self::K_HUMAN_RULE => 'Ends in 3 or 4, or exact hundreds (100, 200, …, 900)',
-                self::K_EXAMPLE => '3, 4, 13, 14, 23, 24, 100, 200, …'
-            ],
-            [
-                self::K_RULE => 'i = 0 or i % 10 = 6 or i % 100 = 40, 60, 90',
-                self::K_HUMAN_RULE => '0, or ends in 6, 40, 60, or 90',
-                self::K_EXAMPLE => '0, 6, 16, 26, 36, 40, 46, 56, 60, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '9, 10, 19, 29, 30, 39, 49, 59, …'],
-        ],
-        // Rule 37: Belarusian ordinals (few/other)
-        // Locales (1): be
-        37 => [
-            [
-                self::K_RULE => 'n % 10 = 2, 3 and n % 100 != 12, 13',
-                self::K_HUMAN_RULE => 'Ends in 2 or 3 but not 12 or 13',
-                self::K_EXAMPLE => '2, 3, 22, 23, 32, 33, 42, 43, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 1, 4~21, 24~31, 34~41, …'],
-        ],
-        // Rule 38: Bulgarian ordinals (zero/one/two/few/many/other)
-        // Locales (1): bg
-        38 => [
-            [
-                self::K_RULE => 'i % 100 = 0 and i != 0',
-                self::K_HUMAN_RULE => 'Ends in 00 (except 0 itself)',
-                self::K_EXAMPLE => '100, 200, 300, 400, 500, …'
-            ],
-            [self::K_RULE => self::R_ENDS_1_NOT_11, self::K_HUMAN_RULE => self::H_ENDS_1_EXCEPT_11, self::K_EXAMPLE => '1, 21, 31, 41, …'],
-            [self::K_RULE => self::R_ENDS_2_NOT_12, self::K_HUMAN_RULE => self::H_ENDS_2_EXCEPT_12, self::K_EXAMPLE => '2, 22, 32, 42, …'],
-            [
-                self::K_RULE => 'i % 10 = 3, 4 and i % 100 != 13, 14',
-                self::K_HUMAN_RULE => 'Ends in 3 or 4 but not 13 or 14',
-                self::K_EXAMPLE => '3, 4, 23, 24, 33, 34, …'
-            ],
-            [
-                self::K_RULE => 'i % 10 = 7, 8 and i % 100 != 17, 18',
-                self::K_HUMAN_RULE => 'Ends in 7 or 8 but not 17 or 18',
-                self::K_EXAMPLE => '7, 8, 27, 28, 37, 38, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 5, 6, 9~20, 25, 105, …'],
-        ],
-        // Rule 39: Catalan ordinals (one/two/few/other)
-        // Locales (2): ca, cav
-        39 => [
-            [self::K_RULE => 'n = 1, 3', self::K_HUMAN_RULE => 'Exactly 1 or 3', self::K_EXAMPLE => '1, 3'],
-            [self::K_RULE => self::R_N_EQ_2, self::K_HUMAN_RULE => self::H_EXACTLY_2, self::K_EXAMPLE => self::E_2],
-            [self::K_RULE => self::R_N_EQ_4, self::K_HUMAN_RULE => self::H_EXACTLY_4, self::K_EXAMPLE => self::E_4],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => self::E_OTHER_0_5_20],
-        ],
-        // Rule 40: Georgian ordinals (one/many/other)
-        // Locales (1): ka
-        40 => [
-            [self::K_RULE => self::R_I_EQ_1, self::K_HUMAN_RULE => self::H_EXACTLY_1, self::K_EXAMPLE => self::E_1],
-            [
-                self::K_RULE => 'i = 0 or i % 100 = 2–20, 40, 60, 80',
-                self::K_HUMAN_RULE => '0, or ends in 02–20, 40, 60, or 80',
-                self::K_EXAMPLE => '0, 2~20, 40, 60, 80, 102~120, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '21~39, 41~59, 61~79, 81~101, …'],
-        ],
-        // Rule 41: Swedish ordinals (one/other)
-        // Locales (1): sv
-        41 => [
-            [
-                self::K_RULE => 'n % 10 = 1, 2 and n % 100 != 11, 12',
-                self::K_HUMAN_RULE => 'Ends in 1 or 2 but not 11 or 12',
-                self::K_EXAMPLE => '1, 2, 21, 22, 31, 32, 41, 42, 51, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0, 3~17, 100, 1000, …'],
-        ],
-        // Rule 42: Ligurian/Sicilian ordinals (many/other)
-        // Locales (2): lij, scn
-        42 => [
-            [
-                self::K_RULE => 'n = 8, 11, 80–89, 800–899',
-                self::K_HUMAN_RULE => 'Exactly 8, 11, 80–89, or 800–899',
-                self::K_EXAMPLE => '8, 11, 80~89, 800~803, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0~7, 9, 10, 12~17, 100, 1000, …'],
-        ],
-        // Rule 43: Turkmen ordinals (few/other)
-        // Locales (1): tk
-        43 => [
-            [
-                self::K_RULE => 'n % 10 = 6, 9 or n = 10',
-                self::K_HUMAN_RULE => 'Ends in 6 or 9, or exactly 10',
-                self::K_EXAMPLE => '6, 9, 10, 16, 19, 26, 29, 36, 39, …'
-            ],
-            [self::K_RULE => self::R_EMPTY, self::K_HUMAN_RULE => self::H_ANY_OTHER, self::K_EXAMPLE => '0~5, 7, 8, 11~15, 17, 18, 20, …'],
-        ],
-    ];
 
     /**
      * @param bool $forceRebuild When true, skip the cache and rebuild from PluralRules.
@@ -888,7 +197,10 @@ class PluralRulesBuilder
     {
         $languages = Languages::getInstance();
         $enabledLanguages = $languages->getEnabledLanguages();
-        $overrides = $this->loadOverrides();
+        $overrides       = $this->loadOverrides();
+        $cldrRules       = $this->loadCldrRules();
+        $humanRuleLookup = $this->loadHumanRuleLookup();
+        $parentMap       = $this->loadParentMap();
 
         $result = [];
 
@@ -910,7 +222,10 @@ class PluralRulesBuilder
                 $result[$localeCode] = $this->buildLanguageRulesFragment(
                     $name,
                     $localeCode,
-                    $overrides
+                    $overrides,
+                    $cldrRules,
+                    $humanRuleLookup,
+                    $parentMap
                 );
             }
 
@@ -922,7 +237,10 @@ class PluralRulesBuilder
             $result[$isoCode] = $this->buildLanguageRulesFragment(
                 $name,
                 $isoCode,
-                $overrides
+                $overrides,
+                $cldrRules,
+                $humanRuleLookup,
+                $parentMap
             );
         }
 
@@ -937,19 +255,39 @@ class PluralRulesBuilder
      * @param string $name     The display name.
      * @param string $code     The ISO or locale code (e.g. "pt" or "pt_PT").
      * @param array<string, array{cardinal?: array<string, array{example?: string}>, ordinal?: array<string, array{example?: string}>}> $overrides Per-language overrides.
+     * @param array<string, array{cardinal?: list<array{category: string, rule: string}>, ordinal?: list<array{category: string, rule: string}>}> $cldrRules Per-locale CLDR rules.
+     * @param array{cardinal: array<string, string>, ordinal: array<string, string>} $humanRuleLookup Rule expression → human-readable text lookups.
+     * @param array<string, string> $parentMap Child locale → CLDR parent locale mapping.
      */
-    private function buildLanguageRulesFragment(string $name, string $code, array $overrides): LanguageRulesFragment
-    {
+    private function buildLanguageRulesFragment(
+        string $name,
+        string $code,
+        array $overrides,
+        array $cldrRules,
+        array $humanRuleLookup,
+        array $parentMap = []
+    ): LanguageRulesFragment {
+        // Resolve CLDR rules for this locale using the following chain:
+        // 1. Exact match in CLDR
+        // 2. Case-insensitive match (e.g. "pt_pt" → "pt_PT")
+        // 3. Parent locale from nonCldrParentMap.json (e.g. "acf" → "fr")
+        // 4. No match → empty fallback
+        $cldrCode = $this->resolveCldrCode($code, $cldrRules, $parentMap);
+        $cldrCardinal = $this->buildCldrCategoryMap($cldrRules[$cldrCode][self::K_CARDINAL] ?? []);
+        $cldrOrdinal  = $this->buildCldrCategoryMap($cldrRules[$cldrCode][self::K_ORDINAL] ?? []);
+
         $cardinalFragments = $this->buildCategoryFragments(
             PluralRules::getCardinalCategories($code),
-            self::CARDINAL_HUMAN_RULES[PluralRules::getRuleGroup($code)] ?? [],
-            $overrides[$code][self::K_CARDINAL] ?? []
+            $overrides[$code][self::K_CARDINAL] ?? [],
+            $cldrCardinal,
+            $humanRuleLookup[self::K_CARDINAL]
         );
 
         $ordinalFragments = $this->buildCategoryFragments(
             PluralRules::getOrdinalCategories($code),
-            self::ORDINAL_HUMAN_RULES[PluralRules::getRuleGroup($code, self::K_ORDINAL)] ?? [],
-            $overrides[$code][self::K_ORDINAL] ?? []
+            $overrides[$code][self::K_ORDINAL] ?? [],
+            $cldrOrdinal,
+            $humanRuleLookup[self::K_ORDINAL]
         );
 
         return new LanguageRulesFragment($name, $code, $cardinalFragments, $ordinalFragments);
@@ -957,31 +295,53 @@ class PluralRulesBuilder
 
     /**
      * Build CategoryFragment objects by zipping category names from PluralRules
-     * with the positional human rule data, applying per-language overrides.
+     * with CLDR data and per-language overrides.
+     *
+     * Priority chain for each field:
+     *   rule       → CLDR > fallback (empty)
+     *   human_rule → override > CLDR lookup > fallback ("Any other number")
+     *   example    → override > CLDR integer_examples > fallback (empty)
      *
      * @param array<int, string> $categories Category names from PluralRules (e.g. ['one', 'other']).
-     * @param array<int, array{rule: string, human_rule: string, example: string}> $humanRules Positional human rule data.
-     * @param array<string, array{human_rule?: string, example?: string}> $overrides Per-language overrides keyed by category name (e.g. 'one', 'other').
+     * @param array<string, array{human_rule?: string, example?: string}> $overrides Per-language overrides keyed by category name.
+     * @param array<string, array{rule: string, example: string}> $cldrCategoryData CLDR {rule, example} keyed by category name.
+     * @param array<string, string> $humanRuleLookup Rule expression → human-readable text lookup.
      * @return CategoryFragment[]
      */
-    private function buildCategoryFragments(array $categories, array $humanRules, array $overrides = []): array
-    {
-        $fragments = [];
+    private function buildCategoryFragments(
+        array $categories,
+        array $overrides = [],
+        array $cldrCategoryData = [],
+        array $humanRuleLookup = []
+    ): array {
+        $fragments    = [];
+        $isSingleForm = count($categories) === 1;
 
-        foreach ($categories as $index => $category) {
-            $ruleData = $humanRules[$index] ?? [
-                self::K_RULE => self::R_EMPTY,
-                self::K_HUMAN_RULE => self::H_ANY_OTHER,
-                self::K_EXAMPLE => self::E_EMPTY,
-            ];
+        foreach ($categories as $category) {
+            $cldrData = $cldrCategoryData[$category] ?? null;
 
-            // Apply per-language overrides if present (keyed by category name)
-            $humanRule = $overrides[$category][self::K_HUMAN_RULE] ?? $ruleData[self::K_HUMAN_RULE];
-            $example   = $overrides[$category][self::K_EXAMPLE]    ?? $ruleData[self::K_EXAMPLE];
+            // ── rule ──
+            $rule = $cldrData[self::K_RULE] ?? self::R_EMPTY;
+
+            // ── human_rule ──
+            // When there is only one category ("other" with no rule), use
+            // "Any number" instead of "Any other number" — there is nothing
+            // to contrast the catch-all against.
+            if ($isSingleForm && $rule === self::R_EMPTY) {
+                $defaultHumanRule = self::H_ANY_NUMBER;
+            } else {
+                $defaultHumanRule = $humanRuleLookup[$rule] ?? self::H_ANY_OTHER;
+            }
+            $humanRule = $overrides[$category][self::K_HUMAN_RULE] ?? $defaultHumanRule;
+
+            // ── example ──
+            // Try: override → CLDR integer_examples → empty
+            $defaultExample = $cldrData[self::K_EXAMPLE] ?? '';
+            $example = $overrides[$category][self::K_EXAMPLE] ?? $defaultExample;
 
             $fragments[] = new CategoryFragment(
                 category: $category,
-                rule: $ruleData[self::K_RULE],
+                rule: $rule,
                 human_rule: $humanRule,
                 example: $example,
             );
@@ -1008,6 +368,116 @@ class PluralRulesBuilder
         }
 
         return $this->readJsonFile(self::OVERRIDES_FILE_PATH);
+    }
+
+    /**
+     * Load per-locale CLDR plural rules from the CLDR 49 JSON file.
+     *
+     * Returns an array keyed by locale code (e.g. "af", "pt_PT"), then
+     * 'cardinal'/'ordinal', each containing a list of {category, rule, ...}.
+     *
+     * @return array<string, array{cardinal?: list<array{category: string, rule: string}>, ordinal?: list<array{category: string, rule: string}>}>
+     */
+    private function loadCldrRules(): array
+    {
+        if (!file_exists(self::CLDR_RULES_FILE_PATH)) {
+            // @codeCoverageIgnoreStart
+            return [];
+            // @codeCoverageIgnoreEnd
+        }
+
+        return $this->readJsonFile(self::CLDR_RULES_FILE_PATH);
+    }
+
+    /**
+     * Load both cardinal and ordinal human-rule lookup tables.
+     *
+     * @return array{cardinal: array<string, string>, ordinal: array<string, string>}
+     */
+    private function loadHumanRuleLookup(): array
+    {
+        $cardinal = file_exists(self::CARDINAL_HUMAN_LOOKUP_PATH)
+            ? $this->readJsonFile(self::CARDINAL_HUMAN_LOOKUP_PATH)
+            : [];
+        $ordinal = file_exists(self::ORDINAL_HUMAN_LOOKUP_PATH)
+            ? $this->readJsonFile(self::ORDINAL_HUMAN_LOOKUP_PATH)
+            : [];
+
+        return [
+            self::K_CARDINAL => $cardinal,
+            self::K_ORDINAL  => $ordinal,
+        ];
+    }
+
+    /**
+     * Load the child → parent locale mapping for non-CLDR locales.
+     *
+     * @return array<string, string> Child locale code → CLDR parent locale code.
+     */
+    private function loadParentMap(): array
+    {
+        if (!file_exists(self::PARENT_MAP_FILE_PATH)) {
+            // @codeCoverageIgnoreStart
+            return [];
+            // @codeCoverageIgnoreEnd
+        }
+
+        return $this->readJsonFile(self::PARENT_MAP_FILE_PATH);
+    }
+
+    /**
+     * Resolve the CLDR key for a locale using the following chain:
+     *
+     * 1. Exact match in CLDR
+     * 2. Case-insensitive match (e.g. "pt_pt" → "pt_PT")
+     * 3. Parent locale from nonCldrParentMap.json (e.g. "acf" → "fr")
+     * 4. No match → returns the original code (will produce empty CLDR data)
+     *
+     * @param string $code The locale code to resolve.
+     * @param array<string, mixed> $cldrRules The full CLDR rules array.
+     * @param array<string, string> $parentMap Child → parent mapping.
+     * @return string The resolved CLDR key.
+     */
+    private function resolveCldrCode(string $code, array $cldrRules, array $parentMap): string
+    {
+        // 1. Exact match
+        if (isset($cldrRules[$code])) {
+            return $code;
+        }
+
+        // 2. Case-insensitive match (e.g. "pt_pt" → "pt_PT")
+        foreach ($cldrRules as $cldrKey => $v) {
+            if (strcasecmp($cldrKey, $code) === 0) {
+                return $cldrKey;
+            }
+        }
+
+        // 3. Parent locale fallback (e.g. "acf" → "fr")
+        if (isset($parentMap[$code], $cldrRules[$parentMap[$code]])) {
+            return $parentMap[$code];
+        }
+
+        // 4. No match
+        return $code;
+    }
+
+    /**
+     * Build a category → {rule, example} map from a CLDR categories array.
+     *
+     * @param list<array{category: string, rule: string, integer_examples?: string}> $cldrCategories
+     * @return array<string, array{rule: string, example: string}> Category name → CLDR rule expression and integer examples.
+     */
+    private function buildCldrCategoryMap(array $cldrCategories): array
+    {
+        $map = [];
+        foreach ($cldrCategories as $cat) {
+            $map[$cat['category']] = [
+                self::K_RULE    => $cat[self::K_RULE],
+                self::K_EXAMPLE => $cat['integer_examples'] ?? '',
+            ];
+        }
+
+        return $map;
     }
 
     /**

@@ -763,7 +763,7 @@ final class PluralRulesBuilderTest extends TestCase
      */
     public function testCustomFilePathDoesNotAffectDefaultLocation(): void
     {
-        $defaultFile = dirname(__DIR__, 4) . '/src/Locales/pluralRules.json';
+        $defaultFile = dirname(__DIR__, 4) . '/src/resources/pluralRules.json';
         $defaultModTime = file_exists($defaultFile) ? filemtime($defaultFile) : null;
 
         PluralRulesBuilder::getInstance(forceRebuild: true, filePath: $this->tempFile);
