@@ -363,9 +363,11 @@ class CardinalDecimalRule
                 default => 5,
             },
 
-            // Rule 15 — is: handled by cldrCardinalRuleSet (should not reach here)
-            // Fallback: same as default
-            15 => 1,
+            // Rule 15 — is (Icelandic): intentionally omitted.
+            // Icelandic is the only locale with rule group 15, and it is always
+            // intercepted by the $cldrCardinalRuleSet map ('is' => 'is') in
+            // evaluateWithOperands(), so this arm is unreachable. Keeping it
+            // would be dead code.
 
             // Rule 16 — gd: uses n
             16 => match (true) {

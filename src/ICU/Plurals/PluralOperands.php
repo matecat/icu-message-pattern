@@ -42,22 +42,22 @@ namespace Matecat\ICU\Plurals;
 final readonly class PluralOperands
 {
     /**
-     * @param float $absoluteValue                  CLDR "n" — Absolute value of the source number (with decimals).
-     * @param int   $integerPart                    CLDR "i" — Integer digits of the absolute value.
-     * @param int   $fractionDigitCount             CLDR "v" — Number of visible fraction digits (with trailing zeros).
-     * @param int   $significantFractionDigitCount  CLDR "w" — Number of visible fraction digits (without trailing zeros).
-     * @param int   $fractionDigits                 CLDR "f" — Visible fraction digits as an integer (with trailing zeros).
-     * @param int   $significantFractionDigits      CLDR "t" — Visible fraction digits as an integer (without trailing zeros).
-     * @param int   $compactExponent                CLDR "e" — Compact decimal exponent value (reserved for future use, always 0).
+     * @param float $absoluteValue CLDR "n" — Absolute value of the source number (with decimals).
+     * @param int $integerPart CLDR "i" — Integer digits of the absolute value.
+     * @param int $fractionDigitCount CLDR "v" — Number of visible fraction digits (with trailing zeros).
+     * @param int $significantFractionDigitCount CLDR "w" — Number of visible fraction digits (without trailing zeros).
+     * @param int $fractionDigits CLDR "f" — Visible fraction digits as an integer (with trailing zeros).
+     * @param int $significantFractionDigits CLDR "t" — Visible fraction digits as an integer (without trailing zeros).
+     * @param int $compactExponent CLDR "e" — Compact decimal exponent value (reserved for future use, always 0).
      */
     public function __construct(
         public float $absoluteValue,
-        public int   $integerPart,
-        public int   $fractionDigitCount,
-        public int   $significantFractionDigitCount,
-        public int   $fractionDigits,
-        public int   $significantFractionDigits,
-        public int   $compactExponent = 0,
+        public int $integerPart,
+        public int $fractionDigitCount,
+        public int $significantFractionDigitCount,
+        public int $fractionDigits,
+        public int $significantFractionDigits,
+        public int $compactExponent = 0,
     ) {
     }
 
@@ -83,7 +83,7 @@ final readonly class PluralOperands
             $abs = abs($number);
 
             return new self(
-                absoluteValue: (float) $abs,
+                absoluteValue: (float)$abs,
                 integerPart: $abs,
                 fractionDigitCount: 0,
                 significantFractionDigitCount: 0,
@@ -94,7 +94,7 @@ final readonly class PluralOperands
 
         // Convert float to string to capture its decimal representation.
         // Note: floats may lose trailing zeros (1.20 becomes "1.2").
-        $str = is_float($number) ? self::floatToString($number) : (string) $number;
+        $str = is_float($number) ? self::floatToString($number) : (string)$number;
 
         return self::parseString($str);
     }
@@ -112,7 +112,7 @@ final readonly class PluralOperands
         $abs = abs($n);
 
         return new self(
-            absoluteValue: (float) $abs,
+            absoluteValue: (float)$abs,
             integerPart: $abs,
             fractionDigitCount: 0,
             significantFractionDigitCount: 0,
@@ -145,12 +145,12 @@ final readonly class PluralOperands
             $fracPart = '';
         }
 
-        $i = (int) $intPart;
+        $i = (int)$intPart;
 
         if ($fracPart === '') {
             // No fraction → behave like integer
             return new self(
-                absoluteValue: (float) $i,
+                absoluteValue: (float)$i,
                 integerPart: $i,
                 fractionDigitCount: 0,
                 significantFractionDigitCount: 0,
@@ -164,18 +164,18 @@ final readonly class PluralOperands
 
         // f = visible fraction digits as integer (with trailing zeros)
         // e.g., "20" → 20, "100" → 100, "001" → 1
-        $f = (int) $fracPart;
+        $f = (int)$fracPart;
 
         // t = visible fraction digits without trailing zeros, as integer
         // e.g., "20" → "2" → 2, "100" → "1" → 1, "50" → "5" → 5
         $trimmed = rtrim($fracPart, '0');
-        $t = $trimmed === '' ? 0 : (int) $trimmed;
+        $t = $trimmed === '' ? 0 : (int)$trimmed;
 
         // w = number of fraction digits without trailing zeros
         $w = $trimmed === '' ? 0 : strlen($trimmed);
 
         // n = absolute value as float
-        $n = (float) ($intPart . '.' . $fracPart);
+        $n = (float)($intPart . '.' . $fracPart);
 
         return new self(
             absoluteValue: $n,
@@ -198,14 +198,14 @@ final readonly class PluralOperands
         $value = abs($value);
 
         // Use serialize precision to get the full representation
-        $str = (string) $value;
+        $str = (string)$value;
 
         // If PHP used scientific notation, convert via number_format
         if (stripos($str, 'e') !== false) {
             // Determine the number of decimal places needed
             $parts = explode('e', strtolower($str));
             $mantissa = $parts[0];
-            $exponent = (int) $parts[1];
+            $exponent = (int)$parts[1];
 
             $decPos = strpos($mantissa, '.');
             $mantissaDecimals = $decPos !== false ? strlen($mantissa) - $decPos - 1 : 0;

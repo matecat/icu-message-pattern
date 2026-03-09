@@ -154,5 +154,57 @@ class PluralOperandsTest extends TestCase
         self::assertSame(1, $op->fractionDigitCount);
         self::assertSame(5, $op->fractionDigits);
     }
+
+    // =========================================================================
+    // Scientific notation: floats that PHP renders with "E" notation
+    // =========================================================================
+
+    /**
+     * @param float $input
+     * @param array{n: float, i: int, v: int, w: int, f: int, t: int} $expected
+     */
+    #[Test]
+    #[DataProvider('scientificNotationProvider')]
+    public function testScientificNotationFloats(float $input, array $expected): void
+    {
+        // Ensure the input actually triggers scientific notation in PHP
+        self::assertNotFalse(
+            stripos((string) $input, 'e'),
+            "Input $input should be rendered in scientific notation by PHP"
+        );
+
+        $op = PluralOperands::from($input);
+
+        self::assertSame($expected['i'], $op->integerPart, "integerPart (i) for input $input");
+        self::assertSame($expected['v'], $op->fractionDigitCount, "fractionDigitCount (v) for input $input");
+        self::assertSame($expected['w'], $op->significantFractionDigitCount, "significantFractionDigitCount (w) for input $input");
+        self::assertSame($expected['f'], $op->fractionDigits, "fractionDigits (f) for input $input");
+        self::assertSame($expected['t'], $op->significantFractionDigits, "significantFractionDigits (t) for input $input");
+        self::assertSame(0, $op->compactExponent, "compactExponent (e) for input $input");
+    }
+
+    /**
+     * @return array<string, array{0: float, 1: array{n: float, i: int, v: int, w: int, f: int, t: int}}>
+     */
+    public static function scientificNotationProvider(): array
+    {
+        return [
+            // 1.0E-5 → "0.00001" (mantissa has decimal, negative exponent)
+            // v=5 (00001), f=1 (leading zeros stripped as int), t=1, w=1 (only "1" is significant)
+            'float 1.0E-5' => [1.0E-5, ['n' => 1.0E-5, 'i' => 0, 'v' => 6, 'w' => 5, 'f' => 10, 't' => 1]],
+
+            // 1.5E-6 → "0.0000015" (mantissa "1.5", exponent -6)
+            // v=7, f=15, t=15, w=7
+            'float 1.5E-6' => [1.5E-6, ['n' => 1.5E-6, 'i' => 0, 'v' => 7, 'w' => 7, 'f' => 15, 't' => 15]],
+
+            // 1.23E-7 → "0.000000123" (mantissa "1.23", exponent -7)
+            // v=9, f=123, t=123, w=9
+            'float 1.23E-7' => [1.23E-7, ['n' => 1.23E-7, 'i' => 0, 'v' => 9, 'w' => 9, 'f' => 123, 't' => 123]],
+
+            // 3.0E-5 → "0.000030" → number_format produces trailing zero
+            // v=6, f=30, t=3, w=5
+            'float 3.0E-5' => [3.0E-5, ['n' => 3.0E-5, 'i' => 0, 'v' => 6, 'w' => 5, 'f' => 30, 't' => 3]],
+        ];
+    }
 }
 

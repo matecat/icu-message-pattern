@@ -488,6 +488,279 @@ class PluralRulesDecimalTest extends TestCase
     }
 
     // =========================================================================
+    // Rule 5: Irish — n=1/n=2/n=3..6/n=7..10/other (uses n)
+    // =========================================================================
+
+    #[Test]
+    public function testIrishDecimals(): void
+    {
+        // @decimal one: n=1 (1.0)
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('ga', '1.0'));
+
+        // @decimal two: n=2 (2.0)
+        self::assertSame('two', PluralRules::getCardinalCategoryNameForNumber('ga', '2.0'));
+
+        // @decimal few: n=3..6 (5.0)
+        self::assertSame('few', PluralRules::getCardinalCategoryNameForNumber('ga', '5.0'));
+
+        // @decimal many: n=7..10 (8.0)
+        self::assertSame('many', PluralRules::getCardinalCategoryNameForNumber('ga', '8.0'));
+
+        // @decimal other: non-integer decimals → other
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('ga', '0.5'));
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('ga', '11.0'));
+    }
+
+    // =========================================================================
+    // Rule 13: Arabic — uses n (absolute value)
+    // =========================================================================
+
+    #[Test]
+    public function testArabicDecimals(): void
+    {
+        // @decimal zero: n=0
+        self::assertSame('zero', PluralRules::getCardinalCategoryNameForNumber('ar', '0.0'));
+
+        // @decimal one: n=1
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('ar', '1.0'));
+
+        // @decimal two: n=2
+        self::assertSame('two', PluralRules::getCardinalCategoryNameForNumber('ar', '2.0'));
+
+        // @decimal few: n%100=3..10
+        self::assertSame('few', PluralRules::getCardinalCategoryNameForNumber('ar', '3.0'));
+        self::assertSame('few', PluralRules::getCardinalCategoryNameForNumber('ar', '10.0'));
+
+        // @decimal many: n%100=11..99
+        self::assertSame('many', PluralRules::getCardinalCategoryNameForNumber('ar', '11.0'));
+        self::assertSame('many', PluralRules::getCardinalCategoryNameForNumber('ar', '99.0'));
+
+        // @decimal other: non-integer decimals
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('ar', '0.5'));
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('ar', '100.0'));
+    }
+
+    // =========================================================================
+    // Rule 14: Welsh — uses n (absolute value)
+    // =========================================================================
+
+    #[Test]
+    public function testWelshDecimals(): void
+    {
+        // @decimal zero: n=0
+        self::assertSame('zero', PluralRules::getCardinalCategoryNameForNumber('cy', '0.0'));
+
+        // @decimal one: n=1
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('cy', '1.0'));
+
+        // @decimal two: n=2
+        self::assertSame('two', PluralRules::getCardinalCategoryNameForNumber('cy', '2.0'));
+
+        // @decimal few: n=3
+        self::assertSame('few', PluralRules::getCardinalCategoryNameForNumber('cy', '3.0'));
+
+        // @decimal many: n=6
+        self::assertSame('many', PluralRules::getCardinalCategoryNameForNumber('cy', '6.0'));
+
+        // @decimal other: rest
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('cy', '4.0'));
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('cy', '0.5'));
+    }
+
+    // =========================================================================
+    // Rule 16: Scottish Gaelic — uses n
+    // =========================================================================
+
+    #[Test]
+    public function testScottishGaelicDecimals(): void
+    {
+        // @decimal one: n=1 or n=11
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('gd', '1.0'));
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('gd', '11.0'));
+
+        // @decimal two: n=2 or n=12
+        self::assertSame('two', PluralRules::getCardinalCategoryNameForNumber('gd', '2.0'));
+        self::assertSame('two', PluralRules::getCardinalCategoryNameForNumber('gd', '12.0'));
+
+        // @decimal few: n=3..10 or n=13..19
+        self::assertSame('few', PluralRules::getCardinalCategoryNameForNumber('gd', '5.0'));
+        self::assertSame('few', PluralRules::getCardinalCategoryNameForNumber('gd', '15.0'));
+
+        // @decimal other: rest
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('gd', '20.0'));
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('gd', '0.5'));
+    }
+
+    // =========================================================================
+    // Rule 17: Breton — uses n (integer-valued decimals participate)
+    // =========================================================================
+
+    #[Test]
+    public function testBretonDecimals(): void
+    {
+        // @decimal one: n%10=1 and n%100 not in 11,71,91
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('br', '1.0'));
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('br', '21.0'));
+
+        // @decimal two: n%10=2 and n%100 not in 12,72,92
+        self::assertSame('two', PluralRules::getCardinalCategoryNameForNumber('br', '2.0'));
+        self::assertSame('two', PluralRules::getCardinalCategoryNameForNumber('br', '22.0'));
+
+        // Non-integer decimals → other
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('br', '0.5'));
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('br', '1.5'));
+    }
+
+    // =========================================================================
+    // Rule 20: Catalan/Spanish/Italian — v > 0 → "other"
+    // =========================================================================
+
+    #[Test]
+    public function testCatalanSpanishItalianDecimals(): void
+    {
+        // For decimals (v > 0): one and many require v=0 → "other"
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('ca', '0.0'));
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('es', '1.0'));
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('it', '1.5'));
+    }
+
+    // =========================================================================
+    // Rule 21: Inuktitut/Sami — one=n=1; two=n=2; other=rest (uses n)
+    // =========================================================================
+
+    #[Test]
+    public function testInuktitutDecimals(): void
+    {
+        // @decimal one: n=1
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('iu', '1.0'));
+
+        // @decimal two: n=2
+        self::assertSame('two', PluralRules::getCardinalCategoryNameForNumber('iu', '2.0'));
+
+        // @decimal other: rest
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('iu', '0.5'));
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('se', '3.0'));
+    }
+
+    // =========================================================================
+    // Rule 22 (default): zero=n=0; one=n=1; other=rest (uses n)
+    // =========================================================================
+
+    #[Test]
+    public function testRule22DefaultDecimals(): void
+    {
+        // @decimal zero: n=0
+        self::assertSame('zero', PluralRules::getCardinalCategoryNameForNumber('ksh', '0.0'));
+
+        // @decimal one: n=1
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('ksh', '1.0'));
+
+        // @decimal other: rest
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('ksh', '0.5'));
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('ksh', '2.0'));
+    }
+
+    // =========================================================================
+    // Rule 23: Tachelhit — one=i=0 or n=1; few=n=2..10; other=rest
+    // =========================================================================
+
+    #[Test]
+    public function testTachelhitDecimals(): void
+    {
+        // @decimal one: i=0 or n=1
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('shi', '0.5'));
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('shi', '1.0'));
+
+        // @decimal few: n=2..10
+        self::assertSame('few', PluralRules::getCardinalCategoryNameForNumber('shi', '2.0'));
+        self::assertSame('few', PluralRules::getCardinalCategoryNameForNumber('shi', '10.0'));
+
+        // @decimal other: rest
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('shi', '11.0'));
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('shi', '1.5'));
+    }
+
+    // =========================================================================
+    // Rule 24: Cornish — uses n (integer-valued decimals participate)
+    // =========================================================================
+
+    #[Test]
+    public function testCornishDecimals(): void
+    {
+        // Integer-valued decimals → delegate to integer rules
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('kw', '1.0'));
+        self::assertSame('two', PluralRules::getCardinalCategoryNameForNumber('kw', '2.0'));
+
+        // Non-integer decimals → other
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('kw', '0.5'));
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('kw', '1.5'));
+    }
+
+    // =========================================================================
+    // Rule 26: Tamazight — one=n=0..1 or n=11..99; other=rest (uses n)
+    // =========================================================================
+
+    #[Test]
+    public function testTamazightDecimals(): void
+    {
+        // @decimal one: n=0..1 or n=11..99
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('tzm', '0.0'));
+        // The Tamazight n=0.5 is within range 0..1, so CLDR says "one".
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('tzm', '0.5'));
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('tzm', '1.0'));
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('tzm', '11.0'));
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('tzm', '99.0'));
+
+
+        // @decimal other: rest (n > 1 and n < 11, or n >= 100)
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('tzm', '2.0'));
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('tzm', '100.0'));
+    }
+
+    // =========================================================================
+    // Rule 28: Maltese — uses n
+    // =========================================================================
+
+    #[Test]
+    public function testMalteseDecimals(): void
+    {
+        // @decimal one: n=1
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('mt', '1.0'));
+
+        // @decimal two: n=2
+        self::assertSame('two', PluralRules::getCardinalCategoryNameForNumber('mt', '2.0'));
+
+        // @decimal few: n=0 or n%100=3..10
+        self::assertSame('few', PluralRules::getCardinalCategoryNameForNumber('mt', '0.0'));
+        self::assertSame('few', PluralRules::getCardinalCategoryNameForNumber('mt', '3.0'));
+        self::assertSame('few', PluralRules::getCardinalCategoryNameForNumber('mt', '10.0'));
+
+        // @decimal many: n%100=11..19
+        self::assertSame('many', PluralRules::getCardinalCategoryNameForNumber('mt', '11.0'));
+        self::assertSame('many', PluralRules::getCardinalCategoryNameForNumber('mt', '19.0'));
+
+        // @decimal other: rest
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('mt', '20.0'));
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('mt', '0.5'));
+    }
+
+    // =========================================================================
+    // Rule 29 / pt: Portuguese — i = 0..1 → "one"
+    // =========================================================================
+
+    #[Test]
+    public function testPortugueseDecimals(): void
+    {
+        // @decimal one: i=0..1
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('pt', '0.5'));
+        self::assertSame('one', PluralRules::getCardinalCategoryNameForNumber('pt', '1.5'));
+
+        // @decimal other: i >= 2
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('pt', '2.0'));
+        self::assertSame('other', PluralRules::getCardinalCategoryNameForNumber('pt', '2.5'));
+    }
+
+    // =========================================================================
     // Ordinal decimal tests (should use integer part)
     // =========================================================================
 
