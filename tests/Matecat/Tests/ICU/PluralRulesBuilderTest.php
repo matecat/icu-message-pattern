@@ -277,7 +277,7 @@ final class PluralRulesBuilderTest extends TestCase
         self::assertCount(2, $cardinals);
 
         self::assertSame('one', $cardinals[0]->category);
-        self::assertSame('Exactly 1 (whole number only)', $cardinals[0]->human_rule);
+        self::assertSame('Exactly 1 (no decimals)', $cardinals[0]->human_rule);
         self::assertStringContainsString('1', $cardinals[0]->example);
 
         self::assertSame('other', $cardinals[1]->category);

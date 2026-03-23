@@ -27,7 +27,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15 hari / 1.5 hari"
             }
         ],
         "ordinal": [
@@ -35,13 +35,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "Ambil belokan kanan 1."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Ambil belokan kanan yang ke-2."
             }
         ]
     },
@@ -52,20 +52,20 @@
             {
                 "category": "one",
                 "rule": "i = 0,1",
-                "human_rule": "0 or 1",
-                "example": "0, 1"
+                "human_rule": "Exactly 0 or 1, or any decimal number between 0 and 2, excluding 2 itself",
+                "example": "1 jour / 1,5 jour"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
-                "example": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …"
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
+                "example": "1 000 000 de jours / 1 M de jours"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+                "example": "2 jours / 2,0 jours"
             }
         ],
         "ordinal": [
@@ -73,13 +73,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "Prenez la 1re à droite."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Prenez la 2e à droite."
             }
         ]
     },
@@ -122,14 +122,14 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 day"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 days / 1.5 days"
             }
         ],
         "ordinal": [
@@ -137,25 +137,25 @@
                 "category": "one",
                 "rule": "n % 10 = 1 and n % 100 != 11",
                 "human_rule": "Ends in 1 but not 11",
-                "example": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                "example": "Take the 1st right."
             },
             {
                 "category": "two",
                 "rule": "n % 10 = 2 and n % 100 != 12",
                 "human_rule": "Ends in 2 but not 12",
-                "example": "2, 22, 32, 42, 52, 62, 72, 82, 102, 1002, …"
+                "example": "Take the 2nd right."
             },
             {
                 "category": "few",
                 "rule": "n % 10 = 3 and n % 100 != 13",
                 "human_rule": "Ends in 3 but not 13",
-                "example": "3, 23, 33, 43, 53, 63, 73, 83, 103, 1003, …"
+                "example": "Take the 3rd right."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 4~18, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Take the 4th right."
             }
         ]
     },
@@ -166,7 +166,7 @@
             {
                 "category": "one",
                 "rule": "n = 0..1",
-                "human_rule": "0 through 1 (any value between 0 and 1 inclusive)",
+                "human_rule": "Exactly 0 or 1",
                 "example": "da 1 / da 1.0"
             },
             {
@@ -193,13 +193,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "1 libër / 1,0 libër"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 libra / 0,9 libra"
             }
         ],
         "ordinal": [
@@ -207,19 +207,19 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "Merrni kthesën e 1-rë në të djathtë."
             },
             {
                 "category": "many",
                 "rule": "n % 10 = 4 and n % 100 != 14",
                 "human_rule": "Ends in 4 but not 14",
-                "example": "4, 24, 34, 44, 54, 64, 74, 84, 104, 1004, …"
+                "example": "Merrni kthesën e 4-t në të djathtë."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2, 3, 5~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Merrni kthesën e 2-të në të djathtë."
             }
         ]
     },
@@ -359,13 +359,13 @@
                 "category": "one",
                 "rule": "i = 0 or n = 1",
                 "human_rule": "Exactly 0, 1, or any decimal starting with 0",
-                "example": "0, 1"
+                "example": "আপুনি তাত 1 দিন আছিল, আপোনাৰ দিনটো কেনে আছিল? / আপুনি তাত 1.0 দিন আছিল, আপোনাৰ দিনটো কেনে আছিল?"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "আপুনি তাত 2 দিন আছিল, আপোনাৰ দিনবোৰ কেনে আছিল? / আপুনি তাত 1.1 দিন আছিল, আপোনাৰ দিনবোৰ কেনে আছিল?"
             }
         ],
         "ordinal": [
@@ -397,7 +397,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 11~25, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "সোঁফালে 11ৰ্থ পাক লওক৷"
             }
         ]
     },
@@ -408,7 +408,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 día"
             },
             {
@@ -435,13 +435,13 @@
                 "category": "one",
                 "rule": "i = 0 or n = 1",
                 "human_rule": "Exactly 0, 1, or any decimal starting with 0",
-                "example": "0, 1"
+                "example": "1 घंटा / 1.0 घंटा"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 घंटे / 1.1 घंटे"
             }
         ],
         "ordinal": [
@@ -449,31 +449,31 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "1ला दाहिना मोड़ लें."
             },
             {
                 "category": "two",
                 "rule": "n = 2,3",
                 "human_rule": "Exactly 2 or 3",
-                "example": "2, 3"
+                "example": "2रा दाहिना मोड़ लें."
             },
             {
                 "category": "few",
                 "rule": "n = 4",
                 "human_rule": "Exactly 4",
-                "example": "4"
+                "example": "4 दाहिना मोड़ लें."
             },
             {
                 "category": "many",
                 "rule": "n = 6",
                 "human_rule": "Exactly 6",
-                "example": "6"
+                "example": "6ठा दाहिना मोड़ लें."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 5, 7~20, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "5वां दाहिना मोड़ लें."
             }
         ]
     },
@@ -549,13 +549,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "Alış-veriş kartınızda 1 var. / Alınsın?"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Alış-veriş kartınızda 2 var. / Alınsınlar?"
             }
         ],
         "ordinal": [
@@ -563,25 +563,25 @@
                 "category": "one",
                 "rule": "i % 10 = 1,2,5,7,8 or i % 100 = 20,50,70,80",
                 "human_rule": "Ends in 1, 2, 5, 7, 8, or ends in 20, 50, 70, or 80",
-                "example": "1, 2, 5, 7, 8, 11, 12, 15, 17, 18, 20~22, 25, 101, 1001, …"
+                "example": "1-ci sağ döngəni seçin."
             },
             {
                 "category": "few",
                 "rule": "i % 10 = 3,4 or i % 1000 = 100,200,300,400,500,600,700,800,900",
                 "human_rule": "Ends in 3 or 4, or exact hundreds (100, 200, …, 900)",
-                "example": "3, 4, 13, 14, 23, 24, 33, 34, 43, 44, 53, 54, 63, 64, 73, 74, 100, 1003, …"
+                "example": "3-cü sağ döngəni seçin."
             },
             {
                 "category": "many",
                 "rule": "i = 0 or i % 10 = 6 or i % 100 = 40,60,90",
                 "human_rule": "0, or ends in 6, 40, 60, or 90",
-                "example": "0, 6, 16, 26, 36, 40, 46, 56, 106, 1006, …"
+                "example": "6-cı sağ döngəni seçin."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "9, 10, 19, 29, 30, 39, 49, 59, 69, 79, 109, 1000, 10000, 100000, 1000000, …"
+                "example": "9-cu sağ döngəni seçin."
             }
         ]
     },
@@ -593,13 +593,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "Alış-veriş kartınızda 1 var. / Alınsın?"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Alış-veriş kartınızda 2 var. / Alınsınlar?"
             }
         ],
         "ordinal": [
@@ -607,25 +607,25 @@
                 "category": "one",
                 "rule": "i % 10 = 1,2,5,7,8 or i % 100 = 20,50,70,80",
                 "human_rule": "Ends in 1, 2, 5, 7, 8, or ends in 20, 50, 70, or 80",
-                "example": "1, 2, 5, 7, 8, 11, 12, 15, 17, 18, 20~22, 25, 101, 1001, …"
+                "example": "1-ci sağ döngəni seçin."
             },
             {
                 "category": "few",
                 "rule": "i % 10 = 3,4 or i % 1000 = 100,200,300,400,500,600,700,800,900",
                 "human_rule": "Ends in 3 or 4, or exact hundreds (100, 200, …, 900)",
-                "example": "3, 4, 13, 14, 23, 24, 33, 34, 43, 44, 53, 54, 63, 64, 73, 74, 100, 1003, …"
+                "example": "3-cü sağ döngəni seçin."
             },
             {
                 "category": "many",
                 "rule": "i = 0 or i % 10 = 6 or i % 100 = 40,60,90",
                 "human_rule": "0, or ends in 6, 40, 60, or 90",
-                "example": "0, 6, 16, 26, 36, 40, 46, 56, 106, 1006, …"
+                "example": "6-cı sağ döngəni seçin."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "9, 10, 19, 29, 30, 39, 49, 59, 69, 79, 109, 1000, 10000, 100000, 1000000, …"
+                "example": "9-cu sağ döngəni seçin."
             }
         ]
     },
@@ -656,14 +656,14 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 day"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 days / 1.5 days"
             }
         ],
         "ordinal": [
@@ -671,25 +671,25 @@
                 "category": "one",
                 "rule": "n % 10 = 1 and n % 100 != 11",
                 "human_rule": "Ends in 1 but not 11",
-                "example": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                "example": "Take the 1st right."
             },
             {
                 "category": "two",
                 "rule": "n % 10 = 2 and n % 100 != 12",
                 "human_rule": "Ends in 2 but not 12",
-                "example": "2, 22, 32, 42, 52, 62, 72, 82, 102, 1002, …"
+                "example": "Take the 2nd right."
             },
             {
                 "category": "few",
                 "rule": "n % 10 = 3 and n % 100 != 13",
                 "human_rule": "Ends in 3 but not 13",
-                "example": "3, 23, 33, 43, 53, 63, 73, 83, 103, 1003, …"
+                "example": "Take the 3rd right."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 4~18, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Take the 4th right."
             }
         ]
     },
@@ -733,7 +733,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15 hari / 1,5 hari"
             }
         ],
         "ordinal": [
@@ -741,7 +741,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Ambil belokan kanan ke-15."
             }
         ]
     },
@@ -905,13 +905,13 @@
                 "category": "one",
                 "rule": "i = 0 or n = 1",
                 "human_rule": "Exactly 0, 1, or any decimal starting with 0",
-                "example": "0, 1"
+                "example": "1 घंटा / 1.0 घंटा"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 घंटे / 1.1 घंटे"
             }
         ],
         "ordinal": [
@@ -919,31 +919,31 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "1ला दाहिना मोड़ लें."
             },
             {
                 "category": "two",
                 "rule": "n = 2,3",
                 "human_rule": "Exactly 2 or 3",
-                "example": "2, 3"
+                "example": "2रा दाहिना मोड़ लें."
             },
             {
                 "category": "few",
                 "rule": "n = 4",
                 "human_rule": "Exactly 4",
-                "example": "4"
+                "example": "4 दाहिना मोड़ लें."
             },
             {
                 "category": "many",
                 "rule": "n = 6",
                 "human_rule": "Exactly 6",
-                "example": "6"
+                "example": "6ठा दाहिना मोड़ लें."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 5, 7~20, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "5वां दाहिना मोड़ लें."
             }
         ]
     },
@@ -954,7 +954,7 @@
             {
                 "category": "one",
                 "rule": "n = 0..1",
-                "human_rule": "0 through 1 (any value between 0 and 1 inclusive)",
+                "human_rule": "Exactly 0 or 1",
                 "example": "0, 1"
             },
             {
@@ -980,14 +980,14 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 day"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 days / 1.5 days"
             }
         ],
         "ordinal": [
@@ -995,25 +995,25 @@
                 "category": "one",
                 "rule": "n % 10 = 1 and n % 100 != 11",
                 "human_rule": "Ends in 1 but not 11",
-                "example": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                "example": "Take the 1st right."
             },
             {
                 "category": "two",
                 "rule": "n % 10 = 2 and n % 100 != 12",
                 "human_rule": "Ends in 2 but not 12",
-                "example": "2, 22, 32, 42, 52, 62, 72, 82, 102, 1002, …"
+                "example": "Take the 2nd right."
             },
             {
                 "category": "few",
                 "rule": "n % 10 = 3 and n % 100 != 13",
                 "human_rule": "Ends in 3 but not 13",
-                "example": "3, 23, 33, 43, 53, 63, 73, 83, 103, 1003, …"
+                "example": "Take the 3rd right."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 4~18, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Take the 4th right."
             }
         ]
     },
@@ -1025,7 +1025,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15 hari / 1.5 hari"
             }
         ],
         "ordinal": [
@@ -1033,13 +1033,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "Ambil belokan kanan 1."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Ambil belokan kanan yang ke-2."
             }
         ]
     },
@@ -1050,14 +1050,14 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 day"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 days / 1.5 days"
             }
         ],
         "ordinal": [
@@ -1065,25 +1065,25 @@
                 "category": "one",
                 "rule": "n % 10 = 1 and n % 100 != 11",
                 "human_rule": "Ends in 1 but not 11",
-                "example": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                "example": "Take the 1st right."
             },
             {
                 "category": "two",
                 "rule": "n % 10 = 2 and n % 100 != 12",
                 "human_rule": "Ends in 2 but not 12",
-                "example": "2, 22, 32, 42, 52, 62, 72, 82, 102, 1002, …"
+                "example": "Take the 2nd right."
             },
             {
                 "category": "few",
                 "rule": "n % 10 = 3 and n % 100 != 13",
                 "human_rule": "Ends in 3 but not 13",
-                "example": "3, 23, 33, 43, 53, 63, 73, 83, 103, 1003, …"
+                "example": "Take the 3rd right."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 4~18, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Take the 4th right."
             }
         ]
     },
@@ -1095,19 +1095,19 @@
                 "category": "zero",
                 "rule": "n = 0",
                 "human_rule": "Exactly 0",
-                "example": "0"
+                "example": "baa ʊshilé 0 / baa ʊshilé 0,0000"
             },
             {
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "ʊshilé 1 / ʊshilé 1,0"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "ɩshilé 2 / ɩshilé 0,1"
             }
         ],
         "ordinal": [
@@ -1126,14 +1126,14 @@
             {
                 "category": "few",
                 "rule": "i = 2,3,4,5,6",
-                "human_rule": "2 through 6",
+                "human_rule": "Exactly 2–6",
                 "example": "2~6"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "7~22, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Tɔ̂ɔ n’ʊnyɩŋca 7ja na gʊnyɩsono."
             }
         ]
     },
@@ -1215,7 +1215,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "no plural differences"
             }
         ],
         "ordinal": [
@@ -1246,13 +1246,13 @@
             {
                 "category": "few",
                 "rule": "n % 10 = 3..4,9 and n % 100 != 10..19,70..79,90..99",
-                "human_rule": "Ends in 3, 4, or 9 but not in teens, seventies, or nineties",
+                "human_rule": "Ends in 3, 4, or 9 but not 10–19, 70–79, 90–99",
                 "example": "3 cʼhi-error / 3,0 cʼhi-error"
             },
             {
                 "category": "many",
                 "rule": "n != 0 and n % 1000000 = 0",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
+                "human_rule": "Multiples of 1,000,000",
                 "example": "1 000 000 a chas / 1 000 000,0 a chas"
             },
             {
@@ -1310,7 +1310,7 @@
             {
                 "category": "few",
                 "rule": "v = 0 and i % 10 = 2..4 and i % 100 != 12..14 or f % 10 = 2..4 and f % 100 != 12..14",
-                "human_rule": "Ends in 2–4 but not 12–14 (including after decimal point)",
+                "human_rule": "Ends in 2–4, but not 12–14 (including after decimal point)",
                 "example": "2 sata / 0,2 sata"
             },
             {
@@ -1337,7 +1337,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15 hari / 1,5 hari"
             }
         ],
         "ordinal": [
@@ -1345,7 +1345,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Ambil belokan kanan ke-15."
             }
         ]
     },
@@ -1356,13 +1356,13 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 dia"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
                 "example": "1.000.000 de dies / 1 M de dies"
             },
             {
@@ -1426,13 +1426,13 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 dia"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
                 "example": "1.000.000 de dies / 1 M de dies"
             },
             {
@@ -1476,14 +1476,14 @@
             {
                 "category": "one",
                 "rule": "v = 0 and i = 1,2,3 or v = 0 and i % 10 != 4,6,9 or v != 0 and f % 10 != 4,6,9",
-                "human_rule": "Does not end in 4, 6, or 9",
-                "example": "0~3, 5, 7, 8, 10~13, 15, 17, 18, 20, 21, 100, 1000, 10000, 100000, 1000000, …"
+                "human_rule": "Does not end in 4, 6, 9 (including after decimal point)",
+                "example": "3 ka adlaw / 0.3 ka adlaw"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "4, 6, 9, 14, 16, 19, 24, 26, 104, 1004, …"
+                "example": "4 ka mga adlaw / 0.4 ka mga adlaw"
             }
         ],
         "ordinal": [
@@ -1661,13 +1661,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "Sepetinizde 1 X var. / Bunu almak istiyor musunuz?"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Sepetinizde 2 X var. / Bunları almak istiyor musunuz?"
             }
         ],
         "ordinal": [
@@ -1675,7 +1675,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15. / sağdan dönün."
             }
         ]
     },
@@ -1686,20 +1686,20 @@
             {
                 "category": "one",
                 "rule": "i = 0,1",
-                "human_rule": "0 or 1",
-                "example": "0, 1"
+                "human_rule": "Exactly 0 or 1, or any decimal number between 0 and 2, excluding 2 itself",
+                "example": "1 jour / 1,5 jour"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
-                "example": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …"
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
+                "example": "1 000 000 de jours / 1 M de jours"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+                "example": "2 jours / 2,0 jours"
             }
         ],
         "ordinal": [
@@ -1707,13 +1707,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "Prenez la 1re à droite."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Prenez la 2e à droite."
             }
         ]
     },
@@ -1724,13 +1724,13 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 den"
             },
             {
                 "category": "few",
                 "rule": "i = 2..4 and v = 0",
-                "human_rule": "2, 3, or 4 (whole numbers only)",
+                "human_rule": "Exactly 2, 3, or 4 (no decimals)",
                 "example": "2 dny"
             },
             {
@@ -1762,14 +1762,14 @@
             {
                 "category": "one",
                 "rule": "n = 0..1",
-                "human_rule": "0 through 1 (any value between 0 and 1 inclusive)",
-                "example": "0, 1"
+                "human_rule": "Exactly 0 or 1",
+                "example": "1 ᑮᓯᑳᐤ / 1.0 ᑮᓯᑳᐤ"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 ᑮᓯᑳᐘ / 0.1 ᑮᓯᑳᐘ"
             }
         ],
         "ordinal": [
@@ -1789,13 +1789,13 @@
                 "category": "one",
                 "rule": "i = 0 or n = 1",
                 "human_rule": "Exactly 0, 1, or any decimal starting with 0",
-                "example": "0, 1"
+                "example": "সসে 1টি আপেল খেল, সেটি ভাল / সসে 1.0টি আপেল খেল, সেটি ভাল"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "সসে 2টি আপেল খেল, সেগুলি ভাল / সসে 1.1টি আপেল খেল, সেগুলি ভাল"
             }
         ],
         "ordinal": [
@@ -1803,31 +1803,31 @@
                 "category": "one",
                 "rule": "n = 1,5,7,8,9,10",
                 "human_rule": "Exactly 1, 5, 7, 8, 9, or 10",
-                "example": "1, 5, 7~10"
+                "example": "ডান দিকে 1ম বাঁকটি নিন।"
             },
             {
                 "category": "two",
                 "rule": "n = 2,3",
                 "human_rule": "Exactly 2 or 3",
-                "example": "2, 3"
+                "example": "ডান দিকে 2য় বাঁকটি নিন।"
             },
             {
                 "category": "few",
                 "rule": "n = 4",
                 "human_rule": "Exactly 4",
-                "example": "4"
+                "example": "ডান দিকে 4র্থ বাঁকটি নিন।"
             },
             {
                 "category": "many",
                 "rule": "n = 6",
                 "human_rule": "Exactly 6",
-                "example": "6"
+                "example": "ডান দিকে 6ষ্ঠ বাঁকটি নিন।"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 11~25, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "ডান দিকে 11তম বাঁকটি নিন।"
             }
         ]
     },
@@ -1918,7 +1918,7 @@
             {
                 "category": "one",
                 "rule": "n = 1 or t != 0 and i = 0,1",
-                "human_rule": "Exactly 1, or a non-zero decimal starting with 0 or 1",
+                "human_rule": "Exactly 1, or any decimal number between 0 and 2, excluding 0 and 2 themselves",
                 "example": "1 dag / 0,1 dag"
             },
             {
@@ -1944,7 +1944,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 Tag"
             },
             {
@@ -2101,7 +2101,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "no plural differences"
             }
         ],
         "ordinal": [
@@ -2192,7 +2192,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 day"
             },
             {
@@ -2237,13 +2237,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "1 tago / 1,0 tago"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 tagoj / 0,9 tagoj"
             }
         ],
         "ordinal": [
@@ -2268,7 +2268,7 @@
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
                 "example": "1.000.000 de días / 1 M de días"
             },
             {
@@ -2300,7 +2300,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 dia"
             },
             {
@@ -2378,7 +2378,7 @@
             {
                 "category": "one",
                 "rule": "i = 0,1",
-                "human_rule": "0 or 1",
+                "human_rule": "Exactly 0 or 1, or any decimal number between 0 and 2, excluding 2 itself",
                 "example": "0, 1"
             },
             {
@@ -2404,7 +2404,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 päivä"
             },
             {
@@ -2430,7 +2430,7 @@
             {
                 "category": "one",
                 "rule": "v = 0 and i = 1,2,3 or v = 0 and i % 10 != 4,6,9 or v != 0 and f % 10 != 4,6,9",
-                "human_rule": "Does not end in 4, 6, or 9",
+                "human_rule": "Does not end in 4, 6, 9 (including after decimal point)",
                 "example": "3 mansanas / 0.3 mansanas"
             },
             {
@@ -2483,13 +2483,13 @@
                 "category": "one",
                 "rule": "i = 0 or n = 1",
                 "human_rule": "Exactly 0, 1, or any decimal starting with 0",
-                "example": "0, 1"
+                "example": "1 usuku / 1.0 usuku"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 izinsuku / 1.1 izinsuku"
             }
         ],
         "ordinal": [
@@ -2497,7 +2497,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Thatha indlela ejikela kwesokudla engu-15"
             }
         ]
     },
@@ -2554,13 +2554,13 @@
             {
                 "category": "one",
                 "rule": "i = 0,1",
-                "human_rule": "0 or 1",
+                "human_rule": "Exactly 0 or 1, or any decimal number between 0 and 2, excluding 2 itself",
                 "example": "1 jour / 1,5 jour"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
                 "example": "1 000 000 de jours / 1 M de jours"
             },
             {
@@ -2592,7 +2592,7 @@
             {
                 "category": "one",
                 "rule": "i = 0,1",
-                "human_rule": "0 or 1",
+                "human_rule": "Exactly 0 or 1, or any decimal number between 0 and 2, excluding 2 itself",
                 "example": "0, 1"
             },
             {
@@ -2644,7 +2644,7 @@
             {
                 "category": "one",
                 "rule": "i = 0,1",
-                "human_rule": "0 or 1",
+                "human_rule": "Exactly 0 or 1, or any decimal number between 0 and 2, excluding 2 itself",
                 "example": "0, 1"
             },
             {
@@ -2670,14 +2670,14 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 dei"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 dagen / 1,5 dagen"
             }
         ],
         "ordinal": [
@@ -2708,13 +2708,13 @@
             {
                 "category": "few",
                 "rule": "n = 3..6",
-                "human_rule": "3 through 6",
+                "human_rule": "Exactly 3–6",
                 "example": "3 cinn, 3 huaire, 3 chat, 3 éan, 3 bhróg / 3.0 cinn, 3.0 huaire, 3.0 chat, 3.0 éan, 3.0 bhróg"
             },
             {
                 "category": "many",
                 "rule": "n = 7..10",
-                "human_rule": "7 through 10",
+                "human_rule": "Exactly 7–10",
                 "example": "7 gcinn, 7 n-uaire, 7 gcat, 7 n-éan, 7 mbróg / 7.0 gcinn, 7.0 n-uaire, 7.0 gcat, 7.0 n-éan, 7.0 mbróg"
             },
             {
@@ -2798,14 +2798,14 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 day"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 days / 1.5 days"
             }
         ],
         "ordinal": [
@@ -2813,25 +2813,25 @@
                 "category": "one",
                 "rule": "n % 10 = 1 and n % 100 != 11",
                 "human_rule": "Ends in 1 but not 11",
-                "example": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                "example": "Take the 1st right."
             },
             {
                 "category": "two",
                 "rule": "n % 10 = 2 and n % 100 != 12",
                 "human_rule": "Ends in 2 but not 12",
-                "example": "2, 22, 32, 42, 52, 62, 72, 82, 102, 1002, …"
+                "example": "Take the 2nd right."
             },
             {
                 "category": "few",
                 "rule": "n % 10 = 3 and n % 100 != 13",
                 "human_rule": "Ends in 3 but not 13",
-                "example": "3, 23, 33, 43, 53, 63, 73, 83, 103, 1003, …"
+                "example": "Take the 3rd right."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 4~18, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Take the 4th right."
             }
         ]
     },
@@ -2854,7 +2854,7 @@
             {
                 "category": "few",
                 "rule": "n = 3..10,13..19",
-                "human_rule": "3 through 10, or 13 through 19",
+                "human_rule": "Exactly 3-10 or 13-19",
                 "example": "3 brògan / 3.0 brògan"
             },
             {
@@ -2918,7 +2918,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 día"
             },
             {
@@ -2985,13 +2985,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "1 ημέρα / 1,0 ημέρα"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 ημέρες / 0,9 ημέρες"
             }
         ],
         "ordinal": [
@@ -2999,7 +2999,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Στρίψτε στην 15η δεξιά."
             }
         ]
     },
@@ -3126,19 +3126,19 @@
             {
                 "category": "one",
                 "rule": "v = 0 and i % 10 = 1",
-                "human_rule": "Ends in 1 (whole numbers only)",
+                "human_rule": "Ends in 1 (no decimals)",
                 "example": "1 thunnag/vuc/ooyl"
             },
             {
                 "category": "two",
                 "rule": "v = 0 and i % 10 = 2",
-                "human_rule": "Ends in 2 (whole numbers only)",
+                "human_rule": "Ends in 2 (no decimals)",
                 "example": "2 hunnag/vuc/ooyl"
             },
             {
                 "category": "few",
                 "rule": "v = 0 and i % 100 = 0,20,40,60,80",
-                "human_rule": "Exactly 0, 20, 40, 60, 80, 100, …",
+                "human_rule": "Ends in 00, 20, 40, 60, or 80 (no decimals)",
                 "example": "20 thunnag/muc/ooyl"
             },
             {
@@ -3170,14 +3170,14 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 day"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 days / 1.5 days"
             }
         ],
         "ordinal": [
@@ -3185,25 +3185,25 @@
                 "category": "one",
                 "rule": "n % 10 = 1 and n % 100 != 11",
                 "human_rule": "Ends in 1 but not 11",
-                "example": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                "example": "Take the 1st right."
             },
             {
                 "category": "two",
                 "rule": "n % 10 = 2 and n % 100 != 12",
                 "human_rule": "Ends in 2 but not 12",
-                "example": "2, 22, 32, 42, 52, 62, 72, 82, 102, 1002, …"
+                "example": "Take the 2nd right."
             },
             {
                 "category": "few",
                 "rule": "n % 10 = 3 and n % 100 != 13",
                 "human_rule": "Ends in 3 but not 13",
-                "example": "3, 23, 33, 43, 53, 63, 73, 83, 103, 1003, …"
+                "example": "Take the 3rd right."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 4~18, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Take the 4th right."
             }
         ]
     },
@@ -3266,13 +3266,13 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0 or i = 0 and v != 0",
-                "human_rule": "Exactly 1 (whole number only), or any decimal starting with 0",
+                "human_rule": "Exactly 1, or any decimal number between 0 and 1, excluding 0 itself",
                 "example": "‫יום / יום‬"
             },
             {
                 "category": "two",
                 "rule": "i = 2 and v = 0",
-                "human_rule": "Exactly 2 (whole number only)",
+                "human_rule": "Exactly 2 (no decimals)",
                 "example": "‫יומיים‬"
             },
             {
@@ -3368,14 +3368,14 @@
             {
                 "category": "one",
                 "rule": "v = 0 and i = 1,2,3 or v = 0 and i % 10 != 4,6,9 or v != 0 and f % 10 != 4,6,9",
-                "human_rule": "Does not end in 4, 6, or 9",
-                "example": "0~3, 5, 7, 8, 10~13, 15, 17, 18, 20, 21, 100, 1000, 10000, 100000, 1000000, …"
+                "human_rule": "Does not end in 4, 6, 9 (including after decimal point)",
+                "example": "3 mansanas / 0.3 mansanas"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "4, 6, 9, 14, 16, 19, 24, 26, 104, 1004, …"
+                "example": "4 na mansanas / 0.4 na mansanas"
             }
         ],
         "ordinal": [
@@ -3389,7 +3389,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Kunin ang ika-2 (na) kanan."
             }
         ]
     },
@@ -3421,13 +3421,13 @@
                 "category": "one",
                 "rule": "i = 0 or n = 1",
                 "human_rule": "Exactly 0, 1, or any decimal starting with 0",
-                "example": "0, 1"
+                "example": "1 घंटा / 1.0 घंटा"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 घंटे / 1.1 घंटे"
             }
         ],
         "ordinal": [
@@ -3435,31 +3435,31 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "1ला दाहिना मोड़ लें."
             },
             {
                 "category": "two",
                 "rule": "n = 2,3",
                 "human_rule": "Exactly 2 or 3",
-                "example": "2, 3"
+                "example": "2रा दाहिना मोड़ लें."
             },
             {
                 "category": "few",
                 "rule": "n = 4",
                 "human_rule": "Exactly 4",
-                "example": "4"
+                "example": "4 दाहिना मोड़ लें."
             },
             {
                 "category": "many",
                 "rule": "n = 6",
                 "human_rule": "Exactly 6",
-                "example": "6"
+                "example": "6ठा दाहिना मोड़ लें."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 5, 7~20, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "5वां दाहिना मोड़ लें."
             }
         ]
     },
@@ -3516,7 +3516,7 @@
             {
                 "category": "few",
                 "rule": "v = 0 and i % 10 = 2..4 and i % 100 != 12..14 or f % 10 = 2..4 and f % 100 != 12..14",
-                "human_rule": "Ends in 2–4 but not 12–14 (including after decimal point)",
+                "human_rule": "Ends in 2–4, but not 12–14 (including after decimal point)",
                 "example": "2 sata / 0,2 sata"
             },
             {
@@ -3580,13 +3580,13 @@
             {
                 "category": "one",
                 "rule": "i = 0,1",
-                "human_rule": "0 or 1",
+                "human_rule": "Exactly 0 or 1, or any decimal number between 0 and 2, excluding 2 itself",
                 "example": "1 jour / 1,5 jour"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
                 "example": "1 000 000 de jours / 1 M de jours"
             },
             {
@@ -3650,7 +3650,7 @@
             {
                 "category": "one",
                 "rule": "i = 0,1",
-                "human_rule": "0 or 1",
+                "human_rule": "Exactly 0 or 1, or any decimal number between 0 and 2, excluding 2 itself",
                 "example": "այդ 1 պանակը / այդ 1,5 պանակը"
             },
             {
@@ -3682,14 +3682,14 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 die"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 dies / 1,5 dies"
             }
         ],
         "ordinal": [
@@ -3768,14 +3768,14 @@
             {
                 "category": "one",
                 "rule": "v = 0 and i = 1,2,3 or v = 0 and i % 10 != 4,6,9 or v != 0 and f % 10 != 4,6,9",
-                "human_rule": "Does not end in 4, 6, or 9",
-                "example": "0~3, 5, 7, 8, 10~13, 15, 17, 18, 20, 21, 100, 1000, 10000, 100000, 1000000, …"
+                "human_rule": "Does not end in 4, 6, 9 (including after decimal point)",
+                "example": "3 mansanas / 0.3 mansanas"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "4, 6, 9, 14, 16, 19, 24, 26, 104, 1004, …"
+                "example": "4 na mansanas / 0.4 na mansanas"
             }
         ],
         "ordinal": [
@@ -3789,7 +3789,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Kunin ang ika-2 (na) kanan."
             }
         ]
     },
@@ -3800,7 +3800,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1"
             },
             {
@@ -3852,13 +3852,13 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 giorno"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
                 "example": "1.000.000 di giorni / 1 Mln di giorni"
             },
             {
@@ -3942,14 +3942,14 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 day"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 days / 1.5 days"
             }
         ],
         "ordinal": [
@@ -3957,25 +3957,25 @@
                 "category": "one",
                 "rule": "n % 10 = 1 and n % 100 != 11",
                 "human_rule": "Ends in 1 but not 11",
-                "example": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                "example": "Take the 1st right."
             },
             {
                 "category": "two",
                 "rule": "n % 10 = 2 and n % 100 != 12",
                 "human_rule": "Ends in 2 but not 12",
-                "example": "2, 22, 32, 42, 52, 62, 72, 82, 102, 1002, …"
+                "example": "Take the 2nd right."
             },
             {
                 "category": "few",
                 "rule": "n % 10 = 3 and n % 100 != 13",
                 "human_rule": "Ends in 3 but not 13",
-                "example": "3, 23, 33, 43, 53, 63, 73, 83, 103, 1003, …"
+                "example": "Take the 3rd right."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 4~18, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Take the 4th right."
             }
         ]
     },
@@ -4116,7 +4116,7 @@
             {
                 "category": "one",
                 "rule": "i = 0,1",
-                "human_rule": "0 or 1",
+                "human_rule": "Exactly 0 or 1, or any decimal number between 0 and 2, excluding 2 itself",
                 "example": "1 n wass / 1,5 n wass"
             },
             {
@@ -4189,13 +4189,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "1 Ulloq / 1,0 Ulloq"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 Ullut / 0,9 Ullut"
             }
         ],
         "ordinal": [
@@ -4235,7 +4235,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15 ရက် / 1.5 ရက်"
             }
         ],
         "ordinal": [
@@ -4243,7 +4243,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15 အုပ်မြောက်"
             }
         ]
     },
@@ -4255,13 +4255,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "‫1 دۅہ / 1.0 دۅہ‬"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "‫2 دوہٕ / 0.9 دوہٕ‬"
             }
         ],
         "ordinal": [
@@ -4407,13 +4407,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "Картанд 1 Х байна. / Үүнийг авах уу?"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Картанд 2 Х байна. / Тэднийг авах уу?"
             }
         ],
         "ordinal": [
@@ -4421,7 +4421,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15-р баруун эргэлтээр орно уу"
             }
         ]
     },
@@ -4591,13 +4591,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "rojek"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 roj / 0,9 roj"
             }
         ],
         "ordinal": [
@@ -4811,7 +4811,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15 ရက် / 1.5 ရက်"
             }
         ],
         "ordinal": [
@@ -4819,7 +4819,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15 အုပ်မြောက်"
             }
         ]
     },
@@ -4880,7 +4880,7 @@
             {
                 "category": "many",
                 "rule": "n != 1 and n % 100 = 1,21,41,61,81",
-                "human_rule": "Not 1, and ends in 01, 21, 41, 61, or 81",
+                "human_rule": "Ends in 01, 21, 41, 61, or 81 (excluding 1 itself)",
                 "example": "n != 1 and /   n % 100 = 1,21,41,61,81"
             },
             {
@@ -4944,20 +4944,20 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 giorno"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
-                "example": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …"
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
+                "example": "1.000.000 di giorni / 1 Mln di giorni"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+                "example": "2 giorni / 1,5 giorni"
             }
         ],
         "ordinal": [
@@ -4965,13 +4965,13 @@
                 "category": "many",
                 "rule": "n = 11,8,80,800",
                 "human_rule": "Exactly 8, 11, 80, or 800",
-                "example": "8, 11, 80, 800"
+                "example": "Prendi l’8° a destra."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0~7, 9, 10, 12~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Prendi la 7° a destra."
             }
         ]
     },
@@ -4988,7 +4988,7 @@
             {
                 "category": "one",
                 "rule": "i = 0,1 and n != 0",
-                "human_rule": "0 or 1, but not zero itself",
+                "human_rule": "Exactly 1, or any decimal starting with 0 or 1, excluding 0 itself",
                 "example": "i = 0,1 and /   n != 0"
             },
             {
@@ -5040,14 +5040,14 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 dag"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 dagen / 1,5 dagen"
             }
         ],
         "ordinal": [
@@ -5055,7 +5055,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Neem de 15e afslag rechts."
             }
         ]
     },
@@ -5066,7 +5066,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 giorno"
             },
             {
@@ -5118,13 +5118,13 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 de"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
                 "example": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, … | 1.0000001c6, 1.1c6, 2.0000001c6, 2.1c6, 3.0000001c6, 3.1c6, …"
             },
             {
@@ -5145,7 +5145,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0~7, 9, 10, 12~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Té la 7 a man dërta."
             }
         ]
     },
@@ -5156,20 +5156,20 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 giorno"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
-                "example": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …"
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
+                "example": "1.000.000 di giorni / 1 Mln di giorni"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+                "example": "2 giorni / 1,5 giorni"
             }
         ],
         "ordinal": [
@@ -5177,13 +5177,13 @@
                 "category": "many",
                 "rule": "n = 11,8,80,800",
                 "human_rule": "Exactly 8, 11, 80, or 800",
-                "example": "8, 11, 80, 800"
+                "example": "Prendi l’8° a destra."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0~7, 9, 10, 12~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Prendi la 7° a destra."
             }
         ]
     },
@@ -5194,7 +5194,7 @@
             {
                 "category": "one",
                 "rule": "n = 0..1",
-                "human_rule": "0 through 1 (any value between 0 and 1 inclusive)",
+                "human_rule": "Exactly 0 or 1",
                 "example": "0, 1"
             },
             {
@@ -5258,7 +5258,7 @@
             {
                 "category": "many",
                 "rule": "f != 0",
-                "human_rule": "Any number with decimals",
+                "human_rule": "Any number with non-zero decimals",
                 "example": "0,1 obuolio"
             },
             {
@@ -5284,20 +5284,20 @@
             {
                 "category": "zero",
                 "rule": "n % 10 = 0 or n % 100 = 11..19 or v = 2 and f % 100 = 11..19",
-                "human_rule": "Ends in 0 or 11–19 (including after decimal point)",
-                "example": "0, 10~20, 30, 40, 50, 60, 100, 1000, 10000, 100000, 1000000, …"
+                "human_rule": "Ends in 0, 11–19, or exactly two decimals (.11–.19)",
+                "example": "10 diennakšu / 10,0 diennakšu"
             },
             {
                 "category": "one",
                 "rule": "n % 10 = 1 and n % 100 != 11 or v = 2 and f % 10 = 1 and f % 100 != 11 or v != 2 and f % 10 = 1",
                 "human_rule": "Ends in 1 but not 11 (including after decimal point)",
-                "example": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                "example": "1 diennakts / 0,1 diennakts"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~9, 22~29, 102, 1002, …"
+                "example": "2 diennaktis / 0,2 diennaktis"
             }
         ],
         "ordinal": [
@@ -5305,7 +5305,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Dodieties 15. / pagriezienā pa labi."
             }
         ]
     },
@@ -5422,7 +5422,7 @@
             {
                 "category": "zero",
                 "rule": "n % 10 = 0 or n % 100 = 11..19 or v = 2 and f % 100 = 11..19",
-                "human_rule": "Ends in 0 or 11–19 (including after decimal point)",
+                "human_rule": "Ends in 0, 11–19, or exactly two decimals (.11–.19)",
                 "example": "10 diennakšu / 10,0 diennakšu"
             },
             {
@@ -5454,20 +5454,20 @@
             {
                 "category": "zero",
                 "rule": "n % 10 = 0 or n % 100 = 11..19 or v = 2 and f % 100 = 11..19",
-                "human_rule": "Ends in 0 or 11–19 (including after decimal point)",
-                "example": "0, 10~20, 30, 40, 50, 60, 100, 1000, 10000, 100000, 1000000, …"
+                "human_rule": "Ends in 0, 11–19, or exactly two decimals (.11–.19)",
+                "example": "10 diennakšu / 10,0 diennakšu"
             },
             {
                 "category": "one",
                 "rule": "n % 10 = 1 and n % 100 != 11 or v = 2 and f % 10 = 1 and f % 100 != 11 or v != 2 and f % 10 = 1",
                 "human_rule": "Ends in 1 but not 11 (including after decimal point)",
-                "example": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                "example": "1 diennakts / 0,1 diennakts"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~9, 22~29, 102, 1002, …"
+                "example": "2 diennaktis / 0,2 diennaktis"
             }
         ],
         "ordinal": [
@@ -5475,7 +5475,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Dodieties 15. / pagriezienā pa labi."
             }
         ]
     },
@@ -5487,13 +5487,13 @@
                 "category": "one",
                 "rule": "i = 0 or n = 1",
                 "human_rule": "Exactly 0, 1, or any decimal starting with 0",
-                "example": "0, 1"
+                "example": "1 घंटा / 1.0 घंटा"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 घंटे / 1.1 घंटे"
             }
         ],
         "ordinal": [
@@ -5501,31 +5501,31 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "1ला दाहिना मोड़ लें."
             },
             {
                 "category": "two",
                 "rule": "n = 2,3",
                 "human_rule": "Exactly 2 or 3",
-                "example": "2, 3"
+                "example": "2रा दाहिना मोड़ लें."
             },
             {
                 "category": "few",
                 "rule": "n = 4",
                 "human_rule": "Exactly 4",
-                "example": "4"
+                "example": "4 दाहिना मोड़ लें."
             },
             {
                 "category": "many",
                 "rule": "n = 6",
                 "human_rule": "Exactly 6",
-                "example": "6"
+                "example": "6ठा दाहिना मोड़ लें."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 5, 7~20, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "5वां दाहिना मोड़ लें."
             }
         ]
     },
@@ -5537,13 +5537,13 @@
                 "category": "one",
                 "rule": "i = 0 or n = 1",
                 "human_rule": "Exactly 0, 1, or any decimal starting with 0",
-                "example": "0, 1"
+                "example": "1 घंटा / 1.0 घंटा"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 घंटे / 1.1 घंटे"
             }
         ],
         "ordinal": [
@@ -5551,31 +5551,31 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "1ला दाहिना मोड़ लें."
             },
             {
                 "category": "two",
                 "rule": "n = 2,3",
                 "human_rule": "Exactly 2 or 3",
-                "example": "2, 3"
+                "example": "2रा दाहिना मोड़ लें."
             },
             {
                 "category": "few",
                 "rule": "n = 4",
                 "human_rule": "Exactly 4",
-                "example": "4"
+                "example": "4 दाहिना मोड़ लें."
             },
             {
                 "category": "many",
                 "rule": "n = 6",
                 "human_rule": "Exactly 6",
-                "example": "6"
+                "example": "6ठा दाहिना मोड़ लें."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 5, 7~20, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "5वां दाहिना मोड़ लें."
             }
         ]
     },
@@ -5633,19 +5633,19 @@
                 "category": "one",
                 "rule": "v = 0 and i % 10 = 1 and i % 100 != 11 or f % 10 = 1 and f % 100 != 11",
                 "human_rule": "Ends in 1 but not 11 (including after decimal point)",
-                "example": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                "example": "1 сат / 0,1 сат"
             },
             {
                 "category": "few",
                 "rule": "v = 0 and i % 10 = 2..4 and i % 100 != 12..14 or f % 10 = 2..4 and f % 100 != 12..14",
-                "human_rule": "Ends in 2–4 but not 12–14 (including after decimal point)",
-                "example": "2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …"
+                "human_rule": "Ends in 2–4, but not 12–14 (including after decimal point)",
+                "example": "2 сата / 0,2 сата"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "5 сати / 0,5 сати"
             }
         ],
         "ordinal": [
@@ -5653,7 +5653,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Скрените у 15. / десно."
             }
         ]
     },
@@ -5704,20 +5704,20 @@
             {
                 "category": "one",
                 "rule": "i = 0,1",
-                "human_rule": "0 or 1",
-                "example": "0, 1"
+                "human_rule": "Exactly 0 or 1, or any decimal number between 0 and 2, excluding 2 itself",
+                "example": "1 jour / 1,5 jour"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
-                "example": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …"
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
+                "example": "1 000 000 de jours / 1 M de jours"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+                "example": "2 jours / 2,0 jours"
             }
         ],
         "ordinal": [
@@ -5725,13 +5725,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "Prenez la 1re à droite."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Prenez la 2e à droite."
             }
         ]
     },
@@ -5782,7 +5782,7 @@
             {
                 "category": "one",
                 "rule": "n = 0..1",
-                "human_rule": "0 through 1 (any value between 0 and 1 inclusive)",
+                "human_rule": "Exactly 0 or 1",
                 "example": "0, 1"
             },
             {
@@ -5895,7 +5895,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15 hari / 1.5 hari"
             }
         ],
         "ordinal": [
@@ -5903,13 +5903,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "Ambil belokan kanan 1."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Ambil belokan kanan yang ke-2."
             }
         ]
     },
@@ -6056,13 +6056,13 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 zi"
             },
             {
                 "category": "few",
                 "rule": "v != 0 or n = 0 or n != 1 and n % 100 = 1..19",
-                "human_rule": "0, any number with decimals, or ends in 01–19 (except 1 itself)",
+                "human_rule": "Exactly 0, any number with decimals, or ends in 01–19 (except 1 itself)",
                 "example": "2 zile / 1,5 zile"
             },
             {
@@ -6236,7 +6236,7 @@
             {
                 "category": "few",
                 "rule": "n = 0 or n % 100 = 3..10",
-                "human_rule": "0, or ends in 03–10",
+                "human_rule": "Exactly 0, or ends in 03–10",
                 "example": "3 ijiem / 3.0 ijiem"
             },
             {
@@ -6406,7 +6406,7 @@
             {
                 "category": "one",
                 "rule": "n = 1..4",
-                "human_rule": "1 through 4",
+                "human_rule": "Exactly 1–4",
                 "example": "1 ओ दायाँ घुम्ति लिनुहोस्"
             },
             {
@@ -6444,7 +6444,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 dag"
             },
             {
@@ -6594,7 +6594,7 @@
             {
                 "category": "one",
                 "rule": "n = 0..1",
-                "human_rule": "0 through 1 (any value between 0 and 1 inclusive)",
+                "human_rule": "Exactly 0 or 1",
                 "example": "0, 1"
             },
             {
@@ -6930,7 +6930,7 @@
             {
                 "category": "one",
                 "rule": "n = 0..1",
-                "human_rule": "0 through 1 (any value between 0 and 1 inclusive)",
+                "human_rule": "Exactly 0 or 1",
                 "example": "1 ਘੰਟਾ / 1.0 ਘੰਟਾ"
             },
             {
@@ -6956,14 +6956,14 @@
             {
                 "category": "one",
                 "rule": "v = 0 and i = 1,2,3 or v = 0 and i % 10 != 4,6,9 or v != 0 and f % 10 != 4,6,9",
-                "human_rule": "Does not end in 4, 6, or 9",
-                "example": "0~3, 5, 7, 8, 10~13, 15, 17, 18, 20, 21, 100, 1000, 10000, 100000, 1000000, …"
+                "human_rule": "Does not end in 4, 6, 9 (including after decimal point)",
+                "example": "3 mansanas / 0.3 mansanas"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "4, 6, 9, 14, 16, 19, 24, 26, 104, 1004, …"
+                "example": "4 na mansanas / 0.4 na mansanas"
             }
         ],
         "ordinal": [
@@ -6977,7 +6977,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Kunin ang ika-2 (na) kanan."
             }
         ]
     },
@@ -6989,13 +6989,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "1 dia / 1.0 dia"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 dia / 0.9 dia"
             }
         ],
         "ordinal": [
@@ -7035,13 +7035,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "‫1 ورځ / 1,0 ورځ‬"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "‫2 ورځې / 0,9 ورځې‬"
             }
         ],
         "ordinal": [
@@ -7049,7 +7049,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "‫15 کور کیڼ اړخ ته دی‬"
             }
         ]
     },
@@ -7106,14 +7106,14 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 day"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 days / 1.5 days"
             }
         ],
         "ordinal": [
@@ -7121,25 +7121,25 @@
                 "category": "one",
                 "rule": "n % 10 = 1 and n % 100 != 11",
                 "human_rule": "Ends in 1 but not 11",
-                "example": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                "example": "Take the 1st right."
             },
             {
                 "category": "two",
                 "rule": "n % 10 = 2 and n % 100 != 12",
                 "human_rule": "Ends in 2 but not 12",
-                "example": "2, 22, 32, 42, 52, 62, 72, 82, 102, 1002, …"
+                "example": "Take the 2nd right."
             },
             {
                 "category": "few",
                 "rule": "n % 10 = 3 and n % 100 != 13",
                 "human_rule": "Ends in 3 but not 13",
-                "example": "3, 23, 33, 43, 53, 63, 73, 83, 103, 1003, …"
+                "example": "Take the 3rd right."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 4~18, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Take the 4th right."
             }
         ]
     },
@@ -7170,19 +7170,19 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 miesiąc"
             },
             {
                 "category": "few",
                 "rule": "v = 0 and i % 10 = 2..4 and i % 100 != 12..14",
-                "human_rule": "Ends in 2–4 but not 12–14 (whole numbers only)",
+                "human_rule": "Ends in 2–4 (but not 12–14), no decimals",
                 "example": "2 miesiące"
             },
             {
                 "category": "many",
                 "rule": "v = 0 and i != 1 and i % 10 = 0..1 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 12..14",
-                "human_rule": "Ends in 0, 1 (not 1 itself), 5–9, or 12–14 (whole numbers only)",
+                "human_rule": "Ends in 0, 1 (not 1 itself), 5–9, or 12–14 (no decimals)",
                 "example": "5 miesięcy"
             },
             {
@@ -7208,7 +7208,7 @@
             {
                 "category": "one",
                 "rule": "n = 0..1",
-                "human_rule": "0 through 1 (any value between 0 and 1 inclusive)",
+                "human_rule": "Exactly 0 or 1",
                 "example": "0, 1"
             },
             {
@@ -7274,20 +7274,20 @@
             {
                 "category": "one",
                 "rule": "i = 0..1",
-                "human_rule": "0 or 1",
-                "example": "0, 1"
+                "human_rule": "Exactly 0 or 1, or any decimal number between 0 and 2, excluding 2 itself",
+                "example": "1 dia / 1,5 dia"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
-                "example": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …"
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
+                "example": "1.000.000 de dias / 1 mi de dias"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+                "example": "2 dias / 2,0 dias"
             }
         ],
         "ordinal": [
@@ -7295,7 +7295,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Pegue a 15ª à direita."
             }
         ]
     },
@@ -7307,7 +7307,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15 hari / 1,5 hari"
             }
         ],
         "ordinal": [
@@ -7315,7 +7315,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Ambil belokan kanan ke-15."
             }
         ]
     },
@@ -7326,7 +7326,7 @@
             {
                 "category": "zero",
                 "rule": "n % 10 = 0 or n % 100 = 11..19 or v = 2 and f % 100 = 11..19",
-                "human_rule": "Ends in 0 or 11–19 (including after decimal point)",
+                "human_rule": "Ends in 0, 11–19, or exactly two decimals (.11–.19)",
                 "example": "0, 10~20, 30, 40, 50, 60, 100, 1000, 10000, 100000, 1000000, …"
             },
             {
@@ -7410,13 +7410,13 @@
             {
                 "category": "one",
                 "rule": "i = 0..1",
-                "human_rule": "0 or 1",
+                "human_rule": "Exactly 0 or 1, or any decimal number between 0 and 2, excluding 2 itself",
                 "example": "1 dia / 1,5 dia"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
                 "example": "1.000.000 de dias / 1 mi de dias"
             },
             {
@@ -7442,13 +7442,13 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
                 "example": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …"
             },
             {
@@ -7601,19 +7601,19 @@
                 "category": "one",
                 "rule": "v = 0 and i % 10 = 1 and i % 100 != 11 or f % 10 = 1 and f % 100 != 11",
                 "human_rule": "Ends in 1 but not 11 (including after decimal point)",
-                "example": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                "example": "1 сат / 0,1 сат"
             },
             {
                 "category": "few",
                 "rule": "v = 0 and i % 10 = 2..4 and i % 100 != 12..14 or f % 10 = 2..4 and f % 100 != 12..14",
-                "human_rule": "Ends in 2–4 but not 12–14 (including after decimal point)",
-                "example": "2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …"
+                "human_rule": "Ends in 2–4, but not 12–14 (including after decimal point)",
+                "example": "2 сата / 0,2 сата"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "5 сати / 0,5 сати"
             }
         ],
         "ordinal": [
@@ -7621,7 +7621,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Скрените у 15. / десно."
             }
         ]
     },
@@ -7652,13 +7652,13 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 zi"
             },
             {
                 "category": "few",
                 "rule": "v != 0 or n = 0 or n != 1 and n % 100 = 1..19",
-                "human_rule": "0, any number with decimals, or ends in 01–19 (except 1 itself)",
+                "human_rule": "Exactly 0, any number with decimals, or ends in 01–19 (except 1 itself)",
                 "example": "2 zile / 1,5 zile"
             },
             {
@@ -7716,19 +7716,19 @@
             {
                 "category": "one",
                 "rule": "v = 0 and i % 10 = 1 and i % 100 != 11",
-                "human_rule": "Ends in 1 but not 11 (whole numbers only)",
+                "human_rule": "Ends in 1 but not 11 (no decimals)",
                 "example": "из 1 книги за 1 день"
             },
             {
                 "category": "few",
                 "rule": "v = 0 and i % 10 = 2..4 and i % 100 != 12..14",
-                "human_rule": "Ends in 2–4 but not 12–14 (whole numbers only)",
+                "human_rule": "Ends in 2–4 (but not 12–14), no decimals",
                 "example": "из 2 книг за 2 дня"
             },
             {
                 "category": "many",
                 "rule": "v = 0 and i % 10 = 0 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 11..14",
-                "human_rule": "Ends in 0, 5–9, or 11–14 (whole numbers only)",
+                "human_rule": "Ends in 0, 5–9, or 11–14 (no decimals)",
                 "example": "из 5 книг за 5 дней"
             },
             {
@@ -7821,13 +7821,13 @@
                 "category": "one",
                 "rule": "i = 0 or n = 1",
                 "human_rule": "Exactly 0, 1, or any decimal starting with 0",
-                "example": "0, 1"
+                "example": "1 घंटा / 1.0 घंटा"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 घंटे / 1.1 घंटे"
             }
         ],
         "ordinal": [
@@ -7835,31 +7835,31 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "1ला दाहिना मोड़ लें."
             },
             {
                 "category": "two",
                 "rule": "n = 2,3",
                 "human_rule": "Exactly 2 or 3",
-                "example": "2, 3"
+                "example": "2रा दाहिना मोड़ लें."
             },
             {
                 "category": "few",
                 "rule": "n = 4",
                 "human_rule": "Exactly 4",
-                "example": "4"
+                "example": "4 दाहिना मोड़ लें."
             },
             {
                 "category": "many",
                 "rule": "n = 6",
                 "human_rule": "Exactly 6",
-                "example": "6"
+                "example": "6ठा दाहिना मोड़ लें."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 5, 7~20, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "5वां दाहिना मोड़ लें."
             }
         ]
     },
@@ -7948,7 +7948,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 die"
             },
             {
@@ -7980,13 +7980,13 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 jornu"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
                 "example": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, … | 1.0000001c6, 1.1c6, 2.0000001c6, 2.1c6, 3.0000001c6, 3.1c6, …"
             },
             {
@@ -8007,7 +8007,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0~7, 9, 10, 12~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Pigghia a 7ª a manu dritta."
             }
         ]
     },
@@ -8174,7 +8174,7 @@
             {
                 "category": "few",
                 "rule": "v = 0 and i % 10 = 2..4 and i % 100 != 12..14 or f % 10 = 2..4 and f % 100 != 12..14",
-                "human_rule": "Ends in 2–4 but not 12–14 (including after decimal point)",
+                "human_rule": "Ends in 2–4, but not 12–14 (including after decimal point)",
                 "example": "2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …"
             },
             {
@@ -8206,7 +8206,7 @@
             {
                 "category": "few",
                 "rule": "n = 2..10",
-                "human_rule": "2 through 10",
+                "human_rule": "Exactly 2–10",
                 "example": "n = 2..10"
             },
             {
@@ -8233,7 +8233,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15 ရက် / 1.5 ရက်"
             }
         ],
         "ordinal": [
@@ -8241,7 +8241,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15 အုပ်မြောက်"
             }
         ]
     },
@@ -8253,37 +8253,37 @@
                 "category": "zero",
                 "rule": "n = 0",
                 "human_rule": "Exactly 0",
-                "example": "0"
+                "example": "‫0 ولد حضر / 0.0000 ولد حضر‬"
             },
             {
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "‫ولد واحد حضر / ولد واحد حضر‬"
             },
             {
                 "category": "two",
                 "rule": "n = 2",
                 "human_rule": "Exactly 2",
-                "example": "2"
+                "example": "‫ولدان حضرا / ولدان حضرا‬"
             },
             {
                 "category": "few",
                 "rule": "n % 100 = 3..10",
                 "human_rule": "Ends in 03–10",
-                "example": "3~10, 103~110, 1003, …"
+                "example": "‫3 أولاد حضروا / 3.0 أولاد حضروا‬"
             },
             {
                 "category": "many",
                 "rule": "n % 100 = 11..99",
                 "human_rule": "Ends in 11–99",
-                "example": "11~26, 111, 1011, …"
+                "example": "‫11 ولدًا حضروا / 11.0 ولدًا حضروا‬"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "100~102, 200~202, 300~302, 400~402, 500~502, 600, 1000, 10000, 100000, 1000000, …"
+                "example": "‫100 ولد حضروا / 0.1 ولد حضروا‬"
             }
         ],
         "ordinal": [
@@ -8291,7 +8291,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "‫اتجه إلى المنعطف الـ 15 يمينًا.‬"
             }
         ]
     },
@@ -8302,7 +8302,7 @@
             {
                 "category": "one",
                 "rule": "n = 0,1 or i = 0 and f = 1",
-                "human_rule": "0, 1, or a decimal whose fractional digits equal 1 (e.g., 0.1, 0.01)",
+                "human_rule": "Exactly 0 or 1, or any decimal starting with 0 where the fractional part is exactly 1",
                 "example": "1 පොතක් ඇත. / එය කියවීමි. / 0.1 පොතක් ඇත. / එය කියවීමි."
             },
             {
@@ -8328,13 +8328,13 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 deň"
             },
             {
                 "category": "few",
                 "rule": "i = 2..4 and v = 0",
-                "human_rule": "2, 3, or 4 (whole numbers only)",
+                "human_rule": "Exactly 2, 3, or 4 (no decimals)",
                 "example": "2 dni"
             },
             {
@@ -8366,19 +8366,19 @@
             {
                 "category": "one",
                 "rule": "v = 0 and i % 100 = 1",
-                "human_rule": "Ends in 01 (whole numbers only)",
+                "human_rule": "Exactly 1, or ends in 01 (no decimals)",
                 "example": "1 dan"
             },
             {
                 "category": "two",
                 "rule": "v = 0 and i % 100 = 2",
-                "human_rule": "Ends in 02 (whole numbers only)",
+                "human_rule": "Exactly 2, or ends in 02 (no decimals)",
                 "example": "2 dneva"
             },
             {
                 "category": "few",
                 "rule": "v = 0 and i % 100 = 3..4 or v != 0",
-                "human_rule": "Ends in 03 or 04 (whole numbers only), or any number with decimals",
+                "human_rule": "Exactly 3, 4, ends in 03, 04, or any number with decimals",
                 "example": "3 dnevi / 1,5 dnevi"
             },
             {
@@ -8668,7 +8668,7 @@
             {
                 "category": "few",
                 "rule": "v = 0 and i % 10 = 2..4 and i % 100 != 12..14 or f % 10 = 2..4 and f % 100 != 12..14",
-                "human_rule": "Ends in 2–4 but not 12–14 (including after decimal point)",
+                "human_rule": "Ends in 2–4, but not 12–14 (including after decimal point)",
                 "example": "2 сата / 0,2 сата"
             },
             {
@@ -8694,14 +8694,14 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 dag"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 dagen / 1,5 dagen"
             }
         ],
         "ordinal": [
@@ -8709,7 +8709,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Neem de 15e afslag rechts."
             }
         ]
     },
@@ -8838,7 +8838,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "om 1 dag"
             },
             {
@@ -8870,14 +8870,14 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 day"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 days / 1.5 days"
             }
         ],
         "ordinal": [
@@ -8885,25 +8885,25 @@
                 "category": "one",
                 "rule": "n % 10 = 1 and n % 100 != 11",
                 "human_rule": "Ends in 1 but not 11",
-                "example": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                "example": "Take the 1st right."
             },
             {
                 "category": "two",
                 "rule": "n % 10 = 2 and n % 100 != 12",
                 "human_rule": "Ends in 2 but not 12",
-                "example": "2, 22, 32, 42, 52, 62, 72, 82, 102, 1002, …"
+                "example": "Take the 2nd right."
             },
             {
                 "category": "few",
                 "rule": "n % 10 = 3 and n % 100 != 13",
                 "human_rule": "Ends in 3 but not 13",
-                "example": "3, 23, 33, 43, 53, 63, 73, 83, 103, 1003, …"
+                "example": "Take the 3rd right."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 4~18, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Take the 4th right."
             }
         ]
     },
@@ -8914,7 +8914,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "siku 1 iliyopita"
             },
             {
@@ -8986,26 +8986,26 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 miesiąc"
             },
             {
                 "category": "few",
                 "rule": "v = 0 and i % 10 = 2..4 and i % 100 != 12..14",
-                "human_rule": "Ends in 2–4 but not 12–14 (whole numbers only)",
-                "example": "2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …"
+                "human_rule": "Ends in 2–4 (but not 12–14), no decimals",
+                "example": "2 miesiące"
             },
             {
                 "category": "many",
                 "rule": "v = 0 and i != 1 and i % 10 = 0..1 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 12..14",
-                "human_rule": "Ends in 0, 1 (not 1 itself), 5–9, or 12–14 (whole numbers only)",
-                "example": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+                "human_rule": "Ends in 0, 1 (not 1 itself), 5–9, or 12–14 (no decimals)",
+                "example": "5 miesięcy"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": ""
+                "example": "1,5 miesiąca"
             }
         ],
         "ordinal": [
@@ -9013,7 +9013,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Skręć w 15. / w prawo."
             }
         ]
     },
@@ -9122,20 +9122,20 @@
             {
                 "category": "one",
                 "rule": "i = 0..1",
-                "human_rule": "0 or 1",
-                "example": "0, 1"
+                "human_rule": "Exactly 0 or 1, or any decimal number between 0 and 2, excluding 2 itself",
+                "example": "1 dia / 1,5 dia"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
-                "example": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …"
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
+                "example": "1.000.000 de dias / 1 mi de dias"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+                "example": "2 dias / 2,0 dias"
             }
         ],
         "ordinal": [
@@ -9143,7 +9143,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Pegue a 15ª à direita."
             }
         ]
     },
@@ -9155,13 +9155,13 @@
                 "category": "one",
                 "rule": "i = 0 or n = 1",
                 "human_rule": "Exactly 0, 1, or any decimal starting with 0",
-                "example": "0, 1"
+                "example": "‫1 نفر در بازی شرکت کرد. / 1.0 نفر در بازی شرکت کرد.‬"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "‫2 نفر در بازی شرکت کردند. / 1.1 نفر در بازی شرکت کردند.‬"
             }
         ],
         "ordinal": [
@@ -9169,7 +9169,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "‫در پیچ 15ام سمت راست بپیچید.‬"
             }
         ]
     },
@@ -9200,7 +9200,7 @@
             {
                 "category": "one",
                 "rule": "n = 0..1",
-                "human_rule": "0 through 1 (any value between 0 and 1 inclusive)",
+                "human_rule": "Exactly 0 or 1",
                 "example": "1 መዓልቲ / 1.0 መዓልቲ"
             },
             {
@@ -9324,7 +9324,7 @@
             {
                 "category": "one",
                 "rule": "v = 0 and i = 1,2,3 or v = 0 and i % 10 != 4,6,9 or v != 0 and f % 10 != 4,6,9",
-                "human_rule": "Does not end in 4, 6, or 9",
+                "human_rule": "Does not end in 4, 6, 9 (including after decimal point)",
                 "example": "3 mansanas / 0.3 mansanas"
             },
             {
@@ -9403,7 +9403,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Ngaahi ʻaho ʻe 15 / Ngaahi ʻaho ʻe 1.5"
             }
         ],
         "ordinal": [
@@ -9594,14 +9594,14 @@
             {
                 "category": "one",
                 "rule": "n = 0..1",
-                "human_rule": "0 through 1 (any value between 0 and 1 inclusive)",
-                "example": "0, 1"
+                "human_rule": "Exactly 0 or 1",
+                "example": "da 1 / da 1.0"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "nda 2 / nda 0.1"
             }
         ],
         "ordinal": [
@@ -9640,7 +9640,7 @@
             {
                 "category": "one",
                 "rule": "n = 0..1 or n = 11..99",
-                "human_rule": "0 through 1, or 11 through 99",
+                "human_rule": "Exactly 0,1 or 11–99",
                 "example": "0, 1, 11~24"
             },
             {
@@ -9712,19 +9712,19 @@
             {
                 "category": "one",
                 "rule": "v = 0 and i % 10 = 1 and i % 100 != 11",
-                "human_rule": "Ends in 1 but not 11 (whole numbers only)",
+                "human_rule": "Ends in 1 but not 11 (no decimals)",
                 "example": "1 день"
             },
             {
                 "category": "few",
                 "rule": "v = 0 and i % 10 = 2..4 and i % 100 != 12..14",
-                "human_rule": "Ends in 2–4 but not 12–14 (whole numbers only)",
+                "human_rule": "Ends in 2–4 (but not 12–14), no decimals",
                 "example": "2 дні"
             },
             {
                 "category": "many",
                 "rule": "v = 0 and i % 10 = 0 or v = 0 and i % 10 = 5..9 or v = 0 and i % 100 = 11..14",
-                "human_rule": "Ends in 0, 5–9, or 11–14 (whole numbers only)",
+                "human_rule": "Ends in 0, 5–9, or 11–14 (no decimals)",
                 "example": "5 днів"
             },
             {
@@ -9776,7 +9776,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "‫1 گھنٹہ‬"
             },
             {
@@ -9829,13 +9829,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "Bu jildda 1 ta fayl bor. / Uni oʻchirib tashlaysizmi?"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Bu jildda 2 ta fayl bor. / Ularni oʻchirib tashlaysizmi?"
             }
         ],
         "ordinal": [
@@ -9843,7 +9843,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15-chorrahadan o‘ngga buriling"
             }
         ]
     },
@@ -9880,13 +9880,13 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 pomo"
             },
             {
                 "category": "many",
                 "rule": "e = 0 and i != 0 and i % 1000000 = 0 and v = 0 or e != 0..5",
-                "human_rule": "Exact millions (1000000, 2000000, …)",
+                "human_rule": "Multiples of 1,000,000 (no decimals)",
                 "example": "e = 0 and /   i != 0 and /   i % 1000000 = 0 and /   v = 0 or / e != 0..5"
             },
             {
@@ -9907,7 +9907,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0~7, 9, 10, 12~17, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Ciapa la 7ª a dreta"
             }
         ]
     },
@@ -9944,14 +9944,14 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
-                "example": "1"
+                "human_rule": "Exactly 1 (no decimals)",
+                "example": "1 day"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 days / 1.5 days"
             }
         ],
         "ordinal": [
@@ -9959,25 +9959,25 @@
                 "category": "one",
                 "rule": "n % 10 = 1 and n % 100 != 11",
                 "human_rule": "Ends in 1 but not 11",
-                "example": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …"
+                "example": "Take the 1st right."
             },
             {
                 "category": "two",
                 "rule": "n % 10 = 2 and n % 100 != 12",
                 "human_rule": "Ends in 2 but not 12",
-                "example": "2, 22, 32, 42, 52, 62, 72, 82, 102, 1002, …"
+                "example": "Take the 2nd right."
             },
             {
                 "category": "few",
                 "rule": "n % 10 = 3 and n % 100 != 13",
                 "human_rule": "Ends in 3 but not 13",
-                "example": "3, 23, 33, 43, 53, 63, 73, 83, 103, 1003, …"
+                "example": "Take the 3rd right."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 4~18, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Take the 4th right."
             }
         ]
     },
@@ -9988,7 +9988,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1 dag"
             },
             {
@@ -10086,7 +10086,7 @@
             {
                 "category": "one",
                 "rule": "n = 0..1",
-                "human_rule": "0 through 1 (any value between 0 and 1 inclusive)",
+                "human_rule": "Exactly 0 or 1",
                 "example": "0, 1"
             },
             {
@@ -10138,14 +10138,14 @@
             {
                 "category": "one",
                 "rule": "v = 0 and i = 1,2,3 or v = 0 and i % 10 != 4,6,9 or v != 0 and f % 10 != 4,6,9",
-                "human_rule": "Does not end in 4, 6, or 9",
-                "example": "0~3, 5, 7, 8, 10~13, 15, 17, 18, 20, 21, 100, 1000, 10000, 100000, 1000000, …"
+                "human_rule": "Does not end in 4, 6, 9 (including after decimal point)",
+                "example": "3 mansanas / 0.3 mansanas"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "4, 6, 9, 14, 16, 19, 24, 26, 104, 1004, …"
+                "example": "4 na mansanas / 0.4 na mansanas"
             }
         ],
         "ordinal": [
@@ -10159,7 +10159,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Kunin ang ika-2 (na) kanan."
             }
         ]
     },
@@ -10211,13 +10211,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "usuku 1 / usuku 1.0"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "intsuku eziyi-2 / intsuku eziyi-0.9"
             }
         ],
         "ordinal": [
@@ -10262,7 +10262,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1"
             },
             {
@@ -10288,7 +10288,7 @@
             {
                 "category": "one",
                 "rule": "i = 1 and v = 0",
-                "human_rule": "Exactly 1 (whole number only)",
+                "human_rule": "Exactly 1 (no decimals)",
                 "example": "1"
             },
             {
@@ -10315,13 +10315,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "1 maalin / 1.0 maalin"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "2 maalmood / 0.9 maalmood"
             }
         ],
         "ordinal": [
@@ -10381,37 +10381,37 @@
                 "category": "zero",
                 "rule": "n = 0",
                 "human_rule": "Exactly 0",
-                "example": "0"
+                "example": "‫0 ولد حضر / 0.0000 ولد حضر‬"
             },
             {
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "‫ولد واحد حضر / ولد واحد حضر‬"
             },
             {
                 "category": "two",
                 "rule": "n = 2",
                 "human_rule": "Exactly 2",
-                "example": "2"
+                "example": "‫ولدان حضرا / ولدان حضرا‬"
             },
             {
                 "category": "few",
                 "rule": "n % 100 = 3..10",
                 "human_rule": "Ends in 03–10",
-                "example": "3~10, 103~110, 1003, …"
+                "example": "‫3 أولاد حضروا / 3.0 أولاد حضروا‬"
             },
             {
                 "category": "many",
                 "rule": "n % 100 = 11..99",
                 "human_rule": "Ends in 11–99",
-                "example": "11~26, 111, 1011, …"
+                "example": "‫11 ولدًا حضروا / 11.0 ولدًا حضروا‬"
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "100~102, 200~202, 300~302, 400~402, 500~502, 600, 1000, 10000, 100000, 1000000, …"
+                "example": "‫100 ولد حضروا / 0.1 ولد حضروا‬"
             }
         ],
         "ordinal": [
@@ -10419,12 +10419,12 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "‫اتجه إلى المنعطف الـ 15 يمينًا.‬"
             }
         ]
     },
     "zh": {
-        "name": "Chinese (Simplified, Singapore)",
+        "name": "Chinese (Simplified, Malaysia)",
         "isoCode": "zh",
         "cardinal": [
             {
@@ -10451,7 +10451,7 @@
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any number",
-                "example": "0~15, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "15 hari / 1.5 hari"
             }
         ],
         "ordinal": [
@@ -10459,13 +10459,13 @@
                 "category": "one",
                 "rule": "n = 1",
                 "human_rule": "Exactly 1",
-                "example": "1"
+                "example": "Ambil belokan kanan 1."
             },
             {
                 "category": "other",
                 "rule": "",
                 "human_rule": "Any other number",
-                "example": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+                "example": "Ambil belokan kanan yang ke-2."
             }
         ]
     },
