@@ -758,7 +758,7 @@
             {
                 "category": "few",
                 "rule": "n % 10 = 2..4 and n % 100 != 12..14",
-                "human_rule": "Ends in 2-4 but not 12–14",
+                "human_rule": "Ends in 2–4 but not 12–14",
                 "example": "з 2 кніг за 2 дні / з 2,0 кніг за 2,0 дні"
             },
             {
