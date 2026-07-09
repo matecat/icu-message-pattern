@@ -18,8 +18,8 @@ before_script:
 
 script:
   - ./vendor/bin/phpunit -d memory_limit=-1 --coverage-clover=coverage.xml
+  - ./vendor/bin/phpstan analyse --error-format=json --memory-limit=1G 2>&1
   - ./vendor/bin/phpstan analyse --error-format=json --memory-limit=1G > phpstan.json
-
 
 after_success:
   - sonar-scanner -X -Dsonar.token=$SONAR_TOKEN -Dsonar.projectKey=matecat_icu-intl -Dsonar.sources=src -Dsonar.tests=tests/ -Dsonar.php.coverage.reportPaths=coverage.xml -Dsonar.php.phpstan.reportPaths=phpstan.json
