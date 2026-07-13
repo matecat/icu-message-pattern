@@ -509,12 +509,28 @@ class CardinalDecimalRule
 
         // one: n%10=1 and n%100!=11 or v=2 and f%10=1 and f%100!=11 or v!=2 and f%10=1
         //
-        // The "$n100 != 11" sub-expression is logically redundant at this point:
-        // the zero guard above already returned for any n%100 in 11..19, so n%100
-        // can never be 11 here. The check is kept intentionally to match the CLDR
-        // rule text character-by-character, so that future maintainers can verify
-        // this code against the CLDR specification (plurals.xml) without mental
-        // translation. The same reasoning applies to "$f100 !== 11".
+        // The condition below is written to mirror the CLDR rule text (plurals.xml)
+        // token-for-token, so it can be verified against the spec without mental
+        // translation. Two of its sub-expressions are provably redundant once the
+        // zero guard above has run, and are kept only for that readability:
+        //
+        //   - "$n100 != 11": the zero guard returns for any n%100 in 11..19
+        //     unconditionally, so n%100 can never be 11 here.
+        //
+        //   - "$f100 !== 11": the zero guard only excludes f%100 in 11..19 when
+        //     v == 2. But this sub-expression sits inside the "$v === 2 && ..."
+        //     branch, so v == 2 already holds when it is evaluated, which makes
+        //     the guard apply and f%100 can never be 11 here either. (PHPStan
+        //     flags this one, not "$n100 != 11", because it is a strict !== on an
+        //     int that PHPStan can range-narrow; $n100 is an fmod() float compared
+        //     loosely, so it is not narrowed the same way.)
+        //
+        // Dropping both redundant checks, the branch simplifies to:
+        //   if ($n10 == 1 || $f10 === 1) { return 1; }
+        // because ($v === 2 && $f10 === 1) || ($v !== 2 && $f10 === 1) covers every
+        // value of v and thus reduces to just "$f10 === 1".
+        //
+        // @phpstan-ignore notIdentical.alwaysTrue (redundant $f100 !== 11 kept on purpose to mirror the CLDR rule text; see comment above)
         if (($n10 == 1 && $n100 != 11) || ($v === 2 && $f10 === 1 && $f100 !== 11) || ($v !== 2 && $f10 === 1)) {
             return 1;
         }
