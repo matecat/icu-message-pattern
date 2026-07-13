@@ -1851,6 +1851,51 @@
         {
             "localized": [
                 {
+                    "en": "French (Guadeloupe)"
+                }
+            ],
+            "isocode": "fr",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "fr-GP",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "French (Haiti)"
+                }
+            ],
+            "isocode": "fr",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "fr-HT",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "French (Martinique)"
+                }
+            ],
+            "isocode": "fr",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "fr-MQ",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
                     "en": "French (Morocco)"
                 }
             ],
@@ -1888,6 +1933,21 @@
             "enabled": true,
             "rtl": false,
             "bcp47code": "fr-LU",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "French (Tunisia)"
+                }
+            ],
+            "isocode": "fr",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "fr-TN",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4058,6 +4118,21 @@
         {
             "localized": [
                 {
+                    "en": "Portuguese (Angola)"
+                }
+            ],
+            "isocode": "pt",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "pt-AO",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
                     "en": "Portuguese (Brazil)"
                 }
             ],
@@ -4065,6 +4140,36 @@
             "enabled": true,
             "rtl": false,
             "bcp47code": "pt-BR",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Portuguese (Cape Verde)"
+                }
+            ],
+            "isocode": "pt",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "pt-CV",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Portuguese (Mozambique)"
+                }
+            ],
+            "isocode": "pt",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "pt-MZ",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4238,6 +4343,21 @@
         {
             "localized": [
                 {
+                    "en": "Romanian (Moldova)"
+                }
+            ],
+            "isocode": "ro",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "ro-MD",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
                     "en": "Romansh"
                 }
             ],
@@ -4275,6 +4395,36 @@
             "enabled": true,
             "rtl": false,
             "bcp47code": "ru-RU",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Russian (Moldova)"
+                }
+            ],
+            "isocode": "ru",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "ru-MD",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Russian (Ukraine)"
+                }
+            ],
+            "isocode": "ru",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "ru-UA",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4766,6 +4916,36 @@
         {
             "localized": [
                 {
+                    "en": "Spanish (Bolivia)"
+                }
+            ],
+            "isocode": "es",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "es-BO",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Spanish (Chile)"
+                }
+            ],
+            "isocode": "es",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "es-CL",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
                     "en": "Spanish (Colombia)"
                 }
             ],
@@ -4781,6 +4961,21 @@
         {
             "localized": [
                 {
+                    "en": "Spanish (Costa Rica)"
+                }
+            ],
+            "isocode": "es",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "es-CR",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
                     "en": "Spanish (Dominican Republic)"
                 }
             ],
@@ -4788,6 +4983,51 @@
             "enabled": true,
             "rtl": false,
             "bcp47code": "es-DO",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Spanish (Ecuador)"
+                }
+            ],
+            "isocode": "es",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "es-EC",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Spanish (El Salvador)"
+                }
+            ],
+            "isocode": "es",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "es-SV",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Spanish (Guatemala)"
+                }
+            ],
+            "isocode": "es",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "es-GT",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
@@ -4841,6 +5081,21 @@
         {
             "localized": [
                 {
+                    "en": "Spanish (Nicaragua)"
+                }
+            ],
+            "isocode": "es",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "es-NI",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
                     "en": "Spanish (Panama)"
                 }
             ],
@@ -4848,6 +5103,21 @@
             "enabled": true,
             "rtl": false,
             "bcp47code": "es-PA",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },
+        {
+            "localized": [
+                {
+                    "en": "Spanish (Paraguay)"
+                }
+            ],
+            "isocode": "es",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "es-PY",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
