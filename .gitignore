@@ -1,3 +1,5 @@
+.*
+!.gitignore
 # Composer
 composer.lock
 vendor/
