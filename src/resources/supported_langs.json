@@ -2226,13 +2226,27 @@
         {
             "localized": [
                 {
-                    "en": "Hausa"
+                    "en": "Hausa (Niger)"
                 }
             ],
             "isocode": "ha",
             "enabled": true,
             "rtl": false,
             "bcp47code": "ha-NE",
+            "ocr": {
+                "supported": true,
+                "not_supported_or_rtl": false
+            }
+        },{
+            "localized": [
+                {
+                    "en": "Hausa  (Nigeria)"
+                }
+            ],
+            "isocode": "ha",
+            "enabled": true,
+            "rtl": false,
+            "bcp47code": "ha-NG",
             "ocr": {
                 "supported": true,
                 "not_supported_or_rtl": false
